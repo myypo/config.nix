@@ -1,0 +1,117 @@
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 12pt;
+    font-weight: bold;
+    border-radius: 0px;
+}
+
+@keyframes blink_red {
+    to {
+        background: #eb6f92;
+        color: rgb(26, 24, 38);
+    }
+}
+
+.warning,
+.critical,
+.urgent {
+    animation-name: blink_red;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window>box {
+    background: rgb(0, 0, 0);
+    opacity: 0.92;
+    padding: 5px 0px;
+}
+
+#workspaces button {
+    background: transparent;
+    margin: 0px 4px;
+    color: #dedddd;
+    border-radius: 50%;
+    box-shadow: inset -3px -3px 0 0 #f6c177;
+    transition-property: background;
+    transition-duration: 0.5s;
+}
+
+#workspaces button.active {
+    background: #f6c177;
+    color: rgb(26, 24, 38);
+}
+
+#workspaces button.urgent {
+    color: rgb(26, 24, 38);
+}
+
+#workspaces button:not(.active):not(.urgent):hover {
+    box-shadow: inset -3px -3px 0 0 #eb6f92;
+}
+
+#workspaces button.active:hover,
+#workspaces button.urgent:hover {
+    background: #eb6f92;
+    box-shadow: inset -3px -3px 0 0 #eb6f92;
+    color: rgb(26, 24, 38);
+}
+
+tooltip {
+    background: rgb(48, 45, 65);
+}
+
+tooltip label {
+    color: #dedddd;
+}
+
+#mode,
+#clock,
+#memory,
+#cpu,
+#custom-weather,
+#backlight,
+#network,
+#battery,
+#pulseaudio {
+    color: #dedddd;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#temperature {
+    color: #dedddd;
+    padding-left: 15px;
+    padding-right: 10px;
+}
+
+#memory,
+#cpu,
+#clock,
+#backlight,
+#pulseaudio {
+    color: #dedddd;
+}
+
+#battery.charging,
+#battery.full,
+#battery.discharging {
+    color: #dedddd;
+    padding-bottom: 1px;
+}
+
+#battery.critical:not(.charging) {
+    color: #eb6f92;
+    padding-bottom: 1px;
+}
+
+#tray {
+    padding-right: 8px;
+    padding-left: 10px;
+    padding-top: 3px;
+}

@@ -1,0 +1,11 @@
+--cycle
+--layout=reverse
+--pointer=" "
+--marker="●"
+--prompt="  "
+--color=fg:#908caa,hl:#eba4ac
+--color=fg+:#e0def4,hl+:#eba4ac
+--color=border:#403d52,gutter:#000000
+--color=info:#eba4ac,separator:#403d52
+--color=pointer:#eba4ac,marker:#eb6f92,prompt:#eba4ac
+--color=spinner:#3e8fb0

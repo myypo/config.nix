@@ -1,0 +1,112 @@
+return {
+	-- "myypo/compass.nvim",
+	-- build = "make",
+	-- dev = false,
+	--
+	--
+	-- opts = {
+	-- 	picker = {
+	-- 		jump_keys = {
+	-- 			{ "n", "N" },
+	-- 			{ "t", "T" },
+	-- 			{ "e", "E" },
+	-- 			{ "s", "S" },
+	-- 			{ "i", "I" },
+	-- 			{ "r", "R" },
+	-- 			{ "o", "O" },
+	-- 			{ "a", "A" },
+	-- 			{ "m", "M" },
+	-- 			{ "g", "G" },
+	-- 		},
+	-- 	},
+	-- 	tracker = {
+	-- 		signs = {
+	-- 			past = "",
+	-- 			close_past = "",
+	-- 			future = "",
+	-- 			close_future = "",
+	-- 		},
+	-- 	},
+	--
+	-- 	-- picker = {
+	-- 	-- 	max_windows = 6,
+	-- 	-- 	jump_keys = {
+	-- 	-- 		{ "j", "J" },
+	-- 	-- 		{ "f", "F" },
+	-- 	-- 		{ "k", "K" },
+	-- 	-- 		{ "d", "D" },
+	-- 	-- 		{ "l", "L" },
+	-- 	-- 		{ "s", "S" },
+	-- 	-- 		{ ";", ":" },
+	-- 	-- 		{ "a", "A" },
+	-- 	-- 		{ "h", "H" },
+	-- 	-- 		{ "g", "G" },
+	-- 	-- 	},
+	-- 	-- 	sign_text = "●",
+	-- 	-- 	filename = {
+	-- 	-- 		enable = true,
+	-- 	-- 		depth = 2,
+	-- 	-- 	},
+	-- 	-- },
+	-- 	-- tracker = {
+	-- 	-- 	enable = true,
+	-- 	-- 	update_range = {
+	-- 	-- 		lines = {
+	-- 	-- 			single_max_distance = 10,
+	-- 	-- 			combined_max_distance = 25,
+	-- 	-- 		},
+	-- 	-- 		columns = {
+	-- 	-- 			single_max_distance = nil,
+	-- 	-- 			combined_max_distance = 25,
+	-- 	-- 		},
+	-- 	-- 	},
+	-- 	-- 	signs = {
+	-- 	-- 		past = "●",
+	-- 	-- 		close_past = "●",
+	-- 	-- 		future = "●",
+	-- 	-- 		close_future = "●",
+	-- 	-- 	},
+	-- 	-- },
+	-- 	-- persistence = {
+	-- 	-- 	enable = true,
+	-- 	-- 	path = nil,
+	-- 	-- },
+	-- 	-- frecency = {
+	-- 	-- 	time_bucket = {
+	-- 	-- 		thresholds = {
+	-- 	-- 			{ hours = 4, weight = 100 },
+	-- 	-- 			{ hours = 14, weight = 70 },
+	-- 	-- 			{ hours = 31, weight = 50 },
+	-- 	-- 			{ hours = 90, weight = 30 },
+	-- 	-- 		},
+	-- 	-- 		fallback = 10,
+	-- 	-- 	},
+	-- 	-- 	visit_type = {
+	-- 	-- 		create = 50,
+	-- 	-- 		update = 100,
+	-- 	-- 		relative_goto = 50,
+	-- 	-- 		absolute_goto = 100,
+	-- 	-- 	},
+	-- 	-- 	cooldown_seconds = 60,
+	-- 	-- },
+	-- },
+	--
+	-- event = "BufReadPost",
+	-- keys = {
+	-- 	{ "<C-f>", "<Cmd>Compass open<CR>" },
+	-- 	{
+	-- 		"<C-t>",
+	-- 		"<Cmd>Compass goto relative direction=back<CR>",
+	-- 		-- "<Cmd>Compass goto absolute index=0<CR>",
+	-- 		-- "<Cmd>Compass open<CR>",
+	-- 	},
+	-- 	{
+	-- 		"<C-S-t>",
+	-- 		"<Cmd>Compass goto relative direction=forward<CR>",
+	-- 	},
+	-- },
+	--
+	-- -- config = function()
+	-- -- 	require("compass").setup()
+	-- -- end,
+}
