@@ -4,7 +4,9 @@ return {
 	dependencies = { "nvim-lua/plenary.nvim" },
 	config = function()
 		local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-		local b = require("null-ls").builtins
+		local nls = require("null-ls")
+		local b = nls.builtins
+
 		require("null-ls").setup({
 			sources = {
 				-- Lua
@@ -18,7 +20,9 @@ return {
 
 				-- Go
 				b.formatting.gofumpt,
-				b.formatting.golines,
+				b.formatting.golines.with({
+					extra_args = { "--base-formatter", "gofumpt" },
+				}),
 
 				-- Nix
 				b.formatting.alejandra,
@@ -34,6 +38,22 @@ return {
 				b.formatting.sqlfluff.with({
 					extra_args = { "--dialect", "postgres" },
 				}),
+
+				-- Roc
+				{
+					method = nls.methods.FORMATTING,
+					filetypes = { "roc" },
+					generator = nls.generator({
+						command = "roc fmt",
+						args = function(_)
+							return {}
+						end,
+						to_stdin = true,
+						on_output = function(_, _)
+							return {}
+						end,
+					}),
+				},
 			},
 
 			on_attach = function(client, bufnr)

@@ -6,13 +6,13 @@
 }: let
   cfgs = lib.getCfgs {
     inherit config;
-    type = "other";
-    name = "chats";
+    type = "office";
+    name = "corpo";
   };
 
   userOpts = {
-    options.other.chats = {
-      enable = lib.mkNullableEnableOption "chats";
+    options.other.corpo = {
+      enable = lib.mkNullableEnableOption "corpo";
     };
   };
 in {
@@ -24,9 +24,9 @@ in {
         lib.mkIfFall cfg {
           home = {
             packages = with pkgs; [
-              tdesktop
-
               slack
+              postman
+              buttercup-desktop
             ];
           };
         }

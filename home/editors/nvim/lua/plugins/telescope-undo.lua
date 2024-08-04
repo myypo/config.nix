@@ -10,7 +10,7 @@ return {
 	keys = {
 		{
 			"<leader>u",
-			"<Cmd>Telescope undo<cr>",
+			"<Cmd>Telescope undo<CR>",
 			desc = "Telescope undo history",
 		},
 	},

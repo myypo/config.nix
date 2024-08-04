@@ -163,7 +163,8 @@
       lib.attrsets.foldlAttrs (acc: _: v: acc // v) {} {
         setup = {
           "${baseDestPath}/init.lua".text = builtins.replaceStrings (fromFn subs."_init.lua") (toFn subs."_init.lua") (builtins.readFile "${baseSrcPath}/_init.lua");
-          "${baseDestPath}/lazy-lock.json".source = "${baseSrcPath}/lazy-lock.json";
+          # TODO: doing it this way isn't really ergonomic for me
+          # "${baseDestPath}/lazy-lock.json".source = "${baseSrcPath}/lazy-lock.json";
 
           "${baseDestPath}/lua/base".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/base";
           "${baseDestPath}/lua/luasnip".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/luasnip";

@@ -51,9 +51,4 @@
     XDG_SESSION_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
   };
-
-  home.sessionPath = [
-    "$HOME/.npm-global/bin"
-    "$HOME/.local/bin"
-  ];
 }

@@ -87,6 +87,17 @@ return {
 			{ noremap = true, silent = true }
 		)
 
+		keymap({ "n", "v" }, "<C-m>", function()
+			local dlist = vim.diagnostic.get(nil, { severity = { vim.diagnostic.severity.ERROR } })
+			if #dlist < 1 then
+				return
+			end
+
+			local d = dlist[1]
+			vim.api.nvim_set_current_buf(d.bufnr)
+			vim.api.nvim_win_set_cursor(0, { d.end_lnum + 1, d.end_col })
+		end, { noremap = true, silent = true })
+
 		-- LSP setups
 		nvim_lsp.nil_ls.setup({})
 
@@ -143,6 +154,8 @@ return {
 				client.server_capabilities.documentRangeFormattingProvider = false
 			end,
 		})
+
+		nvim_lsp.roc_ls.setup({})
 
 		nvim_lsp.hls.setup({})
 

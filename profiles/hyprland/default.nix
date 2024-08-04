@@ -131,6 +131,12 @@ in {
       dconf.enable = true;
     };
 
+    xdg.portal = with pkgs; {
+      enable = true;
+      extraPortals = [xdg-desktop-portal-gtk xdg-desktop-portal-hyprland];
+      configPackages = [hyprland];
+    };
+
     environment.systemPackages = with pkgs; [
       wl-clipboard
       wlr-randr

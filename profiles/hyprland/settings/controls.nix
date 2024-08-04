@@ -121,6 +121,8 @@
 
         "$mod,P,exec,soft_start .telegram-deskt telegram-desktop '(T)'"
 
+        "$mod,G,exec,soft_start slack 'slack --enable-features=UseOzonePlatform --ozone-platform=wayland' '(S)'"
+
         "$mod,M,exec,soft_start ${mainTerminalMeta.processName} '${mainTerminal} --class=${mainMusicPlayer} ${mainShell} -c ${mainMusicPlayer}' '(M)'"
 
         # Take screenshots

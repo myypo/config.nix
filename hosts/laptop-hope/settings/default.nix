@@ -29,7 +29,7 @@
           alias = true;
           username = true;
           email = true;
-          signing_key = true;
+          signing_key = false;
         };
       };
 
@@ -110,12 +110,14 @@
               settings = "2560x1440@165";
               position = "0x0";
               scaling = "1";
+              # TODO: Fixes screen sharing as by: https://github.com/hyprwm/xdg-desktop-portal-hyprland/issues/99#issuecomment-1731390092
+              extra = "bitdepth,10";
             };
             internal = {
               name = "eDP-1";
               settings = "1920x1080@144";
               position = "0x0";
-              scaling = "1";
+              scaling = "1.2";
               extra = "mirror,DP-1";
             };
           };
@@ -188,6 +190,7 @@
   };
   laptop-services = {
     enable = true;
+    disableNvidia = true;
   };
   ukr-locale = {
     enable = true;
@@ -219,10 +222,14 @@
 
   services = {
     custom = {
+      nordvpn = {
+        enable = false;
+      };
+
       battery-charge-threshold = {
         enable = true;
         batteryName = "BAT0";
-        maxChargeLevel = 50;
+        maxChargeLevel = 80;
       };
 
       min-brightness = {

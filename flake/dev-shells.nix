@@ -25,8 +25,6 @@
       ];
 
       shellHook = ''
-        ${config.pre-commit.installationScript}
-
         export EDITOR=vim
       '';
     };

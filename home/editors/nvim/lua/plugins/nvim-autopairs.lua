@@ -26,6 +26,17 @@ return {
 			return
 		end
 		-- To autoinsert () on choosing function/method
-		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+		cmp.event:on(
+			"confirm_done",
+			cmp_autopairs.on_confirm_done({
+				filetypes = {
+					roc = false,
+					lean = false,
+					nix = false,
+				},
+			})
+		)
+
+		require("nvim-autopairs").get_rules("(")[1].not_filetypes = { "roc", "nix", "lean" }
 	end,
 }

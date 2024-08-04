@@ -58,6 +58,8 @@
   home.file.".config/fish/functions/eisvogel.fish".source = ./functions/eisvogel.fish;
   # Save image from clipboard to disk
   home.file.".config/fish/functions/clipng.fish".source = ./functions/clipng.fish;
+  # Stash the dev env flake related files for working with people who haven't joined the cult
+  home.file.".config/fish/functions/stash-flake.fish".source = ./functions/stash-flake.fish;
 
   # Utils for quickly creating and opening git repos
   home.file.".config/fish/functions/t.fish".source = ./functions/t.fish;

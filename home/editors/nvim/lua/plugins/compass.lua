@@ -1,8 +1,5 @@
 return {
-	-- "myypo/compass.nvim",
-	-- build = "make",
-	-- dev = false,
-	--
+	-- dir = "~/code/my/projects/compass.nvim",
 	--
 	-- opts = {
 	-- 	picker = {

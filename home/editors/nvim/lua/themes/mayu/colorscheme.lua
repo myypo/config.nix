@@ -4,9 +4,13 @@ return {
 	lazy = false,
 	priority = 1000,
 
-	opts = {},
-
 	config = function()
+		require("borrowed").setup({
+			modules = {
+				compass = { enable = true },
+			},
+		})
+
 		vim.cmd("colorscheme mayu")
 	end,
 }

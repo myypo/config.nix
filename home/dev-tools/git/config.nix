@@ -24,9 +24,18 @@
       builtins.map (id: {
         condition = "gitdir:~/code/${id.alias}/**";
         contents = {
-          user.name = id.username;
-          user.email = id.email;
-          user.key = id.signing_key;
+          user.name =
+            if id ? username
+            then id.username
+            else null;
+          user.email =
+            if id ? email
+            then id.email
+            else null;
+          user.key =
+            if id ? signing_key
+            then id.signing_key
+            else null;
         };
       })
       alt_git_identity_list;

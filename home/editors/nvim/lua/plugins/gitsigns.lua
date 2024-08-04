@@ -3,8 +3,9 @@ return {
 	event = "BufRead",
 	config = function()
 		local keymap = vim.keymap.set
-		keymap("n", "<C-Down>", "<Cmd>Gitsigns next_hunk<cr>zz")
-		keymap("n", "<C-Up>", "<Cmd>Gitsigns prev_hunk<cr>zz")
+		keymap("n", "<C-Down>", "<Cmd>Gitsigns next_hunk<CR>zz")
+		keymap("n", "<C-Up>", "<Cmd>Gitsigns prev_hunk<CR>zz")
+		keymap("n", "<Leader>h", "<Cmd>Gitsigns preview_hunk_inline<CR>")
 
 		require("gitsigns").setup({
 

@@ -46,7 +46,7 @@ with lib; let
                     filled = builtins.map ({
                       nameSecr,
                       idxSecr,
-                    }: "${groupName}_${nameSecr}${builtins.toString idxSecr}") (attrsets.cartesianProductOfSets {
+                    }: "${groupName}_${nameSecr}${builtins.toString idxSecr}") (attrsets.cartesianProduct {
                       nameSecr = enabled;
                       idxSecr = empty;
                     });

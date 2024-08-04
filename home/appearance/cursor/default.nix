@@ -32,7 +32,7 @@ in {
       userName: cfg:
         with cfg;
           lib.mkIfFall cfg (import ./config.nix {
-            inherit pkgs size;
+            inherit lib pkgs size;
 
             theme = lib.valueOrUserDefault {
               inherit config userName;

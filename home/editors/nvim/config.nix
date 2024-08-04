@@ -89,7 +89,8 @@ in {
     in {
       # Minimal setup for kitty-pager and command editing
       "${baseDestPath}/init.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/_init.lua";
-      "${baseDestPath}/lazy-lock.json".source = mkOutOfStoreSymlink "${baseSrcPath}/lazy-lock.json";
+      # TODO: doing it this way isn't really ergonomic for me
+      # "${baseDestPath}/lazy-lock.json".source = mkOutOfStoreSymlink "${baseSrcPath}/lazy-lock.json";
 
       "${baseDestPath}/lua/kitty-pager.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/minvim/kitty-pager.lua";
       "${baseDestPath}/lua/base/init.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/base/init.lua";

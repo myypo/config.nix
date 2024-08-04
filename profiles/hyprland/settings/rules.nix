@@ -16,6 +16,9 @@
     # Telegram
     "workspace name:T,title:^(Telegram)$"
 
+    # Slack
+    "workspace name:S,class:^(Slack)$"
+
     # Music player
     "workspace name:M,class:^(${mainMusicPlayerMeta.className})$"
     "opacity 0.92,class:^(${mainMusicPlayerMeta.className})$"
