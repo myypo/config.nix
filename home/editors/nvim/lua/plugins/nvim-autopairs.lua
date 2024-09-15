@@ -1,30 +1,21 @@
 return {
 	"windwp/nvim-autopairs",
-	dependencies = { "hrsh7th/nvim-cmp" },
 	event = "InsertEnter",
 	config = function()
-		local status_ok, npairs = pcall(require, "nvim-autopairs")
-		if not status_ok then
-			return
-		end
-
-		npairs.setup({
+		require("nvim-autopairs").setup({
+			enable_check_bracket_line = true,
+			disable_in_macro = false,
 			check_ts = true,
-			ts_config = {
-				lua = { "string", "source" },
-				javascript = { "string", "template_string" },
-				java = false,
-			},
 			disable_filetype = { "TelescopePrompt", "spectre_panel" },
 			fast_wrap = {
 				map = "<C-s>",
+				-- Colemak-DH optimization
+				keys = "arstgmneiowfpluyxcdh,.qbj'zvk/",
 			},
 		})
+
 		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-		local cmp_status_ok, cmp = pcall(require, "cmp")
-		if not cmp_status_ok then
-			return
-		end
+		local cmp = require("cmp")
 		-- To autoinsert () on choosing function/method
 		cmp.event:on(
 			"confirm_done",
@@ -36,7 +27,5 @@ return {
 				},
 			})
 		)
-
-		require("nvim-autopairs").get_rules("(")[1].not_filetypes = { "roc", "nix", "lean" }
 	end,
 }

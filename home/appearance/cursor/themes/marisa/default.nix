@@ -1,8 +1,10 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  pname = "Marisa-Kirisame";
+in {
   home.pointerCursor = {
     # TODO: sadly it is pretty broken, can't change cursor size and it leaves a trace
     package = pkgs.stdenvNoCC.mkDerivation rec {
-      pname = "Marisa-Kirisame";
+      inherit pname;
       name = pname;
 
       nativeBuildInputs = with pkgs; [xcur2png hyprcursor];
@@ -35,6 +37,10 @@
       '';
     };
 
-    name = "Marisa-Kirisame";
+    name = pname;
+  };
+
+  home.sessionVariables = {
+    HYPRCURSOR_THEME = pname;
   };
 }

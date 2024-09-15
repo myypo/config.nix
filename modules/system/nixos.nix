@@ -5,10 +5,6 @@
   pkgs,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
-    git
-  ];
-
   nix = {
     package = pkgs.nixVersions.git;
 

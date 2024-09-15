@@ -43,7 +43,7 @@
     animations = {
       enabled = true;
       # Here you can customize how animations will look
-      # in addition to hyprland wiki there are many css resourses
+      # in addition to hyprland wiki there are many css resources
       # delving into bezier curve functions
       bezier = theme.bezier;
 

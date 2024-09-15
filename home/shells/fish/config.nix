@@ -5,49 +5,15 @@
   theme,
   flake_path,
 }: {
-  programs.fish = {
-    enable = true;
-
-    shellAliases = {
-      v = "kitty @ launch --copy-env --spacing padding=0 --cwd=current --type=tab nvim >/dev/null 2>&1";
-
-      gcl = "git clone";
-      gs = "git status";
-      gc = "git commit";
-      ga = "git add";
-      gaa = "git add -A";
-      gl = "git log";
-      reposquash = "git reset $(git commit-tree HEAD^{tree} -m 'initial commit')";
-
-      l = "ls -ahl";
-      ls = "exa";
-
-      top = "btop";
-
-      # HACK: have to use --impure because of being unable to load secrets
-      # from their sops-nix generated path in pure mode
-      osu = "${escalCmd} nixos-rebuild switch --impure --flake ${flake_path}/#${hostName}";
-      osr = "${escalCmd} nixos-rebuild switch --impure --rollback --flake ${flake_path}/#${hostName}";
-
-      n = "neofetch";
-
-      f = "fzf";
-
-      c = "wl-copy";
-    };
-  };
+  programs.fish.enable = true;
 
   home.packages = with pkgs; [
     fishPlugins.puffer
   ];
 
-  ### Theme and prompt ###
+  ### Theme ###
   # Numbers are used to ensure correct ordering of sourcing
   home.file.".config/fish/conf.d/0${theme}_palette.fish".source = ./themes/${theme}/palette.fish;
-  home.file.".config/fish/conf.d/1${theme}_prompt.fish".source = ./themes/${theme}/prompt.fish;
-
-  home.file.".config/fish/conf.d/hydro.fish".source = ./settings/hydro.fish;
-  home.file.".config/fish/functions/fish_prompt.fish".source = ./settings/fish_prompt.fish;
 
   ### Other fish settings ###
   home.file.".config/fish/conf.d/common.fish".source = ./settings/common.fish;
@@ -60,6 +26,8 @@
   home.file.".config/fish/functions/clipng.fish".source = ./functions/clipng.fish;
   # Stash the dev env flake related files for working with people who haven't joined the cult
   home.file.".config/fish/functions/stash-flake.fish".source = ./functions/stash-flake.fish;
+  # Remove all current Docker containers
+  home.file.".config/fish/functions/downdock.fish".source = ./functions/downdock.fish;
 
   # Utils for quickly creating and opening git repos
   home.file.".config/fish/functions/t.fish".source = ./functions/t.fish;

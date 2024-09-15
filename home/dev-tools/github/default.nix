@@ -3,8 +3,7 @@
   config,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   cfgs = lib.getCfgs {
     inherit config;
     type = "dev-tools";
@@ -15,8 +14,8 @@ with lib; let
     options.dev-tools.github = {
       enable = lib.mkNullableEnableOption "github";
 
-      theme = mkOption {
-        type = types.nullOr types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
     };

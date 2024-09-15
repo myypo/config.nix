@@ -3,8 +3,6 @@ return {
 	event = { "BufReadPost", "BufNewFile" },
 	config = function()
 		local nvim_lsp = require("lspconfig")
-		local keymap = vim.keymap.set
-
 		local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
@@ -37,7 +35,7 @@ return {
 		})
 
 		-- Allows toggling diagnostics floats on ESC
-		keymap("n", "<Esc>", function()
+		Keymap("n", "<Esc>", function()
 			for _, win in ipairs(vim.api.nvim_list_wins()) do
 				if vim.api.nvim_win_get_config(win).relative ~= "" then
 					vim.api.nvim_win_close(win, true)
@@ -46,60 +44,61 @@ return {
 			end
 
 			vim.diagnostic.open_float(nil)
-		end, { noremap = true, silent = true })
+		end)
 
-		keymap(
-			{ "n", "v" },
-			")",
-			"<Cmd>lua vim.diagnostic.goto_prev({ severity =  vim.diagnostic.severity.ERROR, float = false })<CR>",
-			{ noremap = true, silent = true }
-		)
-		keymap(
-			{ "n", "v" },
-			"(",
-			"<Cmd>lua vim.diagnostic.goto_next({ severity =  vim.diagnostic.severity.ERROR, float = false })<CR>",
-			{ noremap = true, silent = true }
-		)
+		Keymap({ "n", "v" }, ")", function()
+			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR, float = false })
+		end)
+		Keymap({ "n", "v" }, "(", function()
+			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, float = false })
+		end)
 
-		keymap(
-			{ "n", "v" },
-			"}",
-			"<Cmd>lua vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN, float = false })<CR>",
-			{ noremap = true, silent = true }
-		)
-		keymap(
-			{ "n", "v" },
-			"{",
-			"<Cmd>lua vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN, float = false })<CR>",
-			{ noremap = true, silent = true }
-		)
+		Keymap({ "n", "v" }, "}", function()
+			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN, float = false })
+		end)
+		Keymap({ "n", "v" }, "{", function()
+			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN, float = false })
+		end)
 
-		keymap(
-			{ "n", "v" },
-			"]",
-			"<Cmd>lua vim.diagnostic.goto_prev({ severity = { vim.diagnostic.severity.HINT, vim.diagnostic.severity.INFO }, float = false })<CR>",
-			{ noremap = true, silent = true }
-		)
-		keymap(
-			{ "n", "v" },
-			"[",
-			"<Cmd>lua vim.diagnostic.goto_next({ severity = { vim.diagnostic.severity.HINT, vim.diagnostic.severity.INFO }, float = false })<CR>",
-			{ noremap = true, silent = true }
-		)
+		Keymap({ "n", "v" }, "]", function()
+			vim.diagnostic.goto_prev({
+				severity = { vim.diagnostic.severity.HINT, vim.diagnostic.severity.INFO },
+				float = false,
+			})
+		end)
+		Keymap({ "n", "v" }, "[", function()
+			vim.diagnostic.goto_next({
+				severity = { vim.diagnostic.severity.HINT, vim.diagnostic.severity.INFO },
+				float = false,
+			})
+		end)
 
-		keymap({ "n", "v" }, "<C-m>", function()
+		Keymap({ "n", "v" }, "<C-m>", function()
 			local dlist = vim.diagnostic.get(nil, { severity = { vim.diagnostic.severity.ERROR } })
-			if #dlist < 1 then
+			if #dlist == 0 then
 				return
 			end
 
 			local d = dlist[1]
 			vim.api.nvim_set_current_buf(d.bufnr)
 			vim.api.nvim_win_set_cursor(0, { d.end_lnum + 1, d.end_col })
-		end, { noremap = true, silent = true })
+		end)
 
 		-- LSP setups
 		nvim_lsp.nil_ls.setup({})
+
+		nvim_lsp.lua_ls.setup({
+			settings = {
+				Lua = {
+					semantic = {
+						enable = false,
+					},
+					format = {
+						enable = false,
+					},
+				},
+			},
+		})
 
 		nvim_lsp.gopls.setup({
 			settings = {
@@ -117,7 +116,7 @@ return {
 				usePlaceholders = true,
 			},
 
-			-- HACK: because experiencing issues with diagnostics never dissapearing
+			-- HACK: because experiencing issues with diagnostics never disappearing
 			flags = {
 				allow_incremental_sync = false,
 			},
@@ -136,6 +135,38 @@ return {
 			},
 		})
 
+		nvim_lsp.eslint.setup({
+			capabilities = {
+				document_formatting = false,
+				document_range_formatting = false,
+			},
+
+			settings = {
+				rulesCustomizations = {
+					-- Might conflict with prettier
+					{ rule = "@typescript-eslint/no-misused-promises", severity = "off" },
+					{ rule = "@typescript-eslint/no-unsafe-argument", severity = "off" },
+					{ rule = "@typescript-eslint/no-unsafe-assignment", severity = "off" },
+					{ rule = "import/defaults", severity = "off" },
+					{ rule = "import/extensions", severity = "off" },
+					{ rule = "import/namespace", severity = "off" },
+					{ rule = "import/no-cycle", severity = "off" },
+					{ rule = "import/no-unresolved", severity = "off" },
+
+					-- Disable some rules that conflight with tsserver warnings
+					{ rule = "*no-unused-vars", severity = "off" },
+				},
+			},
+		})
+
+		nvim_lsp.typos_lsp.setup({
+			init_options = {
+				diagnosticSeverity = "Info",
+
+				config = "~/.config/typos.toml",
+			},
+		})
+
 		nvim_lsp.html.setup({
 			cmd = { "vscode-html-language-server", "--stdio" },
 		})
@@ -147,6 +178,8 @@ return {
 		nvim_lsp.bashls.setup({
 			cmd = { "bash-language-server", "start" },
 		})
+
+		nvim_lsp.nushell.setup({})
 
 		nvim_lsp.sqls.setup({
 			on_attach = function(client, _)
@@ -160,5 +193,7 @@ return {
 		nvim_lsp.hls.setup({})
 
 		nvim_lsp.ccls.setup({})
+
+		nvim_lsp.rescriptls.setup({})
 	end,
 }

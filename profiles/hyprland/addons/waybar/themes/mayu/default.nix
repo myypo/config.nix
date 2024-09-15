@@ -53,7 +53,7 @@
           "format" = "<span color=\"#f6c177\">{icon} </span>{volume}%";
           "format-muted" = "<span color=\"#f6c177\">󰖁 Muted</span>";
           "format-icons" = {
-            "default" = ["" "" ""];
+            "default" = ["󰕿" "󰖀" "󰕾 "];
           };
           "on-click" = "pulsemixer --toggle-mute";
           "tooltip" = false;

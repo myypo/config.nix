@@ -14,9 +14,23 @@
     name = "mykitty";
     src = ./scripts/kitty_unix_soc.sh;
   };
+  kitty_nvim = lib.writeScript {
+    inherit pkgs cfg;
+    name = "v";
+    src = ./scripts/kitty_nvim.sh;
+  };
 in {
   home.sessionVariables = lib.mkIf isMainTerminal {TERMINAL = "kitty";};
-  home.packages = [mykitty];
+  home.packages = [
+    mykitty
+
+    # Convenient command to open nvim in kitty in cwd
+    (
+      if isMainTerminal
+      then kitty_nvim
+      else null
+    )
+  ];
 
   home.file.".config/kitty/job_win.py".source = ./kittens/job_win.py;
 
@@ -69,6 +83,8 @@ in {
         scrollback_pager = lib.mkIf pagerCompatible "kitty_pager";
 
         shell_integration = lib.mkIf (escalCmd == "doas") "no-sudo";
+
+        wayland_enable_ime = false;
       };
     };
   };

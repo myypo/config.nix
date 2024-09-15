@@ -2,13 +2,21 @@ return {
 	"lewis6991/gitsigns.nvim",
 	event = "BufRead",
 	config = function()
-		local keymap = vim.keymap.set
-		keymap("n", "<C-Down>", "<Cmd>Gitsigns next_hunk<CR>zz")
-		keymap("n", "<C-Up>", "<Cmd>Gitsigns prev_hunk<CR>zz")
-		keymap("n", "<Leader>h", "<Cmd>Gitsigns preview_hunk_inline<CR>")
+		local gitsigns = require("gitsigns")
 
-		require("gitsigns").setup({
+		Keymap("n", "<C-Down>", function()
+			gitsigns.nav_hunk("next", { target = "all" })
+			vim.api.nvim_command("normal! zz")
+		end)
+		Keymap("n", "<C-Up>", function()
+			gitsigns.nav_hunk("prev", { target = "all" })
+			vim.api.nvim_command("normal! zz")
+		end)
+		Keymap("n", "<Leader>h", function()
+			gitsigns.preview_hunk_inline()
+		end)
 
+		gitsigns.setup({
 			signs = {
 				add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
 				change = {

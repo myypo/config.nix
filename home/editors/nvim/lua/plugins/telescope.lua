@@ -18,8 +18,8 @@ return {
 
     -- stylua: ignore
 	keys = {
-		{ "rt", "<Cmd>Telescope lsp_definitions<CR>", desc = "Telescope lsp definitons" },
-		{ "rw", "<Cmd>Telescope lsp_definitions<CR><Cmd>vsplit<CR>", desc = "Telescope lsp definiton in a new window" },
+		{ "rt", "<Cmd>Telescope lsp_definitions<CR>", desc = "Telescope lsp definitions" },
+		{ "rw", "<Cmd>Telescope lsp_definitions<CR><Cmd>vsplit<CR>", desc = "Telescope lsp definition in a new window" },
 		{ "rs", "<Cmd>Telescope grep_string<CR>", desc = "Telescope grep under cursor" },
 		{ "ri", "<Cmd>Telescope lsp_implementations<CR>", desc = "Telescope lsp impls" },
 		{ "rr", "<Cmd>Telescope lsp_references<CR>", desc = "Telescope lsp references" },
@@ -28,7 +28,7 @@ return {
 		{ "<Leader>a", "<Cmd>lua vim.lsp.buf.code_action({ apply = true })<CR>", desc = "Telescope code action UI" },
 		{ "<Leader>g", "<Cmd>Telescope git_status<CR>", desc = "Telescope git changes" },
 		{ "<Leader>r", "<Cmd>Telescope resume<CR>", desc = "Telescope resume last aciton" },
-		{ "<Leader>o", "<Cmd>lua require('telescope.builtin').diagnostics({root_dir=true})<CR>", desc = "Telescope diagnostics" },
+		{ "<Leader>o", "<Cmd>Telescope diagnostics<CR>", desc = "Telescope diagnostics" },
 		{ "<Leader>p", "<Cmd>lua require('telescope.builtin').registers()<CR>", desc = "Telescope registers" },
 	},
 
@@ -46,6 +46,7 @@ return {
 				file_ignore_patterns = {
 					"go.mod",
 					"go.sum",
+					"node_modules",
 					"^docs/",
 				},
 
@@ -90,6 +91,7 @@ return {
 			},
 			pickers = {
 				diagnostics = {
+					root_dir = true,
 					sort_by = "severity",
 				},
 			},

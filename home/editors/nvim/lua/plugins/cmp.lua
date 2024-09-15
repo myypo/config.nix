@@ -12,15 +12,9 @@ return {
 	},
 
 	config = function()
-		local cmp_status_ok, cmp = pcall(require, "cmp")
-		if not cmp_status_ok then
-			return
-		end
+		local cmp = require("cmp")
 
-		local snip_status_ok, ls = pcall(require, "luasnip")
-		if not snip_status_ok then
-			return
-		end
+		local ls = require("luasnip")
 		---@diagnostic disable-next-line: unused-local
 		local s = ls.snippet
 		---@diagnostic disable-next-line: unused-local
@@ -37,7 +31,7 @@ return {
 		local d = ls.dynamic_node
 		---@diagnostic disable-next-line: unused-local
 		local r = ls.restore_node
-		require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/lua/luasnip" })
+		require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/lua/luasnip" } })
 
 		local kind_icons = {
 			Text = "󰊄",
@@ -134,6 +128,7 @@ return {
 				end, { "i", "s" }),
 			}),
 			formatting = {
+				expandable_indicator = true,
 				fields = { "kind", "abbr", "menu" },
 				format = function(_, vim_item)
 					vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
@@ -157,7 +152,6 @@ return {
 					name = "nvim_lsp",
 					priority = 8,
 				},
-				{ name = "nvim_lua", priority = 5 },
 				{ name = "buffer", priority = 4, max_item_count = 2, keyword_length = 3 },
 			}),
 
@@ -186,7 +180,7 @@ return {
 			},
 			confirm_opts = {
 				behavior = cmp.ConfirmBehavior.Replace,
-				select = false,
+				select = true,
 			},
 			mapping = cmp.mapping({
 				["<C-a>"] = {
@@ -216,12 +210,11 @@ return {
 						end
 					end,
 				},
-				["<CR>"] = cmp.mapping.confirm({ select = true }),
 			}),
-
+			matching = { disallow_symbol_nonprefix_matching = false },
 			sources = cmp.config.sources({
 				{ name = "path" },
-			}, { name = "cmdline_history" }, {
+				{ name = "cmdline_history" },
 				{
 					name = "cmdline",
 					option = {

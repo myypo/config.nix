@@ -110,8 +110,6 @@
               settings = "2560x1440@165";
               position = "0x0";
               scaling = "1";
-              # TODO: Fixes screen sharing as by: https://github.com/hyprwm/xdg-desktop-portal-hyprland/issues/99#issuecomment-1731390092
-              extra = "bitdepth,10";
             };
             internal = {
               name = "eDP-1";
@@ -223,7 +221,7 @@
   services = {
     custom = {
       nordvpn = {
-        enable = false;
+        enable = true;
       };
 
       battery-charge-threshold = {

@@ -1,7 +1,7 @@
 return {
 	"myypo/flash.nvim",
 
-	branch = "actual-main",
+	branch = "master",
 
 	keys = {
 		{
@@ -12,13 +12,13 @@ return {
 			end,
 		},
 
-		-- {
-		-- 	"r",
-		-- 	mode = { "o" },
-		-- 	function()
-		-- 		require("flash").treesitter_search()
-		-- 	end,
-		-- },
+		{
+			"r",
+			mode = { "o" },
+			function()
+				require("flash").treesitter_search()
+			end,
+		},
 
 		{
 			"R",

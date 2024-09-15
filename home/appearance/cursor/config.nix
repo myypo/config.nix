@@ -11,5 +11,8 @@ in (lib.attrsets.recursiveUpdate {
 
       inherit size;
     };
+    home.sessionVariables = {
+      HYPRCURSOR_SIZE = size;
+    };
   }
   themeAttrs)

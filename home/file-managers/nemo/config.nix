@@ -10,7 +10,7 @@
   };
 in {
   home.packages = with pkgs; [
-    cinnamon.nemo
+    nemo
   ];
 
   xdg.mimeApps = lib.mkIf isMainFileManager {

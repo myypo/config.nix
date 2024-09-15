@@ -30,6 +30,7 @@
     ### Hyprland ###
     # TODO: temporary fix: https://github.com/hyprwm/Hyprland/issues/5891
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Secrets ###
     sops-nix.url = "github:Mic92/sops-nix";
@@ -42,10 +43,6 @@
     ### Rust overlay ###
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
-
-    ### Dev ###
-    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
-    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Utils ###
     flake-parts.url = "github:hercules-ci/flake-parts";

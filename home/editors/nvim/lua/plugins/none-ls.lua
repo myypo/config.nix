@@ -16,10 +16,9 @@ return {
 				b.formatting.black,
 
 				-- TS/JS
-				b.formatting.prettier,
+				b.formatting.prettierd,
 
 				-- Go
-				b.formatting.gofumpt,
 				b.formatting.golines.with({
 					extra_args = { "--base-formatter", "gofumpt" },
 				}),

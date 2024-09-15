@@ -113,7 +113,7 @@
         "$mod,Return,exec,my${mainTerminal}"
         "$mod,Q,exec,smart_kill"
 
-        "$mod,T,exec,soft_start .qutebrowser-wr qutebrowser '(B)'"
+        "$mod,T,exec,soft_start QtWebEngineProc qutebrowser '(B)'"
         "$mod,B,exec,qutebrowser_in_current"
         "$mod CTRL,B,exec,firefox"
 

@@ -44,8 +44,21 @@ in {
   programs = {
     neovim = {
       enable = true;
+      plugins = with pkgs; [
+        vimPlugins.telescope-fzf-native-nvim
+        vimPlugins.nvim-treesitter.withAllGrammars
+      ];
     };
   };
+  xdg.configFile."nvim/parser".source = "${pkgs.symlinkJoin {
+    name = "treesitter-parsers";
+    paths =
+      pkgs
+      .vimPlugins
+      .nvim-treesitter
+      .withAllGrammars
+      .dependencies;
+  }}/parser";
 
   home = {
     packages = with pkgs; [
@@ -60,10 +73,6 @@ in {
       # Build
       gnumake
       deno
-
-      # Other
-      vimPlugins.telescope-fzf-native-nvim
-      tree-sitter
     ];
   };
 
@@ -77,9 +86,6 @@ in {
       };
       "_rustacean.lua" = {
         vscode-lldb = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}";
-      };
-      "_neodev.lua" = {
-        flake-path = flake_path;
       };
     };
 

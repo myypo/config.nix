@@ -16,8 +16,9 @@
     src = ./scripts/grimblast_save_screen.sh;
   };
 in {
-  home.packages = [
-    pkgs.grimblast
+  home.packages = with pkgs; [
+    grimblast
+    slurp
 
     grimblast_save_screen
     grimblast_save_area

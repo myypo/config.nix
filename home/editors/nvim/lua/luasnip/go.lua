@@ -1,4 +1,5 @@
 ---@diagnostic disable: undefined-global
+
 return {
 	-- Functions
 	s({ trig = "f", wordTrig = true }, {
@@ -36,6 +37,18 @@ return {
 		t(" struct"),
 		t({ " {", "\t" }),
 		i(2),
+		t({ "", "}" }),
+	}),
+
+	-- Interfaces
+	s({ trig = "i", wordTrig = true }, {
+		t("type "),
+		i(1),
+		t(" interface"),
+		t({ " {", "\t" }),
+		i(2),
+		t("() "),
+		i(3),
 		t({ "", "}" }),
 	}),
 }

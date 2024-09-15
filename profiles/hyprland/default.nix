@@ -134,7 +134,8 @@ in {
     xdg.portal = with pkgs; {
       enable = true;
       extraPortals = [xdg-desktop-portal-gtk xdg-desktop-portal-hyprland];
-      configPackages = [hyprland];
+      config.preferred.default = ["hyprland" "gtk"];
+      xdgOpenUsePortal = true;
     };
 
     environment.systemPackages = with pkgs; [

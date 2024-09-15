@@ -13,6 +13,7 @@
 
   home.packages = with pkgs; [
     hyprpicker
+    grimblast
 
     playerctl
   ];
@@ -44,7 +45,7 @@
     # Not supported as of now https://github.com/hyprwm/Hyprland/issues/5996
     # WLR_RENDERER = "vulkan";
 
-    # Deals with the bug that causes cursor to dissapear on hyprland
+    # Deals with the bug that causes cursor to disappear on hyprland
     WLR_NO_HARDWARE_CURSORS = "1";
 
     XDG_CURRENT_DESKTOP = "Hyprland";
