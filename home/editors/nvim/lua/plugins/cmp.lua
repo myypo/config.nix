@@ -1,5 +1,7 @@
 return {
-	"hrsh7th/nvim-cmp",
+	-- TODO: revert to the upstream after this is merged: https://github.com/hrsh7th/nvim-cmp/pull/1980
+	"yioneko/nvim-cmp", -- "hrsh7th/nvim-cmp",
+	branch = "perf-up",
 	event = { "InsertEnter", "CmdlineEnter" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
@@ -31,7 +33,7 @@ return {
 		local d = ls.dynamic_node
 		---@diagnostic disable-next-line: unused-local
 		local r = ls.restore_node
-		require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/lua/luasnip" } })
+		require("luasnip.loaders.from_lua").lazy_load({ paths = { "~/.config/nvim/lua/luasnip" } })
 
 		local kind_icons = {
 			Text = "󰊄",
@@ -119,11 +121,11 @@ return {
 						fallback()
 					end
 				end, { "i", "s" }),
-				["<C-a>"] = cmp.mapping(function(fallback)
-					if cmp.visible then
+				["<C-a>"] = cmp.mapping(function(_)
+					if cmp.visible() then
 						cmp.abort()
 					else
-						fallback()
+						cmp.complete()
 					end
 				end, { "i", "s" }),
 			}),
@@ -184,11 +186,11 @@ return {
 			},
 			mapping = cmp.mapping({
 				["<C-a>"] = {
-					c = function(fallback)
-						if cmp.visible then
+					c = function(_)
+						if cmp.visible() then
 							cmp.abort()
 						else
-							fallback()
+							cmp.complete()
 						end
 					end,
 				},
@@ -205,6 +207,15 @@ return {
 					c = function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
+						else
+							fallback()
+						end
+					end,
+				},
+				["<Right>"] = {
+					c = function(fallback)
+						if cmp.visible() then
+							cmp.confirm({ select = true })
 						else
 							fallback()
 						end

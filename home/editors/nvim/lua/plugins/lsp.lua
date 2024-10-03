@@ -84,6 +84,12 @@ return {
 			vim.api.nvim_win_set_cursor(0, { d.end_lnum + 1, d.end_col })
 		end)
 
+		Keymap({ "n", "v" }, "lr", vim.lsp.buf.rename)
+
+		Keymap({ "n", "v" }, "<Leader>a", function()
+			vim.lsp.buf.code_action({ apply = true })
+		end)
+
 		-- LSP setups
 		nvim_lsp.nil_ls.setup({})
 
@@ -194,6 +200,12 @@ return {
 
 		nvim_lsp.ccls.setup({})
 
-		nvim_lsp.rescriptls.setup({})
+		nvim_lsp.tailwindcss.setup({})
+
+		nvim_lsp.rescriptls.setup({
+			on_attach = function(client, _)
+				client.server_capabilities.semanticTokensProvider = nil
+			end,
+		})
 	end,
 }

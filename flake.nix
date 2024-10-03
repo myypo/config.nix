@@ -28,8 +28,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Hyprland ###
-    # TODO: temporary fix: https://github.com/hyprwm/Hyprland/issues/5891
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Secrets ###

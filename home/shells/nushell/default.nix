@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -27,7 +28,7 @@ in {
     builtins.mapAttrs (
       userName: cfg:
         mkIfFall cfg (import ./config.nix {
-          inherit lib;
+          inherit lib pkgs;
 
           theme = lib.valueOrUserDefault {
             inherit config userName;

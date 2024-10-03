@@ -4,15 +4,15 @@ return {
 		"nvim-tree/nvim-web-devicons",
 	},
 
-	keys = { { "R", "<Cmd>Lspsaga hover_doc<CR>", desc = "LspSaga hover" } },
+	keys = { { "R", "<Cmd>Lspsaga hover_doc<CR>" } },
 
 	config = function()
 		require("lspsaga").setup({
 			lightbulb = {
 				enable = false,
 			},
-			outline = {
-				win_width = 25,
+			beacon = {
+				enable = false,
 			},
 			symbol_in_winbar = {
 				enable = false,

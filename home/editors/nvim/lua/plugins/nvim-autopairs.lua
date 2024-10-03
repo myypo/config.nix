@@ -14,12 +14,12 @@ return {
 			},
 		})
 
-		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+		local cmp_na = require("nvim-autopairs.completion.cmp")
 		local cmp = require("cmp")
 		-- To autoinsert () on choosing function/method
 		cmp.event:on(
 			"confirm_done",
-			cmp_autopairs.on_confirm_done({
+			cmp_na.on_confirm_done({
 				filetypes = {
 					roc = false,
 					lean = false,
@@ -27,5 +27,8 @@ return {
 				},
 			})
 		)
+
+		local na = require("nvim-autopairs")
+		na.get_rule("'")[1].not_filetypes = { "rescript" }
 	end,
 }

@@ -6,5 +6,7 @@
     prettierd
 
     nodejs
+
+    tailwindcss-language-server
   ];
 }

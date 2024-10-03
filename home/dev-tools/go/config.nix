@@ -6,9 +6,7 @@
     gotests
     gomodifytags
     gotools
-    impl
     iferr
-    gonstructor
     delve
   ];
 

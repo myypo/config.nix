@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -21,7 +22,7 @@ in {
   config.home-manager.users =
     builtins.mapAttrs (
       _: cfg:
-        mkIfFall cfg (import ./config.nix {})
+        mkIfFall cfg (import ./config.nix {inherit pkgs;})
     )
     cfgs;
 }

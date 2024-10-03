@@ -37,7 +37,7 @@ in
       (pkgs.writeShellScriptBin "osu" "${escalCmd} nixos-rebuild switch --impure --flake ${flake_path}/#${hostName}")
       (pkgs.writeShellScriptBin "osr" "${escalCmd} nixos-rebuild switch --impure --rollback --flake ${flake_path}/#${hostName}")
 
-      (pkgs.writeShellScriptBin "run" ''nix-shell -p "$1" --run "$2"'')
+      (pkgs.writeShellScriptBin "use" ''nix shell nixpkgs/nixos-unstable#$1'')
     ];
 
     programs.bash.shellAliases = aliases.almostPOSIX;

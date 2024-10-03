@@ -69,13 +69,23 @@ let auto_pair_keybinds = [
 
 let main_keybinds = [
     {
-      name: run_fzf
+      name: run_dir_fzf
       modifier: control
       keycode: char_t
       mode: [emacs, vi_normal, vi_insert]
       event: {
         send: executehostcommand,
-        cmd: "commandline edit --insert (fzf)"
+        cmd: "commandline edit --insert (fd . -td | fzf)"
+      }
+    }
+    {
+      name: run_file_fzf
+      modifier: control
+      keycode: char_f
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+        send: executehostcommand,
+        cmd: "commandline edit --insert (fd . -tf | fzf)"
       }
     }
     {

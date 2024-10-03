@@ -43,7 +43,7 @@
     ignores = [
       "*~"
       "*.swp"
-      "*result*"
+      "result"
       ".direnv"
       "node_modules"
       "target"

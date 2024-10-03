@@ -8,7 +8,7 @@ return {
 			sync_install = false,
 			auto_install = false,
 
-			indent = { enable = true, disable = { "" } },
+			indent = { enable = false },
 
 			highlight = {
 				enable = true,

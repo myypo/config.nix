@@ -6,6 +6,19 @@ return {
 		local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 		local nls = require("null-ls")
 		local b = nls.builtins
+		local h = require("null-ls.helpers")
+
+		---@param cmd string
+		---@param args table
+		local function formatter_generator(cmd, args)
+			return h.formatter_factory({
+				command = cmd,
+				args = args,
+				cwd = nil,
+				to_stdin = true,
+				multiple_files = false,
+			})
+		end
 
 		require("null-ls").setup({
 			sources = {
@@ -38,20 +51,25 @@ return {
 					extra_args = { "--dialect", "postgres" },
 				}),
 
+				-- Rust
+				{
+					method = nls.methods.FORMATTING,
+					filetypes = { "rust" },
+					generator = formatter_generator("rustfmt", { "-q", "$FILENAME" }),
+				},
+
 				-- Roc
 				{
 					method = nls.methods.FORMATTING,
 					filetypes = { "roc" },
-					generator = nls.generator({
-						command = "roc fmt",
-						args = function(_)
-							return {}
-						end,
-						to_stdin = true,
-						on_output = function(_, _)
-							return {}
-						end,
-					}),
+					generator = formatter_generator("roc fmt", { "$FILENAME" }),
+				},
+
+				-- Rescript
+				{
+					method = nls.methods.FORMATTING,
+					filetypes = { "rescript" },
+					generator = formatter_generator("rescript format", { "$FILENAME" }),
 				},
 			},
 

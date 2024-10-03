@@ -62,8 +62,6 @@ end
 local globals = {
 	no_plugin_maps = 1,
 
-	rustfmt_autosave = 1,
-
 	did_install_default_menus = 1,
 	did_install_syntax_menu = 1,
 

@@ -3,33 +3,27 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-telescope/telescope-fzf-native.nvim",
-		{
-			"nvim-telescope/telescope-ui-select.nvim",
-			init = function()
-				vim.ui.select = function(...)
-					require("lazy").load({ plugins = { "telescope.nvim" } })
-					vim.ui.select(...)
-				end
-			end,
-		},
 	},
 
 	cmd = "Telescope",
 
-    -- stylua: ignore
 	keys = {
-		{ "rt", "<Cmd>Telescope lsp_definitions<CR>", desc = "Telescope lsp definitions" },
-		{ "rw", "<Cmd>Telescope lsp_definitions<CR><Cmd>vsplit<CR>", desc = "Telescope lsp definition in a new window" },
-		{ "rs", "<Cmd>Telescope grep_string<CR>", desc = "Telescope grep under cursor" },
-		{ "ri", "<Cmd>Telescope lsp_implementations<CR>", desc = "Telescope lsp impls" },
-		{ "rr", "<Cmd>Telescope lsp_references<CR>", desc = "Telescope lsp references" },
-		{ "<Leader>n", "<Cmd>Telescope find_files<CR>", desc = "Telescope find files" },
-		{ "<Leader>e", "<Cmd>Telescope live_grep<CR>", desc = "Telescope grep" },
-		{ "<Leader>a", "<Cmd>lua vim.lsp.buf.code_action({ apply = true })<CR>", desc = "Telescope code action UI" },
-		{ "<Leader>g", "<Cmd>Telescope git_status<CR>", desc = "Telescope git changes" },
-		{ "<Leader>r", "<Cmd>Telescope resume<CR>", desc = "Telescope resume last aciton" },
-		{ "<Leader>o", "<Cmd>Telescope diagnostics<CR>", desc = "Telescope diagnostics" },
-		{ "<Leader>p", "<Cmd>lua require('telescope.builtin').registers()<CR>", desc = "Telescope registers" },
+		{ "<Leader>n", "<Cmd>Telescope find_files<CR>" },
+		{ "<Leader>e", "<Cmd>Telescope live_grep<CR>" },
+		{ "<Leader>g", "<Cmd>Telescope git_status<CR>" },
+		{ "<Leader>r", "<Cmd>Telescope resume<CR>" },
+		{ "<Leader>o", "<Cmd>Telescope diagnostics<CR>" },
+		{ "<Leader>p", "<Cmd>lua require('telescope.builtin').registers()<CR>" },
+		{ "rt", "<Cmd>Telescope lsp_definitions<CR>" },
+		{ "rw", "<Cmd>Telescope lsp_definitions<CR><Cmd>vsplit<CR>" },
+		{ "rs", "<Cmd>Telescope grep_string<CR>" },
+		{ "ri", "<Cmd>Telescope lsp_implementations<CR>" },
+		{
+			"rr",
+			function()
+				require("telescope.builtin").lsp_references({ include_declaration = false })
+			end,
+		},
 	},
 
 	config = function()
@@ -42,11 +36,9 @@ return {
 
 		telescope.setup({
 			defaults = {
-
 				file_ignore_patterns = {
 					"go.mod",
 					"go.sum",
-					"node_modules",
 					"^docs/",
 				},
 
@@ -102,15 +94,9 @@ return {
 					override_file_sorter = true,
 					case_mode = "smart_case",
 				},
-
-				["ui-select"] = {
-					require("telescope.themes").get_cursor({}),
-				},
 			},
 		})
 
 		require("telescope").load_extension("fzf")
-
-		require("telescope").load_extension("ui-select")
 	end,
 }
