@@ -33,14 +33,6 @@
 in {
   home.sessionVariables = sessionVariables;
 
-  nixpkgs = {
-    config = {
-      programs.npm.npmrc = ''
-        prefix = ''${HOME}/.npm-global
-      '';
-    };
-  };
-
   programs = {
     neovim = {
       enable = true;

@@ -23,6 +23,7 @@
   inputs = {
     ### NixOS and home-manager ###
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    small-unstable-nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -40,7 +41,9 @@
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Rust overlay ###
-    fenix.url = "github:nix-community/fenix";
+    # TODO: revert when merged: https://github.com/nix-community/fenix/issues/174
+    # fenix.url = "github:nix-community/fenix";
+    fenix.url = "github:andresilva/fenix/fix-platforms";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Utils ###

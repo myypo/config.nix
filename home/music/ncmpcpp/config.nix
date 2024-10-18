@@ -2,9 +2,8 @@
   lib,
   pkgs,
   isMainMusicPlayer,
-}: let
-  xdgMusicPlayer = "ncmpcpp.desktop";
-in {
+}:
+lib.mkMusicPlayer isMainMusicPlayer "ncmpcpp.desktop" {
   programs.ncmpcpp = {
     enable = true;
 
@@ -27,6 +26,4 @@ in {
   home.packages = with pkgs; [
     mpc-cli
   ];
-
-  xdg = lib.mkIf isMainMusicPlayer (lib.setMainMusicPlayer {inherit xdgMusicPlayer;});
 }

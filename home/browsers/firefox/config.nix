@@ -2,10 +2,8 @@
   lib,
   pkgs,
   isMainBrowser,
-}: let
-  xdgBrowser = "firefox.desktop";
-in {
-  xdg = lib.mkIf isMainBrowser (lib.setMainBrowser {inherit xdgBrowser;});
+}:
+lib.makeBrowser isMainBrowser "firefox.desktop" {
   home.sessionVariables.BROWSER = lib.mkIf isMainBrowser "firefox";
 
   programs.firefox = {

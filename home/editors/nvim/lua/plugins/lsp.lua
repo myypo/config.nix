@@ -9,29 +9,28 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 		end
 
-		local float_opts = {
-			focusable = false,
-			close_events = {
-				"BufLeave",
-				"CursorMoved",
-				"InsertEnter",
-				"BufHidden",
-				"WinLeave",
-			},
-			border = "rounded",
-			source = false,
-			prefix = " ",
-			suffix = " ",
-			header = " Diagnostics:",
-			scope = "line",
-		}
 		vim.diagnostic.config({
 			virtual_text = false,
 			signs = true,
 			underline = true,
 			update_in_insert = false,
 			severity_sort = true,
-			float = float_opts,
+			float = {
+				focusable = false,
+				close_events = {
+					"BufLeave",
+					"CursorMoved",
+					"InsertEnter",
+					"BufHidden",
+					"WinLeave",
+				},
+				border = "rounded",
+				source = false,
+				prefix = " ",
+				suffix = " ",
+				header = " Diagnostics:",
+				scope = "line",
+			},
 		})
 
 		-- Allows toggling diagnostics floats on ESC
@@ -200,12 +199,24 @@ return {
 
 		nvim_lsp.ccls.setup({})
 
-		nvim_lsp.tailwindcss.setup({})
+		nvim_lsp.tailwindcss.setup({
+			root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts"),
+		})
 
 		nvim_lsp.rescriptls.setup({
 			on_attach = function(client, _)
 				client.server_capabilities.semanticTokensProvider = nil
 			end,
+		})
+
+		vim.filetype.add({ extension = { purs = "purescript" } })
+		nvim_lsp.purescriptls.setup({
+			root_dir = nvim_lsp.util.root_pattern("spago.dhall"),
+			settings = {
+				purescript = {
+					addSpagoSources = true,
+				},
+			},
 		})
 	end,
 }

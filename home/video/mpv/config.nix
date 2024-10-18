@@ -2,9 +2,8 @@
   lib,
   pkgs,
   isMainVideoPlayer,
-}: let
-  xdgVideoPlayer = "mpv.desktop";
-in {
+}:
+lib.mkVideoPlayer isMainVideoPlayer "mpv.desktop" {
   home.packages = with pkgs; [
     ffmpegthumbnailer
   ];
@@ -17,6 +16,4 @@ in {
       hwdec-codecs = "all";
     };
   };
-
-  xdg = lib.mkIf isMainVideoPlayer (lib.setMainVideoPlayer {inherit xdgVideoPlayer;});
 }

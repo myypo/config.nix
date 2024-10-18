@@ -32,7 +32,7 @@ in {
     )
   ];
 
-  home.file.".config/kitty/job_win.py".source = ./kittens/job_win.py;
+  xdg.configFile."kitty/job_win.py".source = ./kittens/job_win.py;
 
   imports = [
     (import ./themes/${theme} {inherit fontSize;})
@@ -50,6 +50,7 @@ in {
         "ctrl+shift+h" = "send_text application \\033[104;6u";
         "ctrl+shift+," = "send_text application \\033[44;6u";
         "ctrl+shift+d" = "send_text application \\033[100;6u";
+        "ctrl+shift+u" = "send_text application \\033[117;6u";
         "ctrl+shift+c" = "send_text application \\033[99;6u";
         "ctrl+shift+a" = "send_text application \\033[97;6u";
         "ctrl+shift+p" = "send_text application \\033[113;6u";

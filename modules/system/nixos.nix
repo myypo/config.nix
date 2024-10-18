@@ -31,6 +31,13 @@
     overlays = [
       # Make our overlays set in config.flake.overlays.default work
       self.overlays.default
+
+      # Make pkgs from small-unstable accessible by referencing pkgs.small-unstable
+      (final: _prev: {
+        small-unstable = import inputs.small-unstable-nixpkgs {
+          inherit (final) system config;
+        };
+      })
     ];
   };
 

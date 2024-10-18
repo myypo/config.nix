@@ -4,6 +4,8 @@ return {
 	branch = "master",
 
 	keys = {
+		"f",
+		"F",
 		{
 			"s",
 			mode = { "n" },
@@ -27,8 +29,6 @@ return {
 				require("flash").treesitter()
 			end,
 		},
-		"f",
-		"F",
 	},
 
 	config = function()
@@ -42,10 +42,13 @@ return {
 				enabled = false,
 				multi_window = false,
 			},
+			prompt = { enabled = false },
+			highlight = { matches = false },
 			modes = {
 				treesitter_search = {
 					search = { multi_window = false, wrap = true, incremental = false },
 				},
+				treesitter = { highlight = { backdrop = true } },
 				char = {
 					config = function(opts)
 						opts.autohide = opts.autohide or (vim.fn.mode(true):find("no") and vim.v.operator == "y")
@@ -60,16 +63,9 @@ return {
 					autohide = true,
 					highlight = { backdrop = true },
 					jump_labels = true,
-					jump = {
-						autojump = true,
-					},
+					jump = { autojump = true },
 				},
-				search = {
-					enabled = false,
-				},
-			},
-			prompt = {
-				enabled = false,
+				search = { enabled = false },
 			},
 		})
 	end,

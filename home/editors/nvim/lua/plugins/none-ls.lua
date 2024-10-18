@@ -51,6 +51,9 @@ return {
 					extra_args = { "--dialect", "postgres" },
 				}),
 
+				-- Purescript
+				b.formatting.purs_tidy,
+
 				-- Rust
 				{
 					method = nls.methods.FORMATTING,

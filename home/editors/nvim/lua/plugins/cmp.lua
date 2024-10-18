@@ -1,7 +1,6 @@
 return {
-	-- TODO: revert to the upstream after this is merged: https://github.com/hrsh7th/nvim-cmp/pull/1980
-	"yioneko/nvim-cmp", -- "hrsh7th/nvim-cmp",
-	branch = "perf-up",
+	"iguanacucumber/magazine.nvim",
+	name = "nvim-cmp",
 	event = { "InsertEnter", "CmdlineEnter" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
@@ -79,6 +78,7 @@ return {
 			completion = {
 				completeopt = "menu,menuone",
 			},
+			---@diagnostic disable-next-line: missing-fields
 			performance = {
 				max_view_entries = 7,
 			},
@@ -222,6 +222,7 @@ return {
 					end,
 				},
 			}),
+			---@diagnostic disable-next-line: missing-fields
 			matching = { disallow_symbol_nonprefix_matching = false },
 			sources = cmp.config.sources({
 				{ name = "path" },

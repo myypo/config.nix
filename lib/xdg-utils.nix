@@ -1,74 +1,75 @@
-{}: {
-  setMainBrowser = {xdgBrowser}: let
-    browserList = [xdgBrowser];
-    associations = {
-      "text/html" = browserList;
-      "x-scheme-handler/http" = browserList;
-      "x-scheme-handler/https" = browserList;
-      "x-scheme-handler/ftp" = browserList;
-      "x-scheme-handler/chrome" = browserList;
-      "x-scheme-handler/about" = browserList;
-      "x-scheme-handler/unknown" = browserList;
-      "application/x-extension-htm" = browserList;
-      "application/x-extension-html" = browserList;
-      "application/x-extension-shtml" = browserList;
-      "application/xhtml+xml" = browserList;
-      "application/x-extension-xhtml" = browserList;
-      "application/x-extension-xht" = browserList;
-    };
-  in {
-    mimeApps = {
-      defaultApplications = associations;
-      associations.added = associations;
-    };
-  };
+{lib}: let
+  makeMainXdg = isMain: xdgName: fileTypes: rest: let
+    associations =
+      lib.trivial.pipe
+      fileTypes
+      [
+        (builtins.map
+          (ft: {
+            name = ft;
+            value = [xdgName];
+          }))
+        (builtins.listToAttrs)
+      ];
+  in
+    lib.attrsets.recursiveUpdate {
+      xdg.mimeApps = lib.mkIf isMain {
+        defaultApplications = associations;
+        associations.added = associations;
+      };
+    }
+    rest;
+in {
+  makeBrowser = isMain: xdgBrowser: rest: let
+    fileTypes = [
+      "text/html"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+      "x-scheme-handler/ftp"
+      "x-scheme-handler/chrome"
+      "x-scheme-handler/about"
+      "x-scheme-handler/unknown"
+      "application/x-extension-htm"
+      "application/x-extension-html"
+      "application/x-extension-shtml"
+      "application/xhtml+xml"
+      "application/x-extension-xhtml"
+      "application/x-extension-xht"
+    ];
+  in
+    makeMainXdg isMain xdgBrowser fileTypes rest;
 
-  setMainImageViewer = {xdgImageViewer}: let
-    imageViewerList = [xdgImageViewer];
-    associations = {
-      "image/png" = imageViewerList;
-      "image/jpg" = imageViewerList;
-      "image/jpeg" = imageViewerList;
-      "image/gif" = imageViewerList;
-      "image/bmp" = imageViewerList;
-      "image/svg" = imageViewerList;
-      "image/tiff" = imageViewerList;
-      "image/webp" = imageViewerList;
-    };
-  in {
-    mimeApps = {
-      defaultApplications = associations;
-      associations.added = associations;
-    };
-  };
+  makeImageViewer = isMain: xdgImageViewer: rest: let
+    fileTypes = [
+      "image/png"
+      "image/jpg"
+      "image/jpeg"
+      "image/gif"
+      "image/bmp"
+      "image/svg"
+      "image/tiff"
+      "image/webp"
+    ];
+  in
+    makeMainXdg isMain xdgImageViewer fileTypes rest;
 
-  setMainVideoPlayer = {xdgVideoPlayer}: let
-    videoPlayerList = [xdgVideoPlayer];
-    associations = {
-      "video/mp4" = videoPlayerList;
-      "video/webm" = videoPlayerList;
-      "video/mpeg" = videoPlayerList;
-      "video/quicktime" = videoPlayerList;
-    };
-  in {
-    mimeApps = {
-      defaultApplications = associations;
-      associations.added = associations;
-    };
-  };
+  mkVideoPlayer = isMain: xdgVideoPlayer: rest: let
+    fileTypes = [
+      "video/mp4"
+      "video/webm"
+      "video/mpeg"
+      "video/quicktime"
+    ];
+  in
+    makeMainXdg isMain xdgVideoPlayer fileTypes rest;
 
-  setMainMusicPlayer = {xdgMusicPlayer}: let
-    musicPlayerList = [xdgMusicPlayer];
-    associations = {
-      "audio/mp3" = musicPlayerList;
-      "audio/ogg" = musicPlayerList;
-      "audio/wav" = musicPlayerList;
-      "audio/flac" = musicPlayerList;
-    };
-  in {
-    mimeApps = {
-      defaultApplications = associations;
-      associations.added = associations;
-    };
-  };
+  mkMusicPlayer = isMain: xdgMusicPlayer: rest: let
+    fileTypes = [
+      "audio/mp3"
+      "audio/ogg"
+      "audio/wav"
+      "audio/flac"
+    ];
+  in
+    makeMainXdg isMain xdgMusicPlayer fileTypes rest;
 }

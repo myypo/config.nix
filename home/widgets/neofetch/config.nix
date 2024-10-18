@@ -1,6 +1,6 @@
 {pkgs}: {
   home.packages = [pkgs.neofetch];
-  home.file.".config/neofetch/config.conf".text = ''
+  xdg.configFile."neofetch/config.conf".text = ''
     print_info()
     {
         info title

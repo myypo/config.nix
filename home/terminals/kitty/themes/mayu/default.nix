@@ -1,5 +1,5 @@
 {fontSize, ...}: {
-  home.file.".config/kitty/themes/Mayu.conf".source = ./Mayu.conf;
+  xdg.configFile."kitty/themes/Mayu.conf".source = ./Mayu.conf;
 
   programs = {
     kitty = {

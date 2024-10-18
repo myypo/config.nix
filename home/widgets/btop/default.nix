@@ -27,7 +27,7 @@ in {
         };
       };
 
-      home.file.".config/btop/themes/catppuccin_mocha.theme".text = ''
+      xdg.configFile."btop/themes/catppuccin_mocha.theme".text = ''
         theme[main_bg]="#000000"
         theme[main_fg]="#CDD6F4"
         theme[title]="#CDD6F4"
