@@ -4,37 +4,25 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "profiles";
-    name = "hyprland";
-  };
-  enable = lib.cfgIsEnabled {
-    inherit config;
-    type = "profiles";
-    name = "hyprland";
-  };
-
+}: let
   userOpts = {
     options.profiles.hyprland = {
-      enable = mkEnableOption "hyprland profile";
+      enable = lib.mkEnableOption "hyprland profile";
 
-      theme = mkOption {
-        type = types.nullOr types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
 
-      monitors = mkOption {
-        type = types.attrsOf (types.submodule {
+      monitors = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.submodule {
           options = {
-            name = mkOption {type = types.str;};
-            settings = mkOption {type = types.str;};
-            position = mkOption {type = types.str;};
-            scaling = mkOption {type = types.str;};
-            extra = mkOption {
-              type = types.nullOr types.str;
+            name = lib.mkOption {type = lib.types.str;};
+            settings = lib.mkOption {type = lib.types.str;};
+            position = lib.mkOption {type = lib.types.str;};
+            scaling = lib.mkOption {type = lib.types.str;};
+            extra = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
               default = null;
             };
           };
@@ -43,113 +31,113 @@ with lib; let
 
       addons = {
         clamshell = {
-          enable = mkEnableOption "clamshell";
+          enable = lib.mkEnableOption "clamshell";
 
           settings = {
-            internalMonitorName = mkOption {type = types.str;};
-            internalMonitorSettings = mkOption {type = types.str;};
-            externalMonitorName = mkOption {type = types.str;};
+            internalMonitorName = lib.mkOption {type = lib.types.str;};
+            internalMonitorSettings = lib.mkOption {type = lib.types.str;};
+            externalMonitorName = lib.mkOption {type = lib.types.str;};
           };
         };
         toggle_touchpad = {
-          enable = mkEnableOption "toggle touchpad";
+          enable = lib.mkEnableOption "toggle touchpad";
           settings = {
-            deviceName = mkOption {
-              type = types.str;
+            deviceName = lib.mkOption {
+              type = lib.types.str;
             };
           };
         };
         swww = {
-          enable = mkEnableOption "swww";
+          enable = lib.mkEnableOption "swww";
 
           dynamic_wall = {
-            enable = mkEnableOption "dynamic wallpaper";
+            enable = lib.mkEnableOption "dynamic wallpaper";
           };
         };
         swaylock = {
-          enable = mkEnableOption "swaylock";
+          enable = lib.mkEnableOption "swaylock";
         };
         waybar = {
-          enable = mkEnableOption "waybar";
-          theme = mkOption {
-            type = types.nullOr types.str;
+          enable = lib.mkEnableOption "waybar";
+          theme = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
             default = null;
           };
         };
         to_notif = {
-          enable = mkEnableOption "to notification hyprland utility";
+          enable = lib.mkEnableOption "to notification hyprland utility";
         };
         project_management = {
-          enable = mkEnableOption "hyprland project management";
+          enable = lib.mkEnableOption "hyprland project management";
         };
       };
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config = mkIf enable {
-    home-manager.users =
-      builtins.mapAttrs (
-        userName: cfg:
-          mkIf cfg.enable (import ./config.nix {
-            inherit lib inputs pkgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "profiles";
+    name = "hyprland";
+    addArgsFn = userName: cfg: {
+      inherit inputs;
 
-            userCfg = config.myypo.users.${userName};
+      userCfg = config.myypo.users.${userName};
 
-            cfg =
-              cfg
-              // {
-                theme = lib.valueOrUserDefault {
-                  inherit config userName;
-                  name = "theme";
-                  val = cfg.theme;
-                };
+      cfg =
+        cfg
+        // {
+          theme = lib.valueOrUserDefault {
+            inherit config userName;
+            name = "theme";
+            val = cfg.theme;
+          };
 
-                addons =
-                  cfg.addons
-                  // {
-                    waybar =
-                      cfg.addons.waybar
-                      // {
-                        theme = lib.valueOrUserDefault {
-                          inherit config userName;
-                          name = "theme";
-                          val = cfg.addons.waybar.theme;
-                        };
-                      };
+          addons =
+            cfg.addons
+            // {
+              waybar =
+                cfg.addons.waybar
+                // {
+                  theme = lib.valueOrUserDefault {
+                    inherit config userName;
+                    name = "theme";
+                    val = cfg.addons.waybar.theme;
                   };
-              };
-          })
-      )
-      cfgs;
-
-    programs = {
-      # Have to be enabled to use apps that do not support wayland
-      xwayland.enable = false;
-
-      dconf.enable = true;
+                };
+            };
+        };
     };
+    nixosConfig = {
+      programs = {
+        # Have to be enabled to use apps that do not support wayland
+        xwayland.enable = false;
 
-    xdg.portal = with pkgs; {
-      enable = true;
-      extraPortals = [xdg-desktop-portal-gtk xdg-desktop-portal-hyprland];
-      config.preferred.default = ["hyprland" "gtk"];
-      xdgOpenUsePortal = true;
-      configPackages = [hyprland];
+        dconf.enable = true;
+      };
+
+      xdg.portal = with pkgs; {
+        enable = true;
+        extraPortals = [xdg-desktop-portal-gtk xdg-desktop-portal-hyprland];
+        config.preferred.default = ["hyprland" "gtk"];
+        xdgOpenUsePortal = true;
+        configPackages = [hyprland];
+      };
+
+      environment.systemPackages = with pkgs; [
+        wl-clipboard
+        wlr-randr
+        wayland
+        wayland-scanner
+        wayland-utils
+        egl-wayland
+        wayland-protocols
+        glfw-wayland
+        qt6.qtwayland
+        wev
+      ];
     };
-
-    environment.systemPackages = with pkgs; [
-      wl-clipboard
-      wlr-randr
-      wayland
-      wayland-scanner
-      wayland-utils
-      egl-wayland
-      wayland-protocols
-      glfw-wayland
-      qt6.qtwayland
-      wev
-    ];
   };
 }

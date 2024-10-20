@@ -4,24 +4,18 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "other";
-    name = "gpg";
-  };
-
   userOpts = {
     options.other.gpg = {
-      enable = lib.mkNullableEnableOption "gpg";
+      enable = lib.makeNullableEnableOption "gpg";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg (import ./config.nix {inherit pkgs;})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "other";
+    name = "gpg";
+  };
 }

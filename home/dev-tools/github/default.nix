@@ -4,15 +4,9 @@
   pkgs,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "dev-tools";
-    name = "github";
-  };
-
   userOpts = {
     options.dev-tools.github = {
-      enable = lib.mkNullableEnableOption "github";
+      enable = lib.makeNullableEnableOption "github";
 
       theme = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
@@ -21,21 +15,12 @@
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        with cfg;
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit pkgs;
-
-            theme = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "theme";
-              val = theme;
-            };
-          })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "dev-tools";
+    name = "github";
+  };
 }

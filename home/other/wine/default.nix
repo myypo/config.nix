@@ -5,32 +5,18 @@
   ...
 }:
 with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "other";
-    name = "wine";
-  };
-
   userOpts = {
     options.other.wine = {
-      enable = mkNullableEnableOption "wine";
+      enable = makeNullableEnableOption "wine";
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        mkIfFall cfg {
-          home = {
-            packages = with pkgs; [
-              wineWowPackages.waylandFull
-              samba
-              winetricks
-            ];
-          };
-        }
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "other";
+    name = "wine";
+  };
 }

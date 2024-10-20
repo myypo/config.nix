@@ -4,7 +4,7 @@
   theme,
   isMainMusicPlayer,
 }:
-lib.mkMusicPlayer isMainMusicPlayer "termusic.desktop" {
+lib.makeMusicPlayer isMainMusicPlayer "termusic.desktop" {
   home.packages = with pkgs; [
     termusic
 

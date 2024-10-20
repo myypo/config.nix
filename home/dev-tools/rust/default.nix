@@ -4,35 +4,22 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "dev-tools";
-    name = "rust";
-  };
-  enable = cfgIsEnabled {
-    inherit config;
-    type = "dev-tools";
-    name = "rust";
-  };
-
+}: let
   userOpts = {
     options.dev-tools.rust = {
-      enable = mkNullableEnableOption "rust dev-tools";
+      enable = lib.makeNullableEnableOption "rust dev-tools";
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config = lib.mkIf enable {
-    home-manager.users =
-      builtins.mapAttrs (
-        _: cfg:
-          mkIfFall cfg (import ./config.nix {inherit inputs pkgs;})
-      )
-      cfgs;
-
-    nixpkgs.overlays = [inputs.fenix.overlays.default];
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "dev-tools";
+    name = "rust";
+    nixosConfig = {
+      nixpkgs.overlays = [inputs.fenix.overlays.default];
+    };
   };
 }

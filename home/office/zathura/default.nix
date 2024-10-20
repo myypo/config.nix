@@ -1,30 +1,24 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "office";
-    name = "zathura";
-  };
-
   userOpts = {
     options.office.zathura = {
-      enable = lib.mkNullableEnableOption "zathura";
+      enable = lib.makeNullableEnableOption "zathura";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit lib;
-
-          isMainDocumentViewer = config.myypo.users.${userName}.mainDocumentViewer == "zathura";
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "office";
+    name = "zathura";
+    addArgsFn = userName: cfg: {
+      isMainDocumentViewer = config.myypo.users.${userName}.mainDocumentViewer == "zathura";
+    };
+  };
 }

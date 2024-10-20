@@ -5,15 +5,9 @@
   ...
 }:
 with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "browsers";
-    name = "qutebrowser";
-  };
-
   userOpts = {
     options.browsers.qutebrowser = {
-      enable = lib.mkNullableEnableOption "qutebrowser";
+      enable = lib.makeNullableEnableOption "qutebrowser";
 
       theme = mkOption {
         type = types.nullOr types.str;
@@ -22,23 +16,15 @@ with lib; let
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        with cfg;
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit lib pkgs;
-
-            isMainBrowser = config.myypo.users.${userName}.mainBrowser == "qutebrowser";
-
-            theme = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "theme";
-              val = theme;
-            };
-          })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "browsers";
+    name = "qutebrowser";
+    addArgsFn = userName: cfg: {
+      isMainBrowser = config.myypo.users.${userName}.mainBrowser == "qutebrowser";
+    };
+  };
 }

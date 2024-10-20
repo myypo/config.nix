@@ -53,7 +53,7 @@ in {
   in
     makeMainXdg isMain xdgImageViewer fileTypes rest;
 
-  mkVideoPlayer = isMain: xdgVideoPlayer: rest: let
+  makeVideoPlayer = isMain: xdgVideoPlayer: rest: let
     fileTypes = [
       "video/mp4"
       "video/webm"
@@ -63,7 +63,7 @@ in {
   in
     makeMainXdg isMain xdgVideoPlayer fileTypes rest;
 
-  mkMusicPlayer = isMain: xdgMusicPlayer: rest: let
+  makeMusicPlayer = isMain: xdgMusicPlayer: rest: let
     fileTypes = [
       "audio/mp3"
       "audio/ogg"

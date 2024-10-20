@@ -5,33 +5,21 @@
   pkgs,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "recording";
-    name = "grim";
-  };
-  enable = lib.cfgIsEnabled {
-    inherit config;
-    type = "recording";
-    name = "grim";
-  };
-
   userOpts = {
     options.recording.grim = {
-      enable = lib.mkNullableEnableOption "grim";
+      enable = lib.makeNullableEnableOption "grim";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config = lib.mkIf enable {
-    home-manager.users =
-      builtins.mapAttrs (
-        _: cfg:
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit lib inputs pkgs;
-          })
-      )
-      cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "recording";
+    name = "grim";
+    addArgsFn = userName: cfg: {
+      inherit inputs;
+    };
   };
 }

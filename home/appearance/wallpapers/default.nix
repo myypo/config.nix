@@ -1,30 +1,23 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
-  gtkCfgs = lib.getCfgs {
-    inherit config;
-    type = "appearance";
-    name = "wallpapers";
-  };
-
   userOpts = {
     options.appearance = {
       wallpapers = {
-        enable = lib.mkNullableEnableOption "wallpapers package";
+        enable = lib.makeNullableEnableOption "wallpapers package";
       };
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg {
-          home.file."Pictures/wallpapers".source = ./images;
-        }
-    )
-    gtkCfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "appearance";
+    name = "wallpapers";
+  };
 }

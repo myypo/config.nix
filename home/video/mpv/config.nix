@@ -3,7 +3,7 @@
   pkgs,
   isMainVideoPlayer,
 }:
-lib.mkVideoPlayer isMainVideoPlayer "mpv.desktop" {
+lib.makeVideoPlayer isMainVideoPlayer "mpv.desktop" {
   home.packages = with pkgs; [
     ffmpegthumbnailer
   ];

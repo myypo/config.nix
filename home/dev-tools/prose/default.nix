@@ -5,24 +5,18 @@
   ...
 }:
 with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "dev-tools";
-    name = "prose";
-  };
-
   userOpts = {
     options.dev-tools.prose = {
-      enable = mkNullableEnableOption "prose dev-tools";
+      enable = makeNullableEnableOption "prose dev-tools";
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        mkIfFall cfg (import ./config.nix {inherit pkgs;})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "dev-tools";
+    name = "prose";
+  };
 }

@@ -4,26 +4,18 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "browsers";
-    name = "chromium";
-  };
-
   userOpts = {
     options.browsers.chromium = {
-      enable = lib.mkNullableEnableOption "chromium";
+      enable = lib.makeNullableEnableOption "chromium";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "browsers";
+    name = "chromium";
+  };
 }

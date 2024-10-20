@@ -3,49 +3,19 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "notifications";
-    name = "mako";
-  };
-
+}: let
   userOpts = {
     options.notifications.mako = {};
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config = {
-    home-manager.users =
-      builtins.mapAttrs (
-        userName: cfg: let
-          enable = cfg._common.enable;
-
-          backend = cfg._common.backend;
-          isBackend = backend == "mako";
-
-          theme = cfg._common.theme;
-
-          fontSize = cfg._common.fontSize;
-        in
-          with cfg;
-            mkIf (enable && isBackend) (import ./config.nix {
-              inherit pkgs;
-
-              theme = lib.valueOrUserDefault {
-                inherit config userName;
-                name = "theme";
-                val = theme;
-              };
-              fontSize = lib.valueOrUserDefault {
-                inherit config userName;
-                name = "fontSize";
-                val = fontSize;
-              };
-            })
-      )
-      cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "notifications";
+    name = "mako";
+    enable = true;
+    mkIfFn = cfg: lib.mkIf (cfg._common.enable && cfg._common.backend == "mako");
   };
 }

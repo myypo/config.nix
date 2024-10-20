@@ -1,6 +1,6 @@
 {
   lib,
-  personalUserName,
+  githubUserName,
   personal_email,
   personal_signing_key,
   alt_git_identity_list,
@@ -11,7 +11,7 @@
     # Plugin for working with large files
     lfs.enable = true;
 
-    userName = personalUserName;
+    userName = githubUserName;
     userEmail = personal_email;
 
     signing = {

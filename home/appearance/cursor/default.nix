@@ -5,15 +5,9 @@
   ...
 }:
 with lib; let
-  gtkCfgs = lib.getCfgs {
-    inherit config;
-    type = "appearance";
-    name = "cursor";
-  };
-
   userOpts = {
     options.appearance.cursor = {
-      enable = lib.mkNullableEnableOption "custom cursor";
+      enable = lib.makeNullableEnableOption "custom cursor";
 
       size = mkOption {
         type = types.int;
@@ -25,21 +19,12 @@ with lib; let
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        with cfg;
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit lib pkgs size;
-
-            theme = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "theme";
-              val = theme;
-            };
-          })
-    )
-    gtkCfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "appearance";
+    name = "cursor";
+  };
 }

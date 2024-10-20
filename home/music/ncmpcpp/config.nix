@@ -3,7 +3,7 @@
   pkgs,
   isMainMusicPlayer,
 }:
-lib.mkMusicPlayer isMainMusicPlayer "ncmpcpp.desktop" {
+lib.makeMusicPlayer isMainMusicPlayer "ncmpcpp.desktop" {
   programs.ncmpcpp = {
     enable = true;
 

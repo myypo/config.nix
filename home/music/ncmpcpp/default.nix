@@ -4,28 +4,21 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "music";
-    name = "ncmpcpp";
-  };
-
   userOpts = {
     options.music.ncmpcpp = {
-      enable = lib.mkNullableEnableOption "ncmpcpp";
+      enable = lib.makeNullableEnableOption "ncmpcpp";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-
-          isMainMusicPlayer = config.myypo.users.${userName}.mainMusicPlayer == "ncmpcpp";
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "music";
+    name = "ncmpcpp";
+    addArgsFn = userName: cfg: {
+      isMainMusicPlayer = config.myypo.users.${userName}.mainMusicPlayer == "ncmpcpp";
+    };
+  };
 }

@@ -95,7 +95,7 @@ with lib; let
     )
     cfg;
 
-  setSubOpts = {
+  makeHomeOpts = {
     lib,
     userOpts,
   }:
@@ -105,7 +105,7 @@ with lib; let
       };
     };
 in {
-  options = setSubOpts {inherit lib userOpts;};
+  options = makeHomeOpts {inherit lib userOpts;};
 
   config = {
     users.mutableUsers = false;

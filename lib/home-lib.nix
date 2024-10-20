@@ -8,16 +8,22 @@
       if builtins.isList type
       then type
       else [type];
-
     cfgPath = typesList ++ [name];
-  in
-    with lib;
+
+    commonArgs = {
+      hostName = config.myypo.hostName;
+      escalCmd = config.myypo.security.privilege-elevation.cmd;
+    };
+    userArgs =
       builtins.mapAttrs (
         _: user:
-          (attrsets.attrByPath cfgPath {} user)
-          // {_common = attrsets.attrByPath (typesList ++ ["common"]) {} user;}
+          (lib.attrsets.attrByPath cfgPath {} user)
+          // {_common = lib.attrsets.attrByPath (typesList ++ ["common"]) {} user;}
+          // commonArgs
       )
       config.myypo.users;
+  in
+    userArgs;
 
   cfgIsEnabled = {
     config,
@@ -83,9 +89,49 @@
       then cfg._common.enableAll
       else false;
   in
-    if enable
-    then lib.mkIf true
-    else lib.mkIf false;
+    lib.mkIf enable;
+
+  makeHomeModule = {
+    pkgs,
+    config,
+    configPath,
+    type,
+    name,
+    addArgsFn ? userName: cfg: {},
+    nixosConfig ? {},
+    enable ?
+      cfgIsEnabled {
+        inherit config type name;
+      },
+    mkIfFn ? mkIfFall,
+  }: let
+    cfgs = getCfgs {
+      inherit config type name;
+    };
+
+    hmConfig = {
+      home-manager.users =
+        builtins.mapAttrs (
+          userName: cfg:
+            mkIfFn cfg (let
+              configArgs = let
+                requiredArgs = builtins.functionArgs (import configPath);
+                passedArgs = builtins.intersectAttrs requiredArgs ({
+                    inherit lib pkgs;
+                  }
+                  // (lib.attrsets.attrByPath ["_common"] {} cfg)
+                  // cfg
+                  // (addArgsFn userName cfg));
+                missingArgs = lib.attrsets.filterAttrs (n: _: (!builtins.hasAttr n passedArgs || passedArgs.${n} == null)) requiredArgs;
+              in
+                passedArgs // (builtins.mapAttrs (n: _: lib.attrsets.attrByPath [n] (builtins.readFile config.sops.secrets."${userName}__${n}".path) config.myypo.users.${userName}) missingArgs);
+            in
+              import configPath configArgs)
+        )
+        cfgs;
+    };
+  in
+    lib.mkIf enable (hmConfig // nixosConfig);
 
   # Because pkgs.substituteAll is weird
   writeScript = {
@@ -135,60 +181,30 @@
 
   getMeta = type: name: (import ../home/${type}/${name}/meta.nix);
 
-  sourceNvimFiles = {
-    mkOutOfStoreSymlink,
-    flake_path,
-    subs,
-    theme,
-    extra,
-  }: let
-    plugins = let
-      fromFn = fsubs: builtins.map (s: "@${s}@") (builtins.attrNames fsubs);
-      toFn = fsubs: builtins.attrValues fsubs;
+  # Actually mkOutOfStoreSymlink copied from home-manager
+  makeOutOfStore = pkgs: path: let
+    pathStr = builtins.toString path;
+    # Figures out a valid Nix store name for the given path.
+    storeFileName = path: let
+      # All characters that are considered safe. Note "-" is not
+      # included to avoid "-" followed by digit being interpreted as a
+      # version.
+      safeChars =
+        ["+" "." "_" "?" "="]
+        ++ lib.lowerChars
+        ++ lib.upperChars
+        ++ lib.stringToCharacters "0123456789";
 
-      baseDestPath = ".config/nvim";
-      baseSrcPath = "${flake_path}/home/editors/nvim";
+      empties = l: lib.genList (x: "") (lib.length l);
 
-      pluginsPath = "${baseSrcPath}/lua/plugins";
+      unsafeInName =
+        lib.stringToCharacters (lib.replaceStrings safeChars (empties safeChars) path);
 
-      pluginsFiles = let
-        filesPluginsFolder = builtins.attrNames (lib.attrsets.filterAttrs (_: v: v == "regular") (builtins.readDir pluginsPath));
-        luaFiles = builtins.filter (f: lib.strings.hasSuffix ".lua" f) filesPluginsFolder;
-        plugins = lib.lists.partition (f: lib.strings.hasPrefix "_" f) luaFiles;
-      in {
-        plain = plugins.wrong;
-        subst = plugins.right;
-      };
+      safeName = lib.replaceStrings unsafeInName (empties unsafeInName) path;
     in
-      lib.attrsets.foldlAttrs (acc: _: v: acc // v) {} {
-        setup = {
-          "${baseDestPath}/init.lua".text = builtins.replaceStrings (fromFn subs."_init.lua") (toFn subs."_init.lua") (builtins.readFile "${baseSrcPath}/_init.lua");
-          # TODO: doing it this way isn't really ergonomic for me
-          # "${baseDestPath}/lazy-lock.json".source = "${baseSrcPath}/lazy-lock.json";
+      "hm_" + safeName;
 
-          "${baseDestPath}/lua/base".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/base";
-          "${baseDestPath}/lua/luasnip".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/luasnip";
-
-          "${baseDestPath}/lua/plugins/colorscheme.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/colorscheme.lua";
-          "${baseDestPath}/lua/plugins/lualine.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/lualine.lua";
-        };
-
-        substPlugins = builtins.listToAttrs (builtins.map (f: let
-            from = fromFn subs.${f};
-            to = toFn subs.${f};
-            contents = builtins.readFile "${pluginsPath}/${f}";
-          in {
-            name = "${baseDestPath}/lua/plugins/${f}";
-            value = {text = builtins.replaceStrings from to contents;};
-          })
-          pluginsFiles.subst);
-
-        plainPlugins = builtins.listToAttrs (builtins.map (f: {
-            name = "${baseDestPath}/lua/plugins/${f}";
-            value = {source = mkOutOfStoreSymlink "${pluginsPath}/${f}";};
-          })
-          pluginsFiles.plain);
-      };
+    name = storeFileName (builtins.baseNameOf pathStr);
   in
-    plugins // extra;
+    pkgs.runCommandLocal name {} ''ln -s ${lib.strings.escapeShellArg pathStr} $out'';
 }
