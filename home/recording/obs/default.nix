@@ -1,26 +1,21 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "recording";
-    name = "obs";
-  };
-
   userOpts = {
     options.recording.obs = {
-      enable = lib.mkNullableEnableOption "obs";
+      enable = lib.makeNullableEnableOption "obs";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg (import ./config.nix {})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "recording";
+    name = "obs";
+  };
 }

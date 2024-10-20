@@ -5,15 +5,9 @@
   ...
 }:
 with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "shells";
-    name = "fish";
-  };
-
   userOpts = {
     options.shells.fish = {
-      enable = lib.mkNullableEnableOption "fish";
+      enable = lib.makeNullableEnableOption "fish";
 
       hostName = mkOption {
         type = types.str;
@@ -27,28 +21,12 @@ with lib; let
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        with cfg;
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit pkgs hostName;
-
-            escalCmd = config.myypo.security.privilege-elevation.cmd;
-
-            theme = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "theme";
-              val = theme;
-            };
-
-            flake_path = lib.getUserSecret {
-              inherit config userName;
-              secretName = "flake_path";
-            };
-          })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "shells";
+    name = "fish";
+  };
 }

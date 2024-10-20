@@ -4,28 +4,21 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "video";
-    name = "mpv";
-  };
-
   userOpts = {
     options.video.mpv = {
-      enable = lib.mkNullableEnableOption "mpv";
+      enable = lib.makeNullableEnableOption "mpv";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-
-          isMainVideoPlayer = config.myypo.users.${userName}.mainVideoPlayer == "mpv";
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "video";
+    name = "mpv";
+    addArgsFn = userName: cfg: {
+      isMainVideoPlayer = config.myypo.users.${userName}.mainVideoPlayer == "mpv";
+    };
+  };
 }

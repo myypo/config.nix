@@ -3,26 +3,19 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "shells";
-    name = "bash";
-  };
-
+}: let
   userOpts = {
     options.shells.bash = {
-      enable = mkNullableEnableOption "fish";
+      enable = lib.makeNullableEnableOption "fish";
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        mkIfFall cfg (import ./config.nix {inherit pkgs;})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "shells";
+    name = "bash";
+  };
 }

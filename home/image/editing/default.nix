@@ -4,26 +4,18 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "image";
-    name = "editing";
-  };
-
   userOpts = {
     options.image.editing = {
-      enable = lib.mkNullableEnableOption "editing";
+      enable = lib.makeNullableEnableOption "editing";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit pkgs;
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "image";
+    name = "editing";
+  };
 }

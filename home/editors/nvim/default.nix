@@ -4,68 +4,88 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  nixosConfig = config;
-
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "editors";
-    name = "nvim";
-  };
-  enable = lib.cfgIsEnabled {
-    inherit config;
-    type = "editors";
-    name = "nvim";
-  };
-
+}: let
   userOpts = {
     options.editors.nvim = {
-      enable = lib.mkNullableEnableOption "nvim";
+      enable = lib.makeNullableEnableOption "nvim";
 
-      theme = mkOption {
-        type = types.nullOr types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config = mkIf enable {
-    home-manager.users =
-      builtins.mapAttrs (
-        userName: cfg:
-          lib.mkIfFall cfg (
-            # TODO: there is probably a better way of making the home-manager lib accessible
-            {config, ...}: let
-              homeManagerConfig = config;
-            in
-              import ./config.nix {
-                lib = homeManagerConfig.lib // lib;
-                inherit inputs pkgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "editors";
+    name = "nvim";
+    nixosConfig = {
+      nixpkgs.overlays = [inputs.neovim-nightly-overlay.overlays.default];
+    };
+    addArgsFn = userName: cfg: {
+      isMainEditor = config.myypo.users.${userName}.mainEditor == "nvim";
+      githubUserName = config.myypo.users.${userName}.githubUserName;
 
-                flake_path = lib.getUserSecret {
-                  config = nixosConfig;
-                  inherit userName;
-                  secretName = "flake_path";
-                };
+      sourceNvimFiles = {
+        mkOutOfStoreSymlink,
+        flake_path,
+        subs,
+        theme,
+        extra,
+      }: let
+        plugins = let
+          fromFn = fsubs: builtins.map (s: "@${s}@") (builtins.attrNames fsubs);
+          toFn = fsubs: builtins.attrValues fsubs;
 
-                theme = lib.valueOrUserDefault {
-                  inherit userName;
-                  config = nixosConfig;
-                  name = "theme";
-                  val = cfg.theme;
-                };
+          baseDestPath = ".config/nvim";
+          baseSrcPath = "${flake_path}/home/editors/nvim";
 
-                isMainEditor = nixosConfig.myypo.users.${userName}.mainEditor == "nvim";
+          pluginsPath = "${baseSrcPath}/lua/plugins";
 
-                githubUserName = nixosConfig.myypo.users.${userName}.githubUserName;
-              }
-          )
-      )
-      cfgs;
+          pluginsFiles = let
+            filesPluginsFolder = builtins.attrNames (lib.attrsets.filterAttrs (_: v: v == "regular") (builtins.readDir pluginsPath));
+            luaFiles = builtins.filter (f: lib.strings.hasSuffix ".lua" f) filesPluginsFolder;
+            plugins = lib.lists.partition (f: lib.strings.hasPrefix "_" f) luaFiles;
+          in {
+            plain = plugins.wrong;
+            subst = plugins.right;
+          };
+        in
+          lib.attrsets.foldlAttrs (acc: _: v: acc // v) {} {
+            setup = {
+              "${baseDestPath}/init.lua".text = builtins.replaceStrings (fromFn subs."_init.lua") (toFn subs."_init.lua") (builtins.readFile "${baseSrcPath}/_init.lua");
+              # TODO: doing it this way isn't really ergonomic for me
+              # "${baseDestPath}/lazy-lock.json".source = "${baseSrcPath}/lazy-lock.json";
 
-    nixpkgs.overlays = [inputs.neovim-nightly-overlay.overlays.default];
+              "${baseDestPath}/lua/base".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/base";
+              "${baseDestPath}/lua/luasnip".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/luasnip";
+
+              "${baseDestPath}/lua/plugins/colorscheme.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/colorscheme.lua";
+              "${baseDestPath}/lua/plugins/lualine.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/lualine.lua";
+            };
+
+            substPlugins = builtins.listToAttrs (builtins.map (f: let
+                from = fromFn subs.${f};
+                to = toFn subs.${f};
+                contents = builtins.readFile "${pluginsPath}/${f}";
+              in {
+                name = "${baseDestPath}/lua/plugins/${f}";
+                value = {text = builtins.replaceStrings from to contents;};
+              })
+              pluginsFiles.subst);
+
+            plainPlugins = builtins.listToAttrs (builtins.map (f: {
+                name = "${baseDestPath}/lua/plugins/${f}";
+                value = {source = mkOutOfStoreSymlink "${pluginsPath}/${f}";};
+              })
+              pluginsFiles.plain);
+          };
+      in
+        plugins // extra;
+    };
   };
 }

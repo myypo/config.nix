@@ -4,32 +4,18 @@
   pkgs,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "other";
-    name = "chats";
-  };
-
   userOpts = {
     options.other.chats = {
-      enable = lib.mkNullableEnableOption "chats";
+      enable = lib.makeNullableEnableOption "chats";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg {
-          home = {
-            packages = with pkgs; [
-              tdesktop
-
-              slack
-            ];
-          };
-        }
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "other";
+    name = "chats";
+  };
 }

@@ -3,45 +3,24 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "shells";
-    name = "shared";
-  };
-
+}: let
   userOpts = {
     options.shells.shared = {
-      enable = mkNullableEnableOption "shared";
+      enable = lib.makeNullableEnableOption "shared";
 
-      theme = mkOption {
-        type = types.nullOr types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-
-          hostName = config.myypo.hostName;
-          escalCmd = config.myypo.security.privilege-elevation.cmd;
-          theme = lib.valueOrUserDefault {
-            inherit config userName;
-            name = "theme";
-            val = cfg.theme;
-          };
-          flake_path = lib.getUserSecret {
-            inherit config userName;
-            secretName = "flake_path";
-          };
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "shells";
+    name = "shared";
+  };
 }

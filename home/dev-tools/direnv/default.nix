@@ -1,25 +1,21 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "dev-tools";
-    name = "direnv";
-  };
-
   userOpts = {
     options.dev-tools.direnv = {
-      enable = lib.mkNullableEnableOption "direnv";
+      enable = lib.makeNullableEnableOption "direnv";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg: lib.mkIfFall cfg (import ./config.nix {})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "dev-tools";
+    name = "direnv";
+  };
 }

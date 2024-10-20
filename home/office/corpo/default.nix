@@ -4,32 +4,18 @@
   pkgs,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "office";
-    name = "corpo";
-  };
-
   userOpts = {
     options.other.corpo = {
-      enable = lib.mkNullableEnableOption "corpo";
+      enable = lib.makeNullableEnableOption "corpo";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg {
-          home = {
-            packages = with pkgs; [
-              slack
-              postman
-              buttercup-desktop
-            ];
-          };
-        }
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "office";
+    name = "corpo";
+  };
 }

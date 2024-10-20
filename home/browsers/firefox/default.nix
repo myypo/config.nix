@@ -4,28 +4,21 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "browsers";
-    name = "firefox";
-  };
-
   userOpts = {
     options.browsers.firefox = {
-      enable = lib.mkNullableEnableOption "firefox";
+      enable = lib.makeNullableEnableOption "firefox";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-
-          isMainBrowser = config.myypo.users.${userName}.mainBrowser == "firefox";
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "browsers";
+    name = "firefox";
+    addArgsFn = userName: cfg: {
+      isMainBrowser = config.myypo.users.${userName}.mainBrowser == "firefox";
+    };
+  };
 }

@@ -1,26 +1,21 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "music";
-    name = "mpd";
-  };
-
   userOpts = {
     options.music.mpd = {
-      enable = lib.mkNullableEnableOption "mpd";
+      enable = lib.makeNullableEnableOption "mpd";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "music";
+    name = "mpd";
+  };
 }

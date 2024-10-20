@@ -9,6 +9,20 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 		end
 
+		vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
+			if vim.bo.readonly then
+				return
+			end
+
+			-- Do not publish diagnostics under home directories with name starting with dot and in node_modules
+			local buf = vim.api.nvim_buf_get_name(0)
+			if buf:match("/home/.*/%..*/") or buf:match(".*/node_modules/.*") then
+				return
+			end
+
+			vim.lsp.diagnostic.on_publish_diagnostics(nil, result, ctx, config)
+		end
+
 		vim.diagnostic.config({
 			virtual_text = false,
 			signs = true,
@@ -78,7 +92,24 @@ return {
 				return
 			end
 
-			local d = dlist[1]
+			local curr_buf = vim.api.nvim_get_current_buf()
+			local target_idx = 1
+			local found_next = false
+			for i, v in ipairs(dlist) do
+				if v.bufnr == curr_buf then
+					found_next = true
+					goto continue
+				end
+
+				if found_next then
+					target_idx = i
+					break
+				end
+
+				::continue::
+			end
+
+			local d = dlist[target_idx]
 			vim.api.nvim_set_current_buf(d.bufnr)
 			vim.api.nvim_win_set_cursor(0, { d.end_lnum + 1, d.end_col })
 		end)

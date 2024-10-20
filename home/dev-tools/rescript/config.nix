@@ -1,7 +1,4 @@
-{
-  inputs,
-  pkgs,
-}: let
+{pkgs}: let
   rescript-analysis = pkgs.ocamlPackages.buildDunePackage rec {
     pname = "analysis";
     version = "1.58.0";

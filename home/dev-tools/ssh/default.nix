@@ -3,26 +3,19 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "dev-tools";
-    name = "ssh";
-  };
-
+}: let
   userOpts = {
     options.dev-tools.ssh = {
-      enable = mkNullableEnableOption "ssh dev-tools";
+      enable = lib.makeNullableEnableOption "ssh dev-tools";
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        mkIfFall cfg (import ./config.nix {inherit pkgs;})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "dev-tools";
+    name = "ssh";
+  };
 }

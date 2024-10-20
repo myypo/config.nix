@@ -22,7 +22,7 @@ with lib; let
 
   dirModules = lib.readDirModules ./.;
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
   imports = dirModules;
 }

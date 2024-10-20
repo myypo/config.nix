@@ -1,36 +1,21 @@
 {
   lib,
-  inputs,
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "dev-tools";
-    name = "rescript";
-  };
-  enable = cfgIsEnabled {
-    inherit config;
-    type = "dev-tools";
-    name = "rescript";
-  };
-
+}: let
   userOpts = {
     options.dev-tools.rescript = {
-      enable = mkNullableEnableOption "rescript dev-tools";
+      enable = lib.makeNullableEnableOption "rescript dev-tools";
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config = lib.mkIf enable {
-    home-manager.users =
-      builtins.mapAttrs (
-        _: cfg:
-          mkIfFall cfg (import ./config.nix {inherit inputs pkgs;})
-      )
-      cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "dev-tools";
+    name = "rescript";
   };
 }

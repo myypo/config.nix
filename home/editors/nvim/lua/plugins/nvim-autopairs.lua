@@ -24,6 +24,7 @@ return {
 					roc = false,
 					lean = false,
 					nix = false,
+					nu = false,
 				},
 			})
 		)

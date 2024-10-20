@@ -3,50 +3,31 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "terminals";
-    name = "wezterm";
-  };
-
+}: let
   userOpts = {
     options.terminals.wezterm = {
-      enable = lib.mkNullableEnableOption "wezterm";
+      enable = lib.makeNullableEnableOption "wezterm";
 
-      fontSize = mkOption {
-        type = types.nullOr types.int;
+      fontSize = lib.mkOption {
+        type = lib.types.nullOr lib.types.int;
         default = null;
       };
-      theme = mkOption {
-        type = types.nullOr types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        with cfg;
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit lib pkgs;
-
-            isMainTerminal = config.myypo.users.${userName}.mainTerminal == "wezterm";
-            fontSize = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "fontSize";
-              val = fontSize;
-            };
-            theme = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "theme";
-              val = theme;
-            };
-          })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "terminals";
+    name = "wezterm";
+    addArgsFn = userName: cfg: {
+      isMainTerminal = config.myypo.users.${userName}.mainTerminal == "wezterm";
+    };
+  };
 }

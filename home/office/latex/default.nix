@@ -4,31 +4,18 @@
   pkgs,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "office";
-    name = "latex";
-  };
-
   userOpts = {
     options.office.latex = {
-      enable = lib.mkNullableEnableOption "latex";
+      enable = lib.makeNullableEnableOption "latex";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg {
-          home = {
-            packages = with pkgs; [
-              texlive.combined.scheme-full
-              pandoc
-            ];
-          };
-        }
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "office";
+    name = "latex";
+  };
 }

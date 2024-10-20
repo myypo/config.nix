@@ -3,42 +3,27 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "music";
-    name = "termusic";
-  };
-
+}: let
   userOpts = {
     options.music.termusic = {
-      enable = lib.mkNullableEnableOption "termusic";
+      enable = lib.makeNullableEnableOption "termusic";
 
-      theme = mkOption {
-        type = types.nullOr types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        with cfg;
-          lib.mkIfFall cfg (import ./config.nix {
-            inherit lib pkgs;
-
-            theme = lib.valueOrUserDefault {
-              inherit config userName;
-              name = "theme";
-              val = theme;
-            };
-
-            isMainMusicPlayer = config.myypo.users.${userName}.mainMusicPlayer == "termusic";
-          })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "music";
+    name = "termusic";
+    addArgsFn = userName: cfg: {
+      isMainMusicPlayer = config.myypo.users.${userName}.mainMusicPlayer == "termusic";
+    };
+  };
 }

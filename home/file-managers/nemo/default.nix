@@ -4,28 +4,21 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "file-managers";
-    name = "nemo";
-  };
-
   userOpts = {
     options.file-managers.nemo = {
-      enable = lib.mkNullableEnableOption "nemo";
+      enable = lib.makeNullableEnableOption "nemo";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        lib.mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-
-          isMainFileManager = config.myypo.users.${userName}.mainFileManager == "nemo";
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "file-managers";
+    name = "nemo";
+    addArgsFn = userName: cfg: {
+      isMainFileManager = config.myypo.users.${userName}.mainFileManager == "nemo";
+    };
+  };
 }

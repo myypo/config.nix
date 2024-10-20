@@ -5,15 +5,9 @@
   ...
 }:
 with lib; let
-  cfgs = getCfgs {
-    inherit config;
-    type = "shells";
-    name = "nushell";
-  };
-
   userOpts = {
     options.shells.nushell = {
-      enable = mkNullableEnableOption "nushell";
+      enable = makeNullableEnableOption "nushell";
 
       theme = mkOption {
         type = types.nullOr types.str;
@@ -22,20 +16,12 @@ with lib; let
     };
   };
 in {
-  options = setSubOpts {inherit userOpts;};
+  options = makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      userName: cfg:
-        mkIfFall cfg (import ./config.nix {
-          inherit lib pkgs;
-
-          theme = lib.valueOrUserDefault {
-            inherit config userName;
-            name = "theme";
-            val = cfg.theme;
-          };
-        })
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "shells";
+    name = "nushell";
+  };
 }

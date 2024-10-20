@@ -3,42 +3,33 @@
   config,
   pkgs,
   ...
-}:
-with lib; let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "widgets";
-    name = "rofi";
-  };
-
+}: let
   userOpts = {
     options.widgets.rofi = {
-      enable = lib.mkNullableEnableOption "kitty";
+      enable = lib.makeNullableEnableOption "rofi";
     };
   };
 
-  cfg = {};
   powermenu_theme = lib.writeScript {
-    inherit pkgs cfg;
+    inherit pkgs;
+    cfg = {};
     name = "powermenu_theme";
     src = ./powermenu_theme.sh;
   };
   powermenu = lib.writeScript {
-    inherit pkgs cfg;
+    inherit pkgs;
+    cfg = {};
     name = "powermenu";
     src = ./powermenu.sh;
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg {
-          xdg.configFile."rofi/powermenu_theme.rasi".source = ./powermenu_theme.rasi;
-
-          home.packages = with pkgs; [rofi-wayland powermenu_theme powermenu];
-        }
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit config;
+    pkgs = pkgs // {inherit powermenu_theme powermenu;};
+    configPath = ./config.nix;
+    type = "widgets";
+    name = "rofi";
+  };
 }

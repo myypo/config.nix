@@ -4,24 +4,18 @@
   config,
   ...
 }: let
-  cfgs = lib.getCfgs {
-    inherit config;
-    type = "widgets";
-    name = "neofetch";
-  };
-
   userOpts = {
     options.widgets.neofetch = {
-      enable = lib.mkNullableEnableOption "kitty";
+      enable = lib.makeNullableEnableOption "neofetch";
     };
   };
 in {
-  options = lib.setSubOpts {inherit userOpts;};
+  options = lib.makeHomeOpts userOpts;
 
-  config.home-manager.users =
-    builtins.mapAttrs (
-      _: cfg:
-        lib.mkIfFall cfg (import ./config.nix {inherit pkgs;})
-    )
-    cfgs;
+  config = lib.makeHomeModule {
+    inherit pkgs config;
+    configPath = ./config.nix;
+    type = "widgets";
+    name = "neofetch";
+  };
 }
