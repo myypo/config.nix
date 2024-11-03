@@ -13,6 +13,14 @@ return {
 		i(4),
 		t({ "", "}" }),
 	}),
+	s({ trig = "l", wordTrig = true }, {
+		t("func "),
+		t("() "),
+		i(1),
+		t({ " {", "\t" }),
+		i(2),
+		t({ "", "}()" }),
+	}),
 
 	-- Methods
 	s({ trig = "m", wordTrig = true }, {

@@ -17,22 +17,6 @@
       mainVideoPlayer = "mpv";
       mainMusicPlayer = "termusic";
 
-      secrets = {
-        flake_path = true;
-
-        personal_email = true;
-        personal_signing_key = true;
-
-        alt_git_identity_list = {
-          count = 1;
-
-          alias = true;
-          username = true;
-          email = true;
-          signing_key = false;
-        };
-      };
-
       appearance = {
         common = {enableAll = true;};
 
@@ -251,10 +235,6 @@
       };
 
       dual-function-keys = {
-        enable = true;
-      };
-
-      gnome-keyring = {
         enable = true;
       };
 

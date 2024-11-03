@@ -22,11 +22,5 @@ in {
     configPath = ./config.nix;
     type = "dev-tools";
     name = "git";
-    addArgsFn = userName: cfg: {
-      alt_git_identity_list = lib.getUserListSecret {
-        inherit config userName;
-        listSecretName = "alt_git_identity_list";
-      };
-    };
   };
 }

@@ -32,7 +32,7 @@ in {
 
       sourceNvimFiles = {
         mkOutOfStoreSymlink,
-        flake_path,
+        flakePath,
         subs,
         theme,
         extra,
@@ -42,7 +42,7 @@ in {
           toFn = fsubs: builtins.attrValues fsubs;
 
           baseDestPath = ".config/nvim";
-          baseSrcPath = "${flake_path}/home/editors/nvim";
+          baseSrcPath = "${flakePath}/home/editors/nvim";
 
           pluginsPath = "${baseSrcPath}/lua/plugins";
 

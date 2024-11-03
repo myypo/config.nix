@@ -8,22 +8,24 @@ with lib; let
   cfg = config.myypo.users;
 
   userOpts = {
-    options.secrets = {
-      flake_path = mkEnableOption "absolute path of this flake outside of nix store";
+    # Potentially confidential
+    options = {
+      flakePath = mkOption {
+        type = types.str;
+        description = "absolute path of this flake outside of nix store";
+      };
 
-      personal_email = mkEnableOption "personal email secret";
-      personal_signing_key = mkEnableOption "personal signing key secret";
+      personalEmail = mkOption {type = types.str;};
+      personalSigningKey = mkOption {type = types.str;};
 
-      alt_git_identity_list = {
-        count = mkOption {
-          type = types.int;
-          default = 0;
-        };
-
-        alias = mkEnableOption "alias name for an alt git id";
-        username = mkEnableOption "username of an alt git id";
-        email = mkEnableOption "email of an alt git id";
-        signing_key = mkEnableOption "signing key of an alt git id";
+      altGitIdentities = mkOption {
+        type = types.attrsOf (types.submodule {
+          options = {
+            username = mkOption {type = types.str;};
+            email = mkOption {type = types.str;};
+            signingKey = mkOption {type = types.nullOr types.str;};
+          };
+        });
       };
     };
 

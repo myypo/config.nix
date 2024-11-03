@@ -3,16 +3,16 @@ return {
 	ft = { "lean" },
 
 	opts = {
-		lsp = {},
 
 		mappings = false,
 
-		progress_bars = {
-			enable = false,
-		},
+		progress_bars = { enable = false },
 
-		infoview = {
-			autoopen = false,
+		infoview = { autoopen = false },
+
+		abbreviations = {
+			enable = true,
+			leader = ",",
 		},
 	},
 }

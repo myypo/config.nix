@@ -8,6 +8,7 @@ return {
 		---@diagnostic disable-next-line: missing-fields
 		require("scratch").setup({
 			filetypes = { "md", "nu", "ts" },
+			scratch_file_dir = "~/code/my/scratchpad/scratch.nvim",
 			filetype_details = {
 				["work.md"] = {
 					subdir = "work",

@@ -1,9 +1,9 @@
 {
   lib,
   githubUserName,
-  personal_email,
-  personal_signing_key,
-  alt_git_identity_list,
+  personalEmail,
+  personalSigningKey,
+  altGitIdentities,
 }: {
   programs.git = {
     enable = true;
@@ -12,33 +12,24 @@
     lfs.enable = true;
 
     userName = githubUserName;
-    userEmail = personal_email;
+    userEmail = personalEmail;
 
     signing = {
-      key = personal_signing_key;
+      key = personalSigningKey;
 
       signByDefault = false;
     };
 
     includes =
-      builtins.map (id: {
-        condition = "gitdir:~/code/${id.alias}/**";
+      lib.attrsets.mapAttrsToList (id: v: {
+        condition = "gitdir:~/code/${id}/**";
         contents = {
-          user.name =
-            if id ? username
-            then id.username
-            else null;
-          user.email =
-            if id ? email
-            then id.email
-            else null;
-          user.key =
-            if id ? signing_key
-            then id.signing_key
-            else null;
+          user.name = v.username;
+          user.email = v.email;
+          user.key = v.signingKey;
         };
       })
-      alt_git_identity_list;
+      altGitIdentities;
 
     ignores = [
       "*~"

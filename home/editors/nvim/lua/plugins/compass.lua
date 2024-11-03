@@ -1,7 +1,7 @@
 return {
 	-- "myypo/compass.nvim",
 	-- build = "make",
-	-- -- dir = "~/code/my/projects/compass.nvim",
+	-- dir = "~/code/my/projects/compass.nvim",
 	--
 	-- opts = {
 	-- 	picker = {
@@ -20,7 +20,7 @@ return {
 	-- 	},
 	-- },
 	--
-	-- -- event = "BufReadPost",
+	-- event = "BufReadPost",
 	-- keys = {
 	-- 	{ "<C-f>", "<Cmd>Compass open<CR>" },
 	-- 	{

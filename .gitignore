@@ -1,4 +1,2 @@
-.sops.yaml
-
 **/.luarc.json
 .pre-commit-config.yaml

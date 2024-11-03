@@ -1,7 +1,6 @@
 return {
 	"myypo/flash.nvim",
-
-	branch = "master",
+	dev = true,
 
 	keys = {
 		"f",
@@ -48,7 +47,10 @@ return {
 				treesitter_search = {
 					search = { multi_window = false, wrap = true, incremental = false },
 				},
-				treesitter = { highlight = { backdrop = true } },
+				treesitter = {
+					labels = "arstgmneiowfpluyxcdh,.qbj'zvk/",
+					highlight = { backdrop = true, matches = false },
+				},
 				char = {
 					config = function(opts)
 						opts.autohide = opts.autohide or (vim.fn.mode(true):find("no") and vim.v.operator == "y")

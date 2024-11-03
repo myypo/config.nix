@@ -1,7 +1,7 @@
 {
   lib,
   pkgs,
-  flake_path,
+  flakePath,
   theme,
   isMainEditor,
   githubUserName,
@@ -70,7 +70,7 @@ in {
     mkOutOfStoreSymlink = lib.makeOutOfStore pkgs;
   in
     sourceNvimFiles {
-      inherit mkOutOfStoreSymlink theme flake_path;
+      inherit mkOutOfStoreSymlink theme flakePath;
 
       subs = {
         # Putting underscore before all files with substitutions
@@ -84,7 +84,7 @@ in {
 
       extra = let
         baseDestPath = ".config/minvim";
-        baseSrcPath = "${flake_path}/home/editors/nvim";
+        baseSrcPath = "${flakePath}/home/editors/nvim";
       in {
         # Minimal setup for kitty-pager and command editing
         "${baseDestPath}/init.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/_init.lua";

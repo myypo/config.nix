@@ -16,7 +16,7 @@ return {
 
 			-- Do not publish diagnostics under home directories with name starting with dot and in node_modules
 			local buf = vim.api.nvim_buf_get_name(0)
-			if buf:match("/home/.*/%..*/") or buf:match(".*/node_modules/.*") then
+			if buf:match("/home/[^/]*/%.[^/]*/") or buf:match(".*/node_modules/.*") then
 				return
 			end
 
@@ -121,9 +121,26 @@ return {
 		end)
 
 		-- LSP setups
-		nvim_lsp.nil_ls.setup({})
+		-- client capabilities (+ the completion ones from nvim-cmp).
+		local client_capabilities = function()
+			return vim.tbl_deep_extend(
+				"force",
+				vim.lsp.protocol.make_client_capabilities(),
+				-- nvim-cmp supports additional completion capabilities, so broadcast that to servers.
+				require("cmp_nvim_lsp").default_capabilities(),
+				{
+					workspace = {
+						didChangeWatchedFiles = { dynamicRegistration = false },
+					},
+				}
+			)
+		end
+		local capabilities = client_capabilities()
+
+		nvim_lsp.nil_ls.setup({ capabilities = capabilities })
 
 		nvim_lsp.lua_ls.setup({
+			capabilities = capabilities,
 			settings = {
 				Lua = {
 					semantic = {
@@ -137,6 +154,7 @@ return {
 		})
 
 		nvim_lsp.gopls.setup({
+			capabilities = capabilities,
 			settings = {
 				gopls = {
 					experimentalPostfixCompletions = true,
@@ -159,6 +177,7 @@ return {
 		})
 
 		nvim_lsp.pyright.setup({
+			capabilities = capabilities,
 			settings = {
 				python = {
 					analysis = {
@@ -172,10 +191,11 @@ return {
 		})
 
 		nvim_lsp.eslint.setup({
-			capabilities = {
-				document_formatting = false,
-				document_range_formatting = false,
-			},
+			capabilities = vim.tbl_deep_extend(
+				"force",
+				capabilities,
+				{ document_formatting = false, document_range_formatting = false }
+			),
 
 			settings = {
 				rulesCustomizations = {
@@ -196,6 +216,7 @@ return {
 		})
 
 		nvim_lsp.typos_lsp.setup({
+			capabilities = capabilities,
 			init_options = {
 				diagnosticSeverity = "Info",
 
@@ -204,37 +225,43 @@ return {
 		})
 
 		nvim_lsp.html.setup({
+			capabilities = capabilities,
 			cmd = { "vscode-html-language-server", "--stdio" },
 		})
 
 		nvim_lsp.cssls.setup({
+			capabilities = capabilities,
 			cmd = { "vscode-css-language-server", "--stdio" },
 		})
 
 		nvim_lsp.bashls.setup({
+			capabilities = capabilities,
 			cmd = { "bash-language-server", "start" },
 		})
 
-		nvim_lsp.nushell.setup({})
+		nvim_lsp.nushell.setup({ capabilities = capabilities })
 
 		nvim_lsp.sqls.setup({
+			capabilities = capabilities,
 			on_attach = function(client, _)
 				client.server_capabilities.documentFormattingProvider = false
 				client.server_capabilities.documentRangeFormattingProvider = false
 			end,
 		})
 
-		nvim_lsp.roc_ls.setup({})
+		nvim_lsp.roc_ls.setup({ capabilities = capabilities })
 
-		nvim_lsp.hls.setup({})
+		nvim_lsp.hls.setup({ capabilities = capabilities })
 
-		nvim_lsp.ccls.setup({})
+		nvim_lsp.ccls.setup({ capabilities = capabilities })
 
 		nvim_lsp.tailwindcss.setup({
+			capabilities = capabilities,
 			root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts"),
 		})
 
 		nvim_lsp.rescriptls.setup({
+			capabilities = capabilities,
 			on_attach = function(client, _)
 				client.server_capabilities.semanticTokensProvider = nil
 			end,
@@ -242,6 +269,7 @@ return {
 
 		vim.filetype.add({ extension = { purs = "purescript" } })
 		nvim_lsp.purescriptls.setup({
+			capabilities = capabilities,
 			root_dir = nvim_lsp.util.root_pattern("spago.dhall"),
 			settings = {
 				purescript = {

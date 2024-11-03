@@ -29,7 +29,6 @@ c.fonts.messages.error = "15pt default_family"
 c.completion.shrink = True
 c.zoom.default = "160%"
 
-
 c.hints.uppercase = True
 
 c.content.javascript.clipboard = "access-paste"
@@ -88,5 +87,4 @@ c.url.searchengines = {
     "w": "https://en.wikipedia.org/wiki/{}",
     "y": "https://www.youtube.com/results?search_query={}",
     "toho": "https://en.touhouwiki.net/index.php?search={}&title=Special%3ASearch&go=Go",
-    "b": "https://bitbucket.org/nerdpeople/workspace/repositories/?search={}",
 }

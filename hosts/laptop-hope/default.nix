@@ -1,9 +1,7 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
-  imports = lib.readFileModules ./.;
+{pkgs, ...}: {
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   config = {
     boot = {

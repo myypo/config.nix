@@ -140,20 +140,18 @@ return {
 			sorting = {
 				priority_weight = 1.0,
 				comparators = {
+					cmp.config.compare.offset,
+					cmp.config.compare.exact, -- to always match snippets
+					cmp.config.compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
 					cmp.config.compare.locality,
 					cmp.config.compare.recently_used,
-					cmp.config.compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
-					cmp.config.compare.offset,
 					cmp.config.compare.order,
 				},
 			},
 			sources = cmp.config.sources({
-				{ name = "luasnip", priority = 9, max_item_count = 2 },
+				{ name = "luasnip", priority = 10, max_item_count = 2 },
 				{ name = "path", priority = 8 },
-				{
-					name = "nvim_lsp",
-					priority = 8,
-				},
+				{ name = "nvim_lsp", priority = 8 },
 				{ name = "buffer", priority = 4, max_item_count = 2, keyword_length = 3 },
 			}),
 

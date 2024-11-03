@@ -4,7 +4,7 @@
   escalCmd,
   hostName,
   theme,
-  flake_path,
+  flakePath,
 }: let
   aliases = let
     shared = {
@@ -30,12 +30,11 @@
       };
   };
 in
-  lib.attrsets.recursiveUpdate {
+  lib.attrsets.recursiveUpdate (import ./themes/${theme} {inherit lib;}) {
     home.packages = [
-      # HACK: have to use --impure because of being unable to load secrets
-      # from their sops-nix generated path in pure mode
-      (pkgs.writeShellScriptBin "osu" "${escalCmd} nixos-rebuild switch --impure --flake ${flake_path}/#${hostName}")
-      (pkgs.writeShellScriptBin "osr" "${escalCmd} nixos-rebuild switch --impure --rollback --flake ${flake_path}/#${hostName}")
+      # WARN: have to use --impure for mkOutOfStoreSymlink
+      (pkgs.writeShellScriptBin "osu" "${escalCmd} nixos-rebuild switch --impure --flake ${flakePath}/#${hostName}")
+      (pkgs.writeShellScriptBin "osr" "${escalCmd} nixos-rebuild switch --impure --rollback --flake ${flakePath}/#${hostName}")
 
       (pkgs.writeShellScriptBin "use" ''nix shell nixpkgs/nixos-unstable#$1'')
     ];
@@ -57,4 +56,4 @@ in
       enable = true;
       enableBashIntegration = false;
     };
-  } (import ./themes/${theme} {inherit lib;})
+  }

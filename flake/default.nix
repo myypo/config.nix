@@ -33,9 +33,12 @@ in {
           hostName: _: let
             host = "${self}/hosts/${hostName}";
 
-            settings = {
-              myypo = {inherit hostName;} // import "${host}/settings" {inherit lib;};
-            };
+            settings.myypo = let
+              settingsPath = "${host}/settings";
+              public = {inherit hostName;} // import "${settingsPath}/public.nix" {inherit lib;};
+              private = import "${settingsPath}/.private.nix";
+            in
+              lib.attrsets.recursiveUpdate public private;
           in
             lib.nixosSystem {
               specialArgs = settings // specialArgs;

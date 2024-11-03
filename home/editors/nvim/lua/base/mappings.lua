@@ -23,8 +23,17 @@ Keymap("n", "J", "mzJ`z")
 Keymap("n", "<C-s>", ":w<CR>")
 
 -- No dizziness when navigating
-Keymap("n", "<C-d>", "<C-d>zz")
-Keymap("n", "<C-u>", "<C-u>zz")
+local function lazy_feedkeys(keys)
+	keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+	return function()
+		local old = vim.o.lazyredraw
+		vim.o.lazyredraw = true
+		vim.api.nvim_feedkeys(keys, "nx", false)
+		vim.o.lazyredraw = old
+	end
+end
+Keymap("n", "<C-d>", lazy_feedkeys("<C-d>zz"))
+Keymap("n", "<C-u>", lazy_feedkeys("<C-u>zz"))
 
 -- Killword backward
 Keymap("i", "<C-BS>", "<C-w>")
@@ -38,6 +47,8 @@ Keymap("n", "r", "<Nop>")
 
 -- Unmap go back in buffer tag stack
 Keymap("n", "<C-t>", "<Nop>")
+
+Keymap("", "<CR>", "<Nop>")
 
 -- Navigate between opened windows
 Keymap("n", "<Tab>", "<C-w>w")

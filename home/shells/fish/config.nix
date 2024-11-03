@@ -3,7 +3,7 @@
   escalCmd,
   hostName,
   theme,
-  flake_path,
+  flakePath,
 }: {
   programs.fish.enable = true;
 

@@ -124,7 +124,7 @@
                   // (addArgsFn userName cfg));
                 missingArgs = lib.attrsets.filterAttrs (n: _: (!builtins.hasAttr n passedArgs || passedArgs.${n} == null)) requiredArgs;
               in
-                passedArgs // (builtins.mapAttrs (n: _: lib.attrsets.attrByPath [n] (builtins.readFile config.sops.secrets."${userName}__${n}".path) config.myypo.users.${userName}) missingArgs);
+                passedArgs // (builtins.mapAttrs (n: _: lib.attrsets.attrByPath [n] null config.myypo.users.${userName}) missingArgs);
             in
               import configPath configArgs)
         )
