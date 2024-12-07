@@ -1,7 +1,7 @@
 return {
 	"potamides/pantran.nvim",
 	keys = {
-		{ "<leader>t", '"Ty<Cmd>Pantran<CR>"Tp', mode = "v" },
+		{ "<Leader>t", '"Ty<Cmd>Pantran<CR>"Tp', mode = "v" },
 	},
 	config = function()
 		require("pantran").setup({

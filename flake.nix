@@ -41,9 +41,7 @@
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Rust overlay ###
-    # TODO: revert when merged: https://github.com/nix-community/fenix/issues/174
-    # fenix.url = "github:nix-community/fenix";
-    fenix.url = "github:andresilva/fenix/fix-platforms";
+    fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Utils ###

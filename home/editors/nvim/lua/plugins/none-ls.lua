@@ -46,11 +46,6 @@ return {
 				b.diagnostics.fish,
 				b.formatting.fish_indent,
 
-				-- SQL
-				b.formatting.sqlfluff.with({
-					extra_args = { "--dialect", "postgres" },
-				}),
-
 				-- Purescript
 				b.formatting.purs_tidy,
 

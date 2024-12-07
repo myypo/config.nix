@@ -1,7 +1,7 @@
 return {
 	-- "myypo/compass.nvim",
 	-- build = "make",
-	-- dir = "~/code/my/projects/compass.nvim",
+	-- -- dir = "~/code/my/projects/compass.nvim",
 	--
 	-- opts = {
 	-- 	picker = {
@@ -21,15 +21,15 @@ return {
 	-- },
 	--
 	-- event = "BufReadPost",
-	-- keys = {
-	-- 	{ "<C-f>", "<Cmd>Compass open<CR>" },
-	-- 	{
-	-- 		"<C-t>",
-	-- 		"<Cmd>Compass goto relative direction=back<CR>",
-	-- 	},
-	-- 	{
-	-- 		"<C-S-t>",
-	-- 		"<Cmd>Compass goto relative direction=forward<CR>",
-	-- 	},
-	-- },
+	-- -- keys = {
+	-- -- 	{ "<C-f>", "<Cmd>Compass open<CR>" },
+	-- -- 	{
+	-- -- 		"<C-n>",
+	-- -- 		"<Cmd>Compass goto relative direction=back<CR>",
+	-- -- 	},
+	-- -- 	{
+	-- -- 		"<C-S-t>",
+	-- -- 		"<Cmd>Compass goto relative direction=forward<CR>",
+	-- -- 	},
+	-- -- },
 }

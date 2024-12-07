@@ -141,10 +141,6 @@ in {
         sessionVariables = combinedVariables;
 
         systemPackages = with pkgs; [
-          libva
-          libva-utils
-          glxinfo
-
           ffmpeg-full
           libva
           libva-utils

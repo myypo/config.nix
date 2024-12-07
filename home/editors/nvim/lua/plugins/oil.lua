@@ -2,23 +2,28 @@ return {
 	"stevearc/oil.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	keys = {
-		{ "m", "<Cmd>Oil<CR>", desc = "Oil" },
+		{ "m", "<Cmd>Oil<CR>" },
 	},
 	config = function()
 		require("oil").setup({
+			use_default_keymaps = false,
 			keymaps = {
 				["m"] = "actions.close",
 				["="] = "actions.parent",
 				[";"] = "actions.refresh",
-				["<C-w>"] = "actions.select_vsplit",
-				["~"] = false,
-				["-"] = false,
-				["_"] = false,
-				["`"] = false,
-				["<C-h>"] = false,
-				["<C-s>"] = false,
-				["<C-t>"] = false,
+				["<Leader>w"] = "actions.select_vsplit",
+				["gx"] = "actions.open_external",
+				["g."] = "actions.toggle_hidden",
+				["<CR>"] = "actions.select",
+				["g?"] = "actions.show_help",
 			},
+			lsp_file_methods = {
+				enabled = true,
+				timeout_ms = 1000,
+				autosave_changes = true,
+			},
+			skip_confirm_for_simple_edits = true,
+			watch_for_changes = true,
 			view_options = (function()
 				return {
 					is_always_hidden = function(name, _)

@@ -10,7 +10,7 @@ return {
 			fast_wrap = {
 				map = "<C-s>",
 				-- Colemak-DH optimization
-				keys = "arstgmneiowfpluyxcdh,.qbj'zvk/",
+				keys = 'arstgmneiowfpluyxcdh,.qbj"zvk/',
 			},
 		})
 

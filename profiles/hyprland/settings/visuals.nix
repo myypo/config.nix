@@ -32,7 +32,7 @@
 
       rounding = 0;
 
-      drop_shadow = false;
+      shadow.enabled = false;
       dim_inactive = false;
 
       blur = {

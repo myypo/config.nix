@@ -4,11 +4,11 @@ return {
 		input = {
 			mappings = {
 				n = {
-					["<C-a>"] = "Close",
+					["<C-t>"] = "Close",
 					["<CR>"] = "Confirm",
 				},
 				i = {
-					["<C-a>"] = "Close",
+					["<C-t>"] = "Close",
 					["<CR>"] = "Confirm",
 					["<Up>"] = "HistoryPrev",
 					["<Down>"] = "HistoryNext",

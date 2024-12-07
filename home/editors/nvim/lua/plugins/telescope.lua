@@ -12,8 +12,19 @@ return {
 		{ "<Leader>e", "<Cmd>Telescope live_grep<CR>" },
 		{ "<Leader>g", "<Cmd>Telescope git_status<CR>" },
 		{ "<Leader>r", "<Cmd>Telescope resume<CR>" },
-		{ "<Leader>o", "<Cmd>Telescope diagnostics<CR>" },
-		{ "<Leader>p", "<Cmd>lua require('telescope.builtin').registers()<CR>" },
+		{ "<Leader>i", "<Cmd>Telescope diagnostics<CR>" },
+		{ "<Leader>f", "<Cmd>lua require('telescope.builtin').registers()<CR>" },
+		{
+			",",
+			function()
+				require("telescope.builtin").buffers({
+					show_all_buffers = false,
+					ignore_current_buffer = false,
+					only_cwd = true,
+					sort_mru = true,
+				})
+			end,
+		},
 		{ "rt", "<Cmd>Telescope lsp_definitions<CR>" },
 		{ "rw", "<Cmd>Telescope lsp_definitions<CR><Cmd>vsplit<CR>" },
 		{ "rs", "<Cmd>Telescope grep_string<CR>" },
@@ -62,22 +73,31 @@ return {
 					},
 				},
 
-				mappings = {
+				default_mappings = {
 					i = {
-						["<C-i>"] = actions.cycle_history_next,
-						["<C-o>"] = actions.cycle_history_prev,
-
-						["<C-a>"] = actions.close,
-
+						["<CR>"] = actions.select_default,
+						["<Down>"] = actions.move_selection_next,
+						["<Up>"] = actions.move_selection_previous,
+						["<C-n>"] = actions.cycle_history_prev,
+						["<C-e>"] = actions.cycle_history_next,
 						["<C-w>"] = actions.select_vertical,
+						["<PageDown>"] = actions.preview_scrolling_down,
+						["<PageUp>"] = actions.preview_scrolling_up,
+						["<C-t>"] = actions.close,
 					},
 					n = {
-						["<C-i>"] = actions.cycle_history_next,
-						["<C-o>"] = actions.cycle_history_prev,
+						["<CR>"] = actions.select_default,
+						["<Down>"] = actions.move_selection_next,
+						["<Up>"] = actions.move_selection_previous,
+						["<C-n>"] = actions.cycle_history_prev,
+						["<C-e>"] = actions.cycle_history_next,
+						["<Leader>w"] = actions.select_vertical,
+						["<PageDown>"] = actions.preview_scrolling_down,
+						["<PageUp>"] = actions.preview_scrolling_up,
+						["<Leader>t"] = actions.close,
 
-						["<C-w>"] = actions.select_vertical,
-
-						["<C-a>"] = actions.close,
+						["gg"] = actions.move_to_top,
+						["G"] = actions.move_to_bottom,
 					},
 				},
 			},

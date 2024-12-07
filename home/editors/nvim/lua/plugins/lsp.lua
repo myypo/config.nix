@@ -47,8 +47,8 @@ return {
 			},
 		})
 
-		-- Allows toggling diagnostics floats on ESC
-		Keymap("n", "<Esc>", function()
+		-- Allows toggling diagnostics floats on Enter
+		Keymap("n", "<CR>", function()
 			for _, win in ipairs(vim.api.nvim_list_wins()) do
 				if vim.api.nvim_win_get_config(win).relative ~= "" then
 					vim.api.nvim_win_close(win, true)
@@ -241,13 +241,7 @@ return {
 
 		nvim_lsp.nushell.setup({ capabilities = capabilities })
 
-		nvim_lsp.sqls.setup({
-			capabilities = capabilities,
-			on_attach = function(client, _)
-				client.server_capabilities.documentFormattingProvider = false
-				client.server_capabilities.documentRangeFormattingProvider = false
-			end,
-		})
+		nvim_lsp.postgres_lsp.setup({ capabilities = capabilities })
 
 		nvim_lsp.roc_ls.setup({ capabilities = capabilities })
 
@@ -257,7 +251,7 @@ return {
 
 		nvim_lsp.tailwindcss.setup({
 			capabilities = capabilities,
-			root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts"),
+			root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts", "tailwind.config.cjs"),
 		})
 
 		nvim_lsp.rescriptls.setup({
@@ -276,6 +270,10 @@ return {
 					addSpagoSources = true,
 				},
 			},
+		})
+
+		nvim_lsp.taplo.setup({
+			capabilities = capabilities,
 		})
 	end,
 }

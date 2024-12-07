@@ -13,6 +13,8 @@ in {
     fonts = {
       enableDefaultPackages = false;
 
+      # TODO: this is kinda bad that all required fonts for the config are installed in one place
+      # better to install fonts in the module where they are needed
       packages = with pkgs; [
         roboto # sans-serif
         cm_unicode # serif
@@ -21,10 +23,12 @@ in {
         noto-fonts-emoji
         twemoji-color-font
 
-        nerdfonts
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.daddy-time-mono
+        nerd-fonts.symbols-only
 
         noto-fonts
-        noto-fonts-cjk
+        noto-fonts-cjk-sans
       ];
       fontconfig = {
         localConf = builtins.readFile ./localConf.xml;

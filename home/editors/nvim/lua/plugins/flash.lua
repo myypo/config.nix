@@ -7,9 +7,14 @@ return {
 		"F",
 		{
 			"s",
-			mode = { "n" },
+			mode = { "n", "o" },
 			function()
-				require("flash").jump()
+				require("flash").jump({
+					remote_op = {
+						restore = true,
+						motion = true,
+					},
+				})
 			end,
 		},
 
@@ -33,7 +38,7 @@ return {
 	config = function()
 		require("flash").setup({
 			-- Colemak-DH optimization
-			labels = "arstgmneiowfpluyxcdh,.qbj'zvk/",
+			labels = 'arstgmneiowfpluyxcdh,.qbj"zvk/',
 			jump = {
 				autojump = true,
 			},
@@ -48,7 +53,7 @@ return {
 					search = { multi_window = false, wrap = true, incremental = false },
 				},
 				treesitter = {
-					labels = "arstgmneiowfpluyxcdh,.qbj'zvk/",
+					labels = 'arstgmneiowfpluyxcdh,.qbj"zvk/',
 					highlight = { backdrop = true, matches = false },
 				},
 				char = {

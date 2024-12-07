@@ -20,7 +20,8 @@ vim.g.mapleader = " "
 
 -- Prevents cursor from moving when using J
 Keymap("n", "J", "mzJ`z")
-Keymap("n", "<C-s>", ":w<CR>")
+
+Keymap("n", "<Leader>s", ":w<CR>")
 
 -- No dizziness when navigating
 local function lazy_feedkeys(keys)
@@ -32,21 +33,20 @@ local function lazy_feedkeys(keys)
 		vim.o.lazyredraw = old
 	end
 end
-Keymap("n", "<C-d>", lazy_feedkeys("<C-d>zz"))
-Keymap("n", "<C-u>", lazy_feedkeys("<C-u>zz"))
+-- Unmap them to remove the habit
+Keymap("n", "<C-d>", "<Nop>")
+Keymap("n", "<C-u>", "<Nop>")
+Keymap("n", "<PageDown>", lazy_feedkeys("<C-d>zz"))
+Keymap("n", "<PageUp>", lazy_feedkeys("<C-u>zz"))
 
 -- Killword backward
-Keymap("i", "<C-BS>", "<C-w>")
-Keymap("c", "<C-BS>", "<C-w>")
+Keymap({ "i", "c" }, "<C-BS>", "<C-w>")
 
 -- Rename the word under cursor
 Keymap("n", "gr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { noremap = true, silent = false })
 
 -- Unmap r because I am using it to start own commands
 Keymap("n", "r", "<Nop>")
-
--- Unmap go back in buffer tag stack
-Keymap("n", "<C-t>", "<Nop>")
 
 Keymap("", "<CR>", "<Nop>")
 
@@ -68,14 +68,14 @@ Keymap("n", "]", "<Nop>")
 unmap("n", "[d")
 unmap("n", "]d")
 
--- Create a split screen
-Keymap("n", "<C-w>", ":set splitright<CR>:vsplit<CR>")
+-- Create a split window
+Keymap("n", "<Leader>w", ":set splitright<CR>:vsplit<CR>")
 
 -- Disable ex mode
 Keymap("n", "Q", "<Nop>")
 
-Keymap("n", "<C-a>", ":x<CR>")
-Keymap("n", "<C-S-a>", function()
+Keymap("n", "<Leader>t", ":x<CR>")
+Keymap("n", "<Leader>T", function()
 	local ok = pcall(vim.cmd.tabclose)
 	if not ok then
 		vim.cmd.qa()
@@ -85,19 +85,36 @@ end)
 -- Execute macro stored in the q register
 Keymap("n", "<C-q>", ":normal @q<CR>")
 
--- Map jump to the next position to Ctrl+i
-Keymap("n", "<C-i>", "<C-I>")
-
--- Use ' for accessing registers
--- since marks are too much anyways
-Keymap("n", "'", "<Nop>")
-Keymap("n", "'", '"')
+-- Remap jumplist controls to be more convenient for Colemak-DH
+Keymap("n", "<C-o>", "<Nop>")
+Keymap("n", "<C-I>", "<Nop>")
+-- Unmap go back in buffer tag stack
+Keymap("n", "<C-t>", "<Nop>")
+Keymap("n", "<C-e>", "<C-I>")
+Keymap("n", "<C-n>", "<C-o>")
 
 -- Paste the previously deleted thing
 -- useful for swapping stuff
 -- goes with TextYankPost autocmd to work around small registers
-Keymap("n", "<C-p>", '"2p')
-Keymap("n", "<C-S-p>", '"2P')
+Keymap("n", "<Leader>p", '"2p')
+Keymap("n", "<Leader>P", '"2P')
+
+Keymap("n", "<Leader>c", "ciw")
+
+-- Comment out and paste
+Keymap("n", "yc", function()
+	vim.cmd(":normal" .. vim.v.count .. "yy")
+	vim.cmd(":normal" .. vim.v.count .. "gcc")
+	if vim.v.count > 1 then
+		vim.cmd(":normal" .. vim.v.count - 1 .. "j")
+	end
+	vim.cmd(":normal p")
+end)
+
+-- Swap regular visual mode with visual line mode
+-- since visual line mode is at least marginally useful
+Keymap("n", "v", "V")
+Keymap("n", "V", "v")
 
 ----- VISUAL -----
 
@@ -114,7 +131,7 @@ Keymap("v", "<C-S-P>", "<Nop>")
 ----- VISUAL BLOCK MODE -----
 
 -- Delete selected text to void and paste
-Keymap("x", "<Leader>p", '"_dP')
+Keymap("x", "p", '"_dP')
 
 ----- INSERT MODE -----
 
@@ -123,3 +140,8 @@ Keymap("i", "<C-N>", "<Nop>")
 Keymap("i", "<C-S-N>", "<Nop>")
 Keymap("i", "<C-P>", "<Nop>")
 Keymap("i", "<C-S-P>", "<Nop>")
+
+Keymap("i", "<C-r>", "<Nop>")
+Keymap("i", "<C-p>", "<C-r>")
+
+Keymap("i", "<C-t>", "<Nop>")

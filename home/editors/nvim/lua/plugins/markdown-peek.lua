@@ -2,7 +2,12 @@ return {
 	"toppair/peek.nvim",
 	build = "deno task --quiet build:fast",
 	keys = {
-		{ "<Leader>m", [[<Cmd>lua require("peek").open()<CR>]], desc = "Preview markdown" },
+		{
+			"<Leader>m",
+			function()
+				require("peek").open()
+			end,
+		},
 	},
 	config = function()
 		require("peek").setup({

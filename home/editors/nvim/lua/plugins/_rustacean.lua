@@ -10,15 +10,17 @@ return {
 				),
 			},
 			server = {
-				capabilities = {
-					textDocument = {
-						completion = {
-							completionItem = {
-								snippetSupport = false,
-							},
+				capabilities = vim.tbl_deep_extend(
+					"force",
+					vim.lsp.protocol.make_client_capabilities(),
+					-- nvim-cmp supports additional completion capabilities, so broadcast that to servers.
+					require("cmp_nvim_lsp").default_capabilities(),
+					{
+						workspace = {
+							didChangeWatchedFiles = { dynamicRegistration = false },
 						},
-					},
-				},
+					}
+				),
 				settings = {
 					-- Options available here: https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
 					["rust-analyzer"] = {

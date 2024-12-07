@@ -84,10 +84,12 @@ vim.cmd([[
     cnoreabbrev ga Git add
     cnoreabbrev gaa Git add -A
     cnoreabbrev gc vertical Git commit
+    cnoreabbrev gca vertical Git commit --amend
     cnoreabbrev gl vertical Git log
     cnoreabbrev gs vertical Git
     cnoreabbrev gb vertical Git blame
-    cnoreabbrev gr vertical Git rebase -i
+    cnoreabbrev gr vertical Git rebase
+    cnoreabbrev gp Git pull
 
     cnoreabbrev h vertical h
 ]])

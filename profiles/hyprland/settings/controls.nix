@@ -9,7 +9,7 @@
 }: {
   wayland.windowManager.hyprland = {
     settings = {
-      "$mod" = "ALT";
+      "$mod" = "SUPER";
 
       input = {
         kb_layout = "us,ua";
@@ -148,18 +148,14 @@
         "$mod,Y,exec,hypr_organize_workspaces"
 
         ### Block for controlling media ###
-        # HACK: Shifts used because this is how keyboard presses
-        # are actually handled, I guess. Sad.
-        "$mod SHIFT,backslash,exec,pulsemixer --toggle-mute" # Pipe
-        "$mod,minus,exec,pulsemixer --change-volume -10"
-        "$mod SHIFT,equal,exec,pulsemixer_add" # Plus
+        ",XF86AudioMute,exec,pulsemixer --toggle-mute"
+        ",XF86AudioLowerVolume,exec,pulsemixer --change-volume -10"
+        ",XF86AudioRaiseVolume,exec,pulsemixer_add"
 
         # MPRIS, can also control stuff in browser etc.
-        "$mod,equal,exec,playerctl -p ${mainMusicPlayer} play-pause" # Toggle current song
-        "$mod,semicolon,exec,playerctl -p ${mainMusicPlayer} previous" # Previous song
-        "$mod SHIFT,semicolon,exec,playerctl -p ${mainMusicPlayer} next" # Colon, Next song
-
-        "$mod,grave,exec,mpris_toggle_browser" # Toggle thing playing in the first grabbed browser player
+        ",XF86AudioPlay,exec,playerctl play-pause" # Toggle current song
+        ",XF86AudioPrev,exec,playerctl -p ${mainMusicPlayer} previous" # Previous song
+        ",XF86AudioNext,exec,playerctl -p ${mainMusicPlayer} next" # Next song
       ];
     };
   };
