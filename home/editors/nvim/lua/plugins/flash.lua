@@ -3,6 +3,8 @@ return {
 	dev = true,
 
 	keys = {
+		"t",
+		"T",
 		"f",
 		"F",
 		{
@@ -65,6 +67,7 @@ return {
 							and vim.fn.reg_recording() == ""
 					end,
 					label = { exclude = "raidc" },
+					keys = { "f", "F", "t", "T" },
 					enabled = true,
 					multi_line = false,
 					autohide = true,

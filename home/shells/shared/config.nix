@@ -35,6 +35,7 @@ in
       # WARN: have to use --impure for mkOutOfStoreSymlink
       (pkgs.writeShellScriptBin "osu" "${escalCmd} nixos-rebuild switch --impure --flake ${flakePath}/#${hostName}")
       (pkgs.writeShellScriptBin "osr" "${escalCmd} nixos-rebuild switch --impure --rollback --flake ${flakePath}/#${hostName}")
+      (pkgs.writeShellScriptBin "ost" "${escalCmd} nixos-rebuild test --impure --flake ${flakePath}/#${hostName}")
 
       (pkgs.writeShellScriptBin "use" ''nix shell nixpkgs/nixos-unstable#$1'')
     ];

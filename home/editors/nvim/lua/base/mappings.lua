@@ -54,6 +54,9 @@ Keymap("", "<CR>", "<Nop>")
 Keymap("n", "<Tab>", "<C-w>w")
 Keymap("n", "<S-Tab>", "<C-w>p")
 
+Keymap("n", "<A-n>", ":cnext<CR>")
+Keymap("n", "<A-e>", ":cprev<CR>")
+
 -- No dizziness when searching
 Keymap("n", "n", "nzzzv")
 Keymap("n", "N", "Nzzzv")
@@ -141,7 +144,7 @@ Keymap("i", "<C-S-N>", "<Nop>")
 Keymap("i", "<C-P>", "<Nop>")
 Keymap("i", "<C-S-P>", "<Nop>")
 
+-- Unmap register pasting
 Keymap("i", "<C-r>", "<Nop>")
-Keymap("i", "<C-p>", "<C-r>")
 
 Keymap("i", "<C-t>", "<Nop>")

@@ -14,17 +14,6 @@ return {
 		{ "<Leader>r", "<Cmd>Telescope resume<CR>" },
 		{ "<Leader>i", "<Cmd>Telescope diagnostics<CR>" },
 		{ "<Leader>f", "<Cmd>lua require('telescope.builtin').registers()<CR>" },
-		{
-			",",
-			function()
-				require("telescope.builtin").buffers({
-					show_all_buffers = false,
-					ignore_current_buffer = false,
-					only_cwd = true,
-					sort_mru = true,
-				})
-			end,
-		},
 		{ "rt", "<Cmd>Telescope lsp_definitions<CR>" },
 		{ "rw", "<Cmd>Telescope lsp_definitions<CR><Cmd>vsplit<CR>" },
 		{ "rs", "<Cmd>Telescope grep_string<CR>" },
@@ -84,6 +73,7 @@ return {
 						["<PageDown>"] = actions.preview_scrolling_down,
 						["<PageUp>"] = actions.preview_scrolling_up,
 						["<C-t>"] = actions.close,
+						["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 					},
 					n = {
 						["<CR>"] = actions.select_default,
@@ -95,6 +85,7 @@ return {
 						["<PageDown>"] = actions.preview_scrolling_down,
 						["<PageUp>"] = actions.preview_scrolling_up,
 						["<Leader>t"] = actions.close,
+						["<Leader>q"] = actions.smart_send_to_qflist + actions.open_qflist,
 
 						["gg"] = actions.move_to_top,
 						["G"] = actions.move_to_bottom,
