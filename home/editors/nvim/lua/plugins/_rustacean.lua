@@ -21,7 +21,17 @@ return {
 						},
 					}
 				),
-				settings = {
+				on_attach = function(_, bufnr)
+					local format_sync_grp = vim.api.nvim_create_augroup("RustaceanFormat", {})
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format()
+						end,
+						group = format_sync_grp,
+					})
+				end,
+				default_settings = {
 					-- Options available here: https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
 					["rust-analyzer"] = {
 						cargo = {
@@ -40,6 +50,7 @@ return {
 								["async-trait"] = { "async_trait" },
 								["napi-derive"] = { "napi" },
 								["async-recursion"] = { "async_recursion" },
+								leptos_macro = { "server" },
 							},
 						},
 					},

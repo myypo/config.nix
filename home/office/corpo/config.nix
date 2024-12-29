@@ -3,5 +3,7 @@
     slack
     postman
     buttercup-desktop
+
+    restate
   ];
 }

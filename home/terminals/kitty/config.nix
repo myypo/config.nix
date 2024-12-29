@@ -44,16 +44,18 @@ in {
 
       keybindings = {
         # Make it possible to use ctrl+shift modifier for the following keys
-        "ctrl+shift+t" = "send_text application \\033[116;6u";
-        "ctrl+shift+n" = "send_text application \\033[110;6u";
+        # by mapping them to their decimal representations https://www.asciitable.com/
+        "ctrl+shift+," = "send_text application \\033[44;6u";
+        "ctrl+shift+a" = "send_text application \\033[97;6u";
+        "ctrl+shift+c" = "send_text application \\033[99;6u";
+        "ctrl+shift+d" = "send_text application \\033[100;6u";
         "ctrl+shift+e" = "send_text application \\033[101;6u";
         "ctrl+shift+h" = "send_text application \\033[104;6u";
-        "ctrl+shift+," = "send_text application \\033[44;6u";
-        "ctrl+shift+d" = "send_text application \\033[100;6u";
-        "ctrl+shift+u" = "send_text application \\033[117;6u";
-        "ctrl+shift+c" = "send_text application \\033[99;6u";
-        "ctrl+shift+a" = "send_text application \\033[97;6u";
+        "ctrl+shift+n" = "send_text application \\033[110;6u";
         "ctrl+shift+p" = "send_text application \\033[113;6u";
+        "ctrl+shift+s" = "send_text application \\033[115;6u";
+        "ctrl+shift+t" = "send_text application \\033[116;6u";
+        "ctrl+shift+u" = "send_text application \\033[117;6u";
 
         # Open pager to take a look at the terminal output
         "alt+r" = "show_last_command_output";

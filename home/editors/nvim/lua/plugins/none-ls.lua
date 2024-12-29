@@ -49,13 +49,6 @@ return {
 				-- Purescript
 				b.formatting.purs_tidy,
 
-				-- Rust
-				{
-					method = nls.methods.FORMATTING,
-					filetypes = { "rust" },
-					generator = formatter_generator("rustfmt", { "-q", "$FILENAME" }),
-				},
-
 				-- Roc
 				{
 					method = nls.methods.FORMATTING,

@@ -35,7 +35,7 @@ c.content.javascript.clipboard = "access-paste"
 c.content.autoplay = False
 
 # Colemak-DH optimized hints
-c.hints.chars = "arstgmneiowfpluyxcdhqbjzvk"
+c.hints.chars = 'arstgmneiowfpluyxcdh,.qbj"zvk/'
 
 c.colors.webpage.darkmode.enabled = True
 
@@ -50,7 +50,7 @@ config.bind("m", "config-cycle tabs.show always never")
 
 config.bind("i", "hint inputs --first")
 config.bind("t", "hint")
-config.bind("T", "hint all tab-fg")
+config.bind("T", "hint all tab-bg")
 config.bind("h", "hint all hover")
 
 # Detach and go with the tab to the previous workspace
