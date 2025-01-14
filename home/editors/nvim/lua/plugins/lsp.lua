@@ -241,7 +241,18 @@ return {
 
 		nvim_lsp.nushell.setup({ capabilities = capabilities })
 
-		nvim_lsp.postgres_lsp.setup({ capabilities = capabilities })
+		require("lspconfig.configs").postgres_lsp = {
+			default_config = {
+				name = "postgres_lsp",
+				cmd = { "postgres_lsp" },
+				filetypes = { "sql" },
+				single_file_support = true,
+			},
+		}
+		nvim_lsp.postgres_lsp.setup({
+			capabilities = capabilities,
+			force_setup = true,
+		})
 
 		nvim_lsp.roc_ls.setup({ capabilities = capabilities })
 
@@ -274,6 +285,19 @@ return {
 
 		nvim_lsp.taplo.setup({
 			capabilities = capabilities,
+			on_attach = function()
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					pattern = { "*.toml" },
+					callback = function()
+						vim.lsp.buf.format({ async = false })
+					end,
+				})
+			end,
+			workspace_config = {
+				formatter = {
+					reorderKeys = true,
+				},
+			},
 		})
 	end,
 }

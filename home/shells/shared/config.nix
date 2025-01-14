@@ -38,6 +38,8 @@ in
       (pkgs.writeShellScriptBin "ost" "${escalCmd} nixos-rebuild test --impure --flake ${flakePath}/#${hostName}")
 
       (pkgs.writeShellScriptBin "use" ''nix shell nixpkgs/nixos-unstable#$1'')
+
+      (pkgs.writeShellScriptBin "nr" ''nix run .#$1'')
     ];
 
     programs.bash.shellAliases = aliases.almostPOSIX;

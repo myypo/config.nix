@@ -1,32 +1,34 @@
 {
-  perSystem = {
-    config,
-    pkgs,
-    ...
-  }: {
-    devShells.default = pkgs.mkShell {
-      packages = with pkgs; [
-        git
+  perSystem =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    {
+      devShells.default = pkgs.mkShell {
+        packages = with pkgs; [
+          git
 
-        alejandra
-        deadnix
-        nil
+          nixfmt-rfc-style
+          deadnix
+          nil
 
-        stylua
-        nodePackages.prettier
-        black
-        shfmt
-        shellcheck
+          stylua
+          nodePackages.prettier
+          black
+          shfmt
+          shellcheck
 
-        sops
-        age
-        ssh-to-age
-        git-crypt
-      ];
+          sops
+          age
+          ssh-to-age
+          git-crypt
+        ];
 
-      shellHook = ''
-        export EDITOR=vim
-      '';
+        shellHook = ''
+          export EDITOR=vim
+        '';
+      };
     };
-  };
 }

@@ -37,7 +37,7 @@ return {
 				}),
 
 				-- Nix
-				b.formatting.alejandra,
+				b.formatting.nixfmt,
 
 				-- Bash
 				b.formatting.shfmt,

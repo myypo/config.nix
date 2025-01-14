@@ -40,7 +40,7 @@ return {
 					"go.mod",
 					"go.sum",
 					"^docs/",
-					"*.ico",
+					".ico",
 				},
 
 				prompt_prefix = " ",

@@ -3,16 +3,15 @@
   pkgs,
   config,
   ...
-}:
-with lib; let
+}: let
   cfg = config.myypo.services.builtin.pipewire;
 in {
   options.myypo.services.builtin.pipewire = {
-    enable = mkEnableOption "pipewire";
+    enable = lib.mkEnableOption "pipewire";
   };
 
-  config = mkIf cfg.enable {
-    hardware.pulseaudio.enable = mkForce false;
+  config = lib.mkIf cfg.enable {
+    services.pulseaudio.enable = lib.mkForce false;
 
     security.rtkit.enable = true;
 

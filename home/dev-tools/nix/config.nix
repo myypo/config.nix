@@ -1,7 +1,8 @@
-{pkgs}: {
+{ pkgs }:
+{
   home.packages = with pkgs; [
     nil
-    alejandra
+    nixfmt-rfc-style
 
     manix
   ];
