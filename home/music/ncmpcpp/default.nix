@@ -3,13 +3,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.music.ncmpcpp = {
       enable = lib.makeNullableEnableOption "ncmpcpp";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

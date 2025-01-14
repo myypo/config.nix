@@ -3,7 +3,8 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.appearance = {
       wallpapers = {
@@ -11,7 +12,8 @@
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

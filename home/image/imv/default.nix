@@ -3,13 +3,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.image.imv = {
       enable = lib.makeNullableEnableOption "imv";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

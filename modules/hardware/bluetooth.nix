@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.hardware.bluetooth;
-in {
+in
+{
   options.myypo.hardware.bluetooth = {
     enable = mkEnableOption "bluetooth";
   };

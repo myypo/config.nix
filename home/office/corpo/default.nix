@@ -3,13 +3,15 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   userOpts = {
     options.other.corpo = {
       enable = lib.makeNullableEnableOption "corpo";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

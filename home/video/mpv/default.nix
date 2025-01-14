@@ -3,13 +3,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.video.mpv = {
       enable = lib.makeNullableEnableOption "mpv";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

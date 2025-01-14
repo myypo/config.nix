@@ -4,9 +4,11 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.myypo.hardware.gpu;
-in {
+in
+{
   options.myypo.hardware.gpu = {
     enable = mkEnableOption "enable custom gpu module";
 
@@ -15,11 +17,16 @@ in {
     };
 
     dedicatedBrand = mkOption {
-      type = types.nullOr (types.enum ["nvidia"]);
+      type = types.nullOr (types.enum [ "nvidia" ]);
       default = null;
     };
     integratedBrand = mkOption {
-      type = types.nullOr (types.enum ["intel" "amd"]);
+      type = types.nullOr (
+        types.enum [
+          "intel"
+          "amd"
+        ]
+      );
       default = null;
     };
 
@@ -42,41 +49,46 @@ in {
     };
   };
 
-  config = let
-    dedicatedBrand = cfg.dedicatedBrand or "none";
-    integratedBrand = cfg.integratedBrand or "none";
-  in
-    mkIf cfg.enable
-    {
+  config =
+    let
+      dedicatedBrand = cfg.dedicatedBrand or "none";
+      integratedBrand = cfg.integratedBrand or "none";
+    in
+    mkIf cfg.enable {
       boot = {
-        initrd.kernelModules = let
-          intelModules =
-            if integratedBrand == "intel"
-            then ["i915"]
-            else [];
-        in
-          builtins.concatLists [intelModules];
+        initrd.kernelModules =
+          let
+            intelModules = if integratedBrand == "intel" then [ "i915" ] else [ ];
+          in
+          builtins.concatLists [ intelModules ];
 
-        kernelParams = let
-          nvidiaParams =
-            if dedicatedBrand == "nvidia"
-            then ["nvidia-drm.modeset=1" "nvidia.NVreg_PreserveVideoMemoryAllocations=1"]
-            else [];
-        in
-          builtins.concatLists [nvidiaParams];
+        kernelParams =
+          let
+            nvidiaParams =
+              if dedicatedBrand == "nvidia" then
+                [
+                  "nvidia-drm.modeset=1"
+                  "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+                ]
+              else
+                [ ];
+          in
+          builtins.concatLists [ nvidiaParams ];
 
-        extraModprobeConfig = let
-          intelModConfig =
-            if integratedBrand == "intel"
-            then "options i915"
-            else null;
+        extraModprobeConfig =
+          let
+            intelModConfig = if integratedBrand == "intel" then "options i915" else null;
 
-          concat = modConfigs: builtins.concatStringsSep "\n" (builtins.filter (s: s != null) modConfigs);
-        in
-          concat [intelModConfig];
+            concat = modConfigs: builtins.concatStringsSep "\n" (builtins.filter (s: s != null) modConfigs);
+          in
+          concat [ intelModConfig ];
 
         # To prevent the audio driver conflicts
-        blacklistedKernelModules = ["nouveau" "snd_hda_intel" "snd_soc_skl"];
+        blacklistedKernelModules = [
+          "nouveau"
+          "snd_hda_intel"
+          "snd_soc_skl"
+        ];
       };
 
       hardware = with cfg; {
@@ -109,50 +121,61 @@ in {
         graphics = {
           enable = true;
 
-          extraPackages = with pkgs; let
-            intelPkgs =
-              if integratedBrand == "intel"
-              then [intel-compute-runtime intel-media-driver]
-              else [];
-          in (builtins.concatLists [intelPkgs]);
+          extraPackages =
+            with pkgs;
+            let
+              intelPkgs =
+                if integratedBrand == "intel" then
+                  [
+                    intel-compute-runtime
+                    intel-media-driver
+                  ]
+                else
+                  [ ];
+            in
+            (builtins.concatLists [ intelPkgs ]);
         };
       };
 
-      environment = with cfg; let
-        combinedVariables = let
-          wlrDevices =
-            if optimus.enable
-            then {
-              # Prioritize using integrated graphics for a WM, the values depend on the laptop's model
-              WLR_DRM_DEVICES = let
-                prior = builtins.toString integratedDriNum;
-                backup = builtins.toString dedicatedDriNum;
-              in "/dev/dri/card${prior}:/dev/dri/card${backup}";
-            }
-            else {WLR_DRM_DEVICES = "/dev/dri/card0";};
-          nvidiaVariables =
-            if dedicatedBrand == "nvidia"
-            then {NVD_BACKEND = "direct";}
-            else {};
+      environment =
+        with cfg;
+        let
+          combinedVariables =
+            let
+              wlrDevices =
+                if optimus.enable then
+                  {
+                    # Prioritize using integrated graphics for a WM, the values depend on the laptop's model
+                    WLR_DRM_DEVICES =
+                      let
+                        prior = builtins.toString integratedDriNum;
+                        backup = builtins.toString dedicatedDriNum;
+                      in
+                      "/dev/dri/card${prior}:/dev/dri/card${backup}";
+                  }
+                else
+                  { WLR_DRM_DEVICES = "/dev/dri/card0"; };
+              nvidiaVariables = if dedicatedBrand == "nvidia" then { NVD_BACKEND = "direct"; } else { };
+            in
+            wlrDevices // nvidiaVariables;
         in
-          wlrDevices // nvidiaVariables;
-      in {
-        variables = combinedVariables;
-        sessionVariables = combinedVariables;
+        {
+          variables = combinedVariables;
+          sessionVariables = combinedVariables;
 
-        systemPackages = with pkgs; [
-          ffmpeg-full
-          libva
-          libva-utils
-          glxinfo
-          mesa
-          pciutils
-          v4l-utils
-          vulkan-tools
-          vulkan-loader
-          vulkan-validation-layers
-          vulkan-extension-layer
-        ];
-      };
+          systemPackages = with pkgs; [
+            ffmpeg-full
+            libva
+            libva-utils
+            glxinfo
+            mesa
+            pciutils
+            v4l-utils
+            vulkan-tools
+            vulkan-loader
+            vulkan-validation-layers
+            vulkan-extension-layer
+          ];
+        };
     };
 }

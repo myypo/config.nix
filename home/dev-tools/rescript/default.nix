@@ -3,13 +3,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.dev-tools.rescript = {
       enable = lib.makeNullableEnableOption "rescript dev-tools";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

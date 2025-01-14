@@ -1,3 +1,1 @@
-{
-  className = "termusic";
-}
+{ className = "termusic"; }

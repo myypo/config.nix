@@ -2,7 +2,8 @@
   lib,
   pkgs,
   addons,
-}: let
+}:
+let
   cfg = addons.toggle_touchpad;
 
   disable_touchpad = lib.writeScript {
@@ -16,9 +17,9 @@
     src = ./enable_touchpad.sh;
   };
 in
-  lib.mkIf cfg.enable {
-    home.packages = [
-      disable_touchpad
-      enable_touchpad
-    ];
-  }
+lib.mkIf cfg.enable {
+  home.packages = [
+    disable_touchpad
+    enable_touchpad
+  ];
+}

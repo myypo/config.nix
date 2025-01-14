@@ -4,13 +4,15 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   userOpts = {
     options.dev-tools.lua = {
       enable = makeNullableEnableOption "lua dev-tools";
     };
   };
-in {
+in
+{
   options = makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

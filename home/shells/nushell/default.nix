@@ -4,7 +4,8 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   userOpts = {
     options.shells.nushell = {
       enable = makeNullableEnableOption "nushell";
@@ -15,7 +16,8 @@ with lib; let
       };
     };
   };
-in {
+in
+{
   options = makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

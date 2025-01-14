@@ -2,8 +2,9 @@
   lib,
   inputs,
   pkgs,
-}: let
-  cfg = {};
+}:
+let
+  cfg = { };
 
   wf_record_area = lib.writeScript {
     inherit pkgs cfg;
@@ -15,7 +16,8 @@
     name = "wf_record_screen";
     src = ./scripts/wf_record_screen.sh;
   };
-in {
+in
+{
   home.packages = with pkgs; [
     wf-recorder
     slurp

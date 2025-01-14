@@ -1,8 +1,5 @@
-{
-  lib,
-  isMainDocumentViewer,
-  ...
-}: let
+{ lib, isMainDocumentViewer, ... }:
+let
   xdgPdfReader = [
     "zathura.desktop"
     "org.pwmt.zathura.desktop"
@@ -11,7 +8,8 @@
     "application/pdf" = xdgPdfReader;
     "application/x-pdf" = xdgPdfReader;
   };
-in {
+in
+{
   xdg = lib.mkIf isMainDocumentViewer {
     mimeApps = {
       defaultApplications = associations;

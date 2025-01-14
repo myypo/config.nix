@@ -4,22 +4,28 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.myypo.hardware.cpu;
-in {
+in
+{
   options.myypo.hardware.cpu = {
     enable = mkEnableOption "enable custom cpu module";
 
     brand = mkOption {
-      type = types.nullOr (types.enum ["intel" "amd" "other"]);
+      type = types.nullOr (
+        types.enum [
+          "intel"
+          "amd"
+          "other"
+        ]
+      );
       default = null;
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      linux-firmware
-    ];
+    environment.systemPackages = with pkgs; [ linux-firmware ];
 
     hardware = with cfg; {
       # Enable all firmware regardless of license.

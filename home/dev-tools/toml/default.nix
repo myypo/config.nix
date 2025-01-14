@@ -3,13 +3,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.dev-tools.toml = {
       enable = lib.makeNullableEnableOption "toml dev-tools";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

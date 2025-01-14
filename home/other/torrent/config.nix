@@ -1,5 +1,4 @@
-{pkgs}: {
-  home.packages = with pkgs; [
-    qbittorrent
-  ];
+{ pkgs }:
+{
+  home.packages = with pkgs; [ qbittorrent ];
 }

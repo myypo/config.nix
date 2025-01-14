@@ -36,39 +36,32 @@ rustPlatform.buildRustPackage rec {
 
   # rustflags as defined in the upstream's .cargo/config.toml
   env = {
-    RUSTFLAGS = let
-      target = stdenv.hostPlatform.config;
-      targetFlags = rec {
-        build = [
-          "-C force-unwind-tables"
-          "-C debug-assertions"
-          "--cfg uuid_unstable"
-          "--cfg tokio_unstable"
-        ];
+    RUSTFLAGS =
+      let
+        target = stdenv.hostPlatform.config;
+        targetFlags = rec {
+          build = [
+            "-C force-unwind-tables"
+            "-C debug-assertions"
+            "--cfg uuid_unstable"
+            "--cfg tokio_unstable"
+          ];
 
-        "aarch64-unknown-linux-gnu" =
-          build
-          ++ [
+          "aarch64-unknown-linux-gnu" = build ++ [
             # Enable frame pointers to support Parca (https://github.com/parca-dev/parca-agent/pull/1805)
             "-C force-frame-pointers=yes"
           ];
 
-        "x86_64-unknown-linux-musl" =
-          build
-          ++ [
-            "-C link-self-contained=yes"
-          ];
+          "x86_64-unknown-linux-musl" = build ++ [ "-C link-self-contained=yes" ];
 
-        "aarch64-unknown-linux-musl" =
-          build
-          ++ [
+          "aarch64-unknown-linux-musl" = build ++ [
             # Enable frame pointers to support Parca (https://github.com/parca-dev/parca-agent/pull/1805)
             "-C force-frame-pointers=yes"
             "-C link-self-contained=yes"
           ];
-      };
-    in
-      lib.concatStringsSep " " (lib.attrsets.attrByPath [target] targetFlags.build targetFlags);
+        };
+      in
+      lib.concatStringsSep " " (lib.attrsets.attrByPath [ target ] targetFlags.build targetFlags);
 
     # Have to be set to dynamically link librdkafka
     CARGO_FEATURE_DYNAMIC_LINKING = 1;
@@ -81,10 +74,8 @@ rustPlatform.buildRustPackage rec {
     rustPlatform.bindgenHook
     cmake
   ];
-  buildInputs = [rdkafka];
-  nativeCheckInputs = [
-    cacert
-  ];
+  buildInputs = [ rdkafka ];
+  nativeCheckInputs = [ cacert ];
 
   useNextest = true;
   # Feature resolution seems to be failing due to this https://github.com/rust-lang/cargo/issues/7754
@@ -103,7 +94,7 @@ rustPlatform.buildRustPackage rec {
       package = restate;
       command = "restatectl --version";
     };
-    updateScript = nix-update-script {};
+    updateScript = nix-update-script { };
   };
 
   meta = {
@@ -111,6 +102,6 @@ rustPlatform.buildRustPackage rec {
     homepage = "https://restate.dev";
     mainProgram = "restate";
     license = lib.licenses.bsl11;
-    maintainers = with lib.maintainers; [myypo];
+    maintainers = with lib.maintainers; [ myypo ];
   };
 }

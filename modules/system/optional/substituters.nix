@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.nixos.substituters;
-in {
+in
+{
   options.myypo.nixos.substituters.enable = mkEnableOption "substituters";
 
   config = mkIf cfg.enable {

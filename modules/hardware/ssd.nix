@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.hardware.ssd;
-in {
+in
+{
   options.myypo.hardware.ssd = {
     enable = mkEnableOption "ssd";
   };

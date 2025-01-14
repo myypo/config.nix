@@ -3,7 +3,8 @@
   addons,
   userCfg,
 }:
-with lib; {
+with lib;
+{
   programs = {
     # Start hyprland automatically with fish
     fish = {
@@ -14,7 +15,7 @@ with lib; {
     };
   };
 
-  systemd.user.targets.hyprland-session.Unit.Wants = ["xdg-desktop-autostart.target"];
+  systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
 
   wayland.windowManager.hyprland = {
     settings = {

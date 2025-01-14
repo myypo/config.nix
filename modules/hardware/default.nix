@@ -1,5 +1,7 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   allModules = lib.readFileModules ./.;
-in {
+in
+{
   imports = allModules;
 }

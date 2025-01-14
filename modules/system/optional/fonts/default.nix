@@ -4,9 +4,11 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.myypo.fonts;
-in {
+in
+{
   options.myypo.fonts.enable = mkEnableOption "fonts";
 
   config = mkIf cfg.enable {

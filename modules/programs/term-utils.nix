@@ -4,9 +4,11 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.myypo.programs.term-utils;
-in {
+in
+{
   options.myypo.programs.term-utils = {
     enable = mkEnableOption "core terminal utils";
   };

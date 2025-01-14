@@ -4,12 +4,11 @@
   hostName,
   theme,
   flakePath,
-}: {
+}:
+{
   programs.fish.enable = true;
 
-  home.packages = with pkgs; [
-    fishPlugins.puffer
-  ];
+  home.packages = with pkgs; [ fishPlugins.puffer ];
 
   ### Theme ###
   # Numbers are used to ensure correct ordering of sourcing

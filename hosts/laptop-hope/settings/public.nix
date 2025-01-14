@@ -1,4 +1,5 @@
-{lib}: rec {
+{ lib }:
+rec {
   users = {
     myypo = {
       githubUserName = "myypo";
@@ -18,45 +19,67 @@
       mainMusicPlayer = "termusic";
 
       appearance = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
 
-        cursor = {size = 48;};
+        cursor = {
+          size = 48;
+        };
       };
 
       dev-tools = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       shells = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       terminals = {
-        kitty = {enable = true;};
+        kitty = {
+          enable = true;
+        };
       };
 
       editors = {
-        nvim = {enable = true;};
+        nvim = {
+          enable = true;
+        };
       };
 
       browsers = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       office = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       recording = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       widgets = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       image = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       music = {
@@ -64,15 +87,21 @@
       };
 
       video = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       file-managers = {
-        nemo = {enable = true;};
+        nemo = {
+          enable = true;
+        };
       };
 
       other = {
-        common = {enableAll = true;};
+        common = {
+          enableAll = true;
+        };
       };
 
       notifications = {
@@ -123,13 +152,23 @@
 
             swww = {
               enable = true;
-              dynamic_wall = {enable = true;};
+              dynamic_wall = {
+                enable = true;
+              };
             };
 
-            swaylock = {enable = true;};
-            waybar = {enable = true;};
-            to_notif = {enable = true;};
-            project_management = {enable = true;};
+            swaylock = {
+              enable = true;
+            };
+            waybar = {
+              enable = true;
+            };
+            to_notif = {
+              enable = true;
+            };
+            project_management = {
+              enable = true;
+            };
           };
         };
       };
@@ -198,8 +237,12 @@
       enable = true;
       members = lib.attrsets.mapAttrsToList (userName: _: userName) users;
     };
-    term-utils = {enable = true;};
-    archiving = {enable = true;};
+    term-utils = {
+      enable = true;
+    };
+    archiving = {
+      enable = true;
+    };
   };
 
   services = {

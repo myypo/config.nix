@@ -2,7 +2,8 @@
   lib,
   cfg,
   userCfg,
-}: let
+}:
+let
   addons = cfg.addons;
   monitors = cfg.monitors;
   theme = import ./themes/${cfg.theme};
@@ -23,14 +24,40 @@
 
   mainMusicPlayer = userCfg.mainMusicPlayer;
   mainMusicPlayerMeta = lib.getMeta "music" mainMusicPlayer;
-in {
+in
+{
   imports = [
-    (import ./autostart.nix {inherit lib addons userCfg;})
+    (import ./autostart.nix { inherit lib addons userCfg; })
 
-    (import ./controls.nix {inherit lib addons userCfg mainTerminal mainTerminalMeta mainShell mainMusicPlayer;})
+    (import ./controls.nix {
+      inherit
+        lib
+        addons
+        userCfg
+        mainTerminal
+        mainTerminalMeta
+        mainShell
+        mainMusicPlayer
+        ;
+    })
 
-    (import ./rules.nix {inherit mainBrowserMeta mainTerminalMeta mainImageViewerMeta mainFileManagerMeta mainMusicPlayerMeta;})
+    (import ./rules.nix {
+      inherit
+        mainBrowserMeta
+        mainTerminalMeta
+        mainImageViewerMeta
+        mainFileManagerMeta
+        mainMusicPlayerMeta
+        ;
+    })
 
-    (import ./visuals.nix {inherit lib theme monitors mainTerminalMeta;})
+    (import ./visuals.nix {
+      inherit
+        lib
+        theme
+        monitors
+        mainTerminalMeta
+        ;
+    })
   ];
 }

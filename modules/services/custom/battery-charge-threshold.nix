@@ -1,17 +1,13 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.services.custom.battery-charge-threshold;
-in {
+in
+{
   options.myypo.services.custom = {
     battery-charge-threshold = {
       enable = mkEnableOption "laptop battery charge threshold";
-      batteryName = mkOption {
-        type = types.str;
-      };
+      batteryName = mkOption { type = types.str; };
       maxChargeLevel = mkOption {
         type = types.int;
         default = 50;
@@ -22,8 +18,8 @@ in {
     # Limit the maximum charge of the battery to extend its life
     systemd.services.battery-charge-threshold = {
       description = "Set the maximum battery charge level";
-      wantedBy = ["multi-user.target"];
-      after = ["local-fs.target"];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "local-fs.target" ];
       serviceConfig = {
         StartLimitBurst = "0";
         Type = "oneshot";

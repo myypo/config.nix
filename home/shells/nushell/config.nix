@@ -2,12 +2,11 @@
   lib,
   pkgs,
   theme,
-}: {
+}:
+{
   programs.nushell = {
     enable = true;
-    package = pkgs.nushell.override {
-      additionalFeatures = p: p ++ ["system-clipboard"];
-    };
+    package = pkgs.nushell.override { additionalFeatures = p: p ++ [ "system-clipboard" ]; };
 
     configFile.source = ./config.nu;
     envFile.source = ./env.nu;

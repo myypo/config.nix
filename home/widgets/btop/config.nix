@@ -1,4 +1,5 @@
-{theme}: {
+{ theme }:
+{
   programs.btop = {
     enable = true;
     settings = {

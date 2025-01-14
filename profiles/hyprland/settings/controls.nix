@@ -6,7 +6,8 @@
   mainTerminalMeta,
   mainShell,
   mainMusicPlayer,
-}: {
+}:
+{
   wayland.windowManager.hyprland = {
     settings = {
       "$mod" = "SUPER";
@@ -22,14 +23,15 @@
 
       bindl = builtins.concatLists [
         (
-          if addons.clamshell.enable
-          then [
-            # Laptop lid is opened
-            ",switch:off:Lid Switch,exec,clamshell open"
-            # Lid is closed
-            ",switch:on:Lid Switch,exec,clamshell close"
-          ]
-          else []
+          if addons.clamshell.enable then
+            [
+              # Laptop lid is opened
+              ",switch:off:Lid Switch,exec,clamshell open"
+              # Lid is closed
+              ",switch:on:Lid Switch,exec,clamshell close"
+            ]
+          else
+            [ ]
         )
       ];
 

@@ -2,10 +2,9 @@
   pkgs,
   theme,
   fontSize,
-}: {
-  imports = [
-    (import ./themes/${theme} {inherit pkgs fontSize;})
-  ];
+}:
+{
+  imports = [ (import ./themes/${theme} { inherit pkgs fontSize; }) ];
 
   gtk = {
     enable = true;

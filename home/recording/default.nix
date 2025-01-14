@@ -1,5 +1,6 @@
-{lib, ...}:
-with lib; let
+{ lib, ... }:
+with lib;
+let
   userOpts = {
     options.recording.common = {
       enableAll = mkEnableOption "enable all configured programs for video recording and screenshots";
@@ -7,7 +8,8 @@ with lib; let
   };
 
   dirModules = lib.readDirModules ./.;
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   imports = dirModules;

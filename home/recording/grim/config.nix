@@ -2,8 +2,9 @@
   lib,
   inputs,
   pkgs,
-}: let
-  cfg = {};
+}:
+let
+  cfg = { };
 
   grim_save_area = lib.writeScript {
     inherit pkgs cfg;
@@ -15,7 +16,8 @@
     name = "grim_save_screen";
     src = ./scripts/grim_save_screen.sh;
   };
-in {
+in
+{
   home.packages = with pkgs; [
     grim
     slurp

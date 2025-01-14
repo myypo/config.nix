@@ -2,18 +2,20 @@
   lib,
   pkgs,
   addons,
-}: let
+}:
+let
   cfg = addons.clamshell;
 
   name = "clamshell";
   src = ./clamshell.sh;
 
   clamshell = lib.writeScript {
-    inherit pkgs name cfg src;
+    inherit
+      pkgs
+      name
+      cfg
+      src
+      ;
   };
 in
-  lib.mkIf cfg.enable {
-    home.packages = [
-      clamshell
-    ];
-  }
+lib.mkIf cfg.enable { home.packages = [ clamshell ]; }

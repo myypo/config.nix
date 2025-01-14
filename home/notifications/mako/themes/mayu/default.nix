@@ -1,4 +1,5 @@
-{fontSize}: {
+{ fontSize }:
+{
   services.mako = {
     font = "JetBrainsMono Nerd Font ${builtins.toString fontSize}";
 

@@ -3,7 +3,8 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.music.termusic = {
       enable = lib.makeNullableEnableOption "termusic";
@@ -14,7 +15,8 @@
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

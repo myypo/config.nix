@@ -1,14 +1,15 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.security.privilege-elevation;
-in {
+in
+{
   options.myypo.security.privilege-elevation = {
     cmd = mkOption {
-      type = types.enum ["sudo" "doas"];
+      type = types.enum [
+        "sudo"
+        "doas"
+      ];
       default = "sudo";
     };
   };

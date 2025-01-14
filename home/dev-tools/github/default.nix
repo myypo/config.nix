@@ -3,7 +3,8 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   userOpts = {
     options.dev-tools.github = {
       enable = lib.makeNullableEnableOption "github";
@@ -14,7 +15,8 @@
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

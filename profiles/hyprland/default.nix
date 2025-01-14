@@ -4,7 +4,8 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.profiles.hyprland = {
       enable = lib.mkEnableOption "hyprland profile";
@@ -15,18 +16,20 @@
       };
 
       monitors = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.submodule {
-          options = {
-            name = lib.mkOption {type = lib.types.str;};
-            settings = lib.mkOption {type = lib.types.str;};
-            position = lib.mkOption {type = lib.types.str;};
-            scaling = lib.mkOption {type = lib.types.str;};
-            extra = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
-              default = null;
+        type = lib.types.attrsOf (
+          lib.types.submodule {
+            options = {
+              name = lib.mkOption { type = lib.types.str; };
+              settings = lib.mkOption { type = lib.types.str; };
+              position = lib.mkOption { type = lib.types.str; };
+              scaling = lib.mkOption { type = lib.types.str; };
+              extra = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+              };
             };
-          };
-        });
+          }
+        );
       };
 
       addons = {
@@ -34,17 +37,15 @@
           enable = lib.mkEnableOption "clamshell";
 
           settings = {
-            internalMonitorName = lib.mkOption {type = lib.types.str;};
-            internalMonitorSettings = lib.mkOption {type = lib.types.str;};
-            externalMonitorName = lib.mkOption {type = lib.types.str;};
+            internalMonitorName = lib.mkOption { type = lib.types.str; };
+            internalMonitorSettings = lib.mkOption { type = lib.types.str; };
+            externalMonitorName = lib.mkOption { type = lib.types.str; };
           };
         };
         toggle_touchpad = {
           enable = lib.mkEnableOption "toggle touchpad";
           settings = {
-            deviceName = lib.mkOption {
-              type = lib.types.str;
-            };
+            deviceName = lib.mkOption { type = lib.types.str; };
           };
         };
         swww = {
@@ -73,7 +74,8 @@
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {
@@ -86,29 +88,23 @@ in {
 
       userCfg = config.myypo.users.${userName};
 
-      cfg =
-        cfg
-        // {
-          theme = lib.valueOrUserDefault {
-            inherit config userName;
-            name = "theme";
-            val = cfg.theme;
-          };
-
-          addons =
-            cfg.addons
-            // {
-              waybar =
-                cfg.addons.waybar
-                // {
-                  theme = lib.valueOrUserDefault {
-                    inherit config userName;
-                    name = "theme";
-                    val = cfg.addons.waybar.theme;
-                  };
-                };
-            };
+      cfg = cfg // {
+        theme = lib.valueOrUserDefault {
+          inherit config userName;
+          name = "theme";
+          val = cfg.theme;
         };
+
+        addons = cfg.addons // {
+          waybar = cfg.addons.waybar // {
+            theme = lib.valueOrUserDefault {
+              inherit config userName;
+              name = "theme";
+              val = cfg.addons.waybar.theme;
+            };
+          };
+        };
+      };
     };
     nixosConfig = {
       programs = {
@@ -120,10 +116,16 @@ in {
 
       xdg.portal = with pkgs; {
         enable = true;
-        extraPortals = [xdg-desktop-portal-gtk xdg-desktop-portal-hyprland];
-        config.preferred.default = ["hyprland" "gtk"];
+        extraPortals = [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-hyprland
+        ];
+        config.preferred.default = [
+          "hyprland"
+          "gtk"
+        ];
         xdgOpenUsePortal = true;
-        configPackages = [hyprland];
+        configPackages = [ hyprland ];
       };
 
       environment.systemPackages = with pkgs; [

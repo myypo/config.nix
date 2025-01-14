@@ -4,7 +4,8 @@
   mainImageViewerMeta,
   mainFileManagerMeta,
   mainMusicPlayerMeta,
-}: {
+}:
+{
   wayland.windowManager.hyprland.settings.windowrulev2 = [
     # Generic terminal, transparent unless in fullscreen
     "opacity 0.92 override 0.92 override 1.0 override,class:^(${mainTerminalMeta.className})$"

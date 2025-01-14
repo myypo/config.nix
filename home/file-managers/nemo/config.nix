@@ -2,16 +2,16 @@
   lib,
   pkgs,
   isMainFileManager,
-}: let
+}:
+let
   xdgFileManager = "nemo.desktop";
 
   associations = {
     "inode/directory" = xdgFileManager;
   };
-in {
-  home.packages = with pkgs; [
-    nemo
-  ];
+in
+{
+  home.packages = with pkgs; [ nemo ];
 
   xdg.mimeApps = lib.mkIf isMainFileManager {
     defaultApplications = associations;

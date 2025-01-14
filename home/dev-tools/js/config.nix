@@ -1,4 +1,5 @@
-{pkgs}: {
+{ pkgs }:
+{
   home.packages = with pkgs; [
     nodePackages_latest.typescript
     nodePackages_latest.vscode-langservers-extracted

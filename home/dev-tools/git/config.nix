@@ -4,7 +4,8 @@
   personalEmail,
   personalSigningKey,
   altGitIdentities,
-}: {
+}:
+{
   programs.git = {
     enable = true;
 
@@ -20,16 +21,14 @@
       signByDefault = false;
     };
 
-    includes =
-      lib.attrsets.mapAttrsToList (id: v: {
-        condition = "gitdir:~/code/${id}/**";
-        contents = {
-          user.name = v.username;
-          user.email = v.email;
-          user.key = v.signingKey;
-        };
-      })
-      altGitIdentities;
+    includes = lib.attrsets.mapAttrsToList (id: v: {
+      condition = "gitdir:~/code/${id}/**";
+      contents = {
+        user.name = v.username;
+        user.email = v.email;
+        user.key = v.signingKey;
+      };
+    }) altGitIdentities;
 
     ignores = [
       "*~"
@@ -42,7 +41,9 @@
     ];
 
     extraConfig = {
-      push = {autoSetupRemote = true;};
+      push = {
+        autoSetupRemote = true;
+      };
       init.defaultBranch = "main";
 
       branch.autosetupmerge = "true";

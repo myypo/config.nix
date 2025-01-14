@@ -3,7 +3,8 @@
   inputs,
   self,
   ...
-}: let
+}:
+let
   extraPkgs = import "${self}/pkgs";
 
   modules = "${self}/modules";
@@ -15,46 +16,50 @@
   specialArgs = {
     inherit inputs self;
 
-    lib = inputs.nixpkgs.lib.extend (
-      final: prev: (import ../lib {lib = final;})
-    );
+    lib = inputs.nixpkgs.lib.extend (final: prev: (import ../lib { lib = final; }));
   };
-in {
+in
+{
   imports = specialArgs.lib.readFileModules ./.;
 
   config = {
-    systems = ["x86_64-linux" "aarch64-linux"];
+    systems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
 
     flake = {
       overlays.default = extraPkgs.overlay;
 
-      nixosConfigurations =
-        builtins.mapAttrs (
-          hostName: _: let
-            host = "${self}/hosts/${hostName}";
+      nixosConfigurations = builtins.mapAttrs (
+        hostName: _:
+        let
+          host = "${self}/hosts/${hostName}";
 
-            settings.myypo = let
+          settings.myypo =
+            let
               settingsPath = "${host}/settings";
-              public = {inherit hostName;} // import "${settingsPath}/public.nix" {inherit lib;};
+              public = {
+                inherit hostName;
+              } // import "${settingsPath}/public.nix" { inherit lib; };
               private = import "${settingsPath}/.private.nix";
             in
-              lib.attrsets.recursiveUpdate public private;
-          in
-            lib.nixosSystem {
-              specialArgs = settings // specialArgs;
+            lib.attrsets.recursiveUpdate public private;
+        in
+        lib.nixosSystem {
+          specialArgs = settings // specialArgs;
 
-              modules = [
-                host
+          modules = [
+            host
 
-                modules
+            modules
 
-                profiles
+            profiles
 
-                home
-              ];
-            }
-        )
-        hosts;
+            home
+          ];
+        }
+      ) hosts;
     };
   };
 }

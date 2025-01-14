@@ -1,5 +1,7 @@
-{lib}: {
-  makeNullableEnableOption = name:
+{ lib }:
+{
+  makeNullableEnableOption =
+    name:
     lib.mkOption {
       default = null;
       example = true;
@@ -8,8 +10,6 @@
     };
 
   makeHomeOpts = userOpts: {
-    myypo.users = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule userOpts);
-    };
+    myypo.users = lib.mkOption { type = lib.types.attrsOf (lib.types.submodule userOpts); };
   };
 }

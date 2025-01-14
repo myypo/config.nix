@@ -5,22 +5,22 @@
   myypo,
   ...
 }:
-with lib; let
+with lib;
+let
   usersCfg = config.myypo.users;
   hmCfg = config.myypo.home-manager;
 
-  hmUserDefinitions = {inherit myypo;};
+  hmUserDefinitions = { inherit myypo; };
 
   dirModules = lib.readDirModules ./.;
-in {
-  imports =
-    dirModules
-    ++ [
-      # Have to do it to pass user-specific home configs
-      hmUserDefinitions
+in
+{
+  imports = dirModules ++ [
+    # Have to do it to pass user-specific home configs
+    hmUserDefinitions
 
-      inputs.home-manager.nixosModules.default
-    ];
+    inputs.home-manager.nixosModules.default
+  ];
 
   options.myypo.home-manager = {
     enable = mkEnableOption "whether to enable home-manager on the machine";
@@ -34,18 +34,14 @@ in {
       useGlobalPkgs = true;
       useUserPackages = true;
       verbose = true;
-      sharedModules = [
-        {home.stateVersion = mkForce config.system.stateVersion;}
-      ];
+      sharedModules = [ { home.stateVersion = mkForce config.system.stateVersion; } ];
     };
-    home-manager.users =
-      builtins.mapAttrs (userName: _: {
-        programs.home-manager.enable = true;
-        home = {
-          username = userName;
-          homeDirectory = "/home/${userName}";
-        };
-      })
-      usersCfg;
+    home-manager.users = builtins.mapAttrs (userName: _: {
+      programs.home-manager.enable = true;
+      home = {
+        username = userName;
+        homeDirectory = "/home/${userName}";
+      };
+    }) usersCfg;
   };
 }

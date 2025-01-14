@@ -4,7 +4,8 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   userOpts = {
     options.appearance = {
       gtk = {
@@ -22,7 +23,8 @@ with lib; let
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

@@ -4,8 +4,9 @@
   theme,
   fontSize,
   isMainTerminal,
-}: {
-  home.sessionVariables = lib.mkIf isMainTerminal {TERMINAL = "wezterm";};
+}:
+{
+  home.sessionVariables = lib.mkIf isMainTerminal { TERMINAL = "wezterm"; };
 
   xdg.configFile."wezterm/colors/${theme}.toml".source = ./themes/${theme}.toml;
 

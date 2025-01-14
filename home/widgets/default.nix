@@ -1,5 +1,6 @@
-{lib, ...}:
-with lib; let
+{ lib, ... }:
+with lib;
+let
   userOpts = {
     options.widgets.common = {
       enableAll = mkEnableOption "enable all configured widget apps";
@@ -7,7 +8,8 @@ with lib; let
   };
 
   dirModules = lib.readDirModules ./.;
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   imports = dirModules;

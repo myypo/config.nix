@@ -1,15 +1,13 @@
+{ pkgs, fontSize }:
 {
-  pkgs,
-  fontSize,
-}: {
   gtk = {
     theme = {
       name = "Colloid-Pink-Dark";
       package = pkgs.colloid-gtk-theme.override {
-        themeVariants = ["pink"];
-        colorVariants = ["dark"];
-        sizeVariants = ["standard"];
-        tweaks = ["black"];
+        themeVariants = [ "pink" ];
+        colorVariants = [ "dark" ];
+        sizeVariants = [ "standard" ];
+        tweaks = [ "black" ];
       };
     };
 

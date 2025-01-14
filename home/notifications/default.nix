@@ -1,11 +1,12 @@
-{lib, ...}:
-with lib; let
+{ lib, ... }:
+with lib;
+let
   userOpts = {
     options.notifications.common = {
       enable = mkEnableOption "enable notifications daemon";
 
       backend = mkOption {
-        type = types.enum ["mako"];
+        type = types.enum [ "mako" ];
         default = "mako";
       };
 
@@ -21,7 +22,8 @@ with lib; let
   };
 
   dirModules = lib.readDirModules ./.;
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   imports = dirModules;

@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.services.builtin.openssh;
-in {
+in
+{
   options.myypo.services.builtin.openssh = {
     enable = mkEnableOption "openssh";
   };

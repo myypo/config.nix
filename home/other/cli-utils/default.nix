@@ -4,7 +4,8 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   userOpts = {
     options.other.cli-utils = {
       enable = lib.makeNullableEnableOption "misc cli tools";
@@ -15,7 +16,8 @@ with lib; let
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {

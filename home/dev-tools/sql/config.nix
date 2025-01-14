@@ -1,5 +1,4 @@
-{pkgs}: {
-  home.packages = with pkgs; [
-    postgres-lsp
-  ];
+{ pkgs }:
+{
+  home.packages = with pkgs; [ postgres-lsp ];
 }

@@ -4,11 +4,19 @@
   inputs,
   pkgs,
   userCfg,
-}: {
+}:
+{
   imports = [
-    (import ./addons {inherit lib pkgs cfg userCfg;})
-    (import ./scripts {inherit lib pkgs userCfg;})
-    (import ./settings {inherit lib cfg userCfg;})
+    (import ./addons {
+      inherit
+        lib
+        pkgs
+        cfg
+        userCfg
+        ;
+    })
+    (import ./scripts { inherit lib pkgs userCfg; })
+    (import ./settings { inherit lib cfg userCfg; })
   ];
 
   home.packages = with pkgs; [

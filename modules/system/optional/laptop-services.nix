@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.laptop-services;
-in {
+in
+{
   options.myypo.laptop-services = {
     enable = mkEnableOption "configuration for laptops";
 
@@ -72,7 +70,12 @@ in {
         blacklist nouveau
         options nouveau modeset=0
       '';
-      blacklistedKernelModules = ["nouveau" "nvidia" "nvidia_drm" "nvidia_modeset"];
+      blacklistedKernelModules = [
+        "nouveau"
+        "nvidia"
+        "nvidia_drm"
+        "nvidia_modeset"
+      ];
     };
   };
 }

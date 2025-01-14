@@ -1,5 +1,6 @@
-{lib, ...}:
-with lib; let
+{ lib, ... }:
+with lib;
+let
   userOpts = {
     options.video.common = {
       enableAll = mkEnableOption "enable all video players and editors";
@@ -7,7 +8,8 @@ with lib; let
   };
 
   dirModules = lib.readDirModules ./.;
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   imports = dirModules;

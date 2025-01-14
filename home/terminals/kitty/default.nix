@@ -4,7 +4,8 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   userOpts = {
     options.terminals.kitty = {
       enable = lib.makeNullableEnableOption "kitty";
@@ -19,7 +20,8 @@ with lib; let
       };
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {
@@ -30,22 +32,26 @@ in {
     addArgsFn = userName: cfg: {
       isMainTerminal = config.myypo.users.${userName}.mainTerminal == "kitty";
 
-      pagerCompatible = let
-        userCfg = config.myypo.users.${userName};
+      pagerCompatible =
+        let
+          userCfg = config.myypo.users.${userName};
 
-        fishEnabled = lib.userCfgIsEnabled {
-          inherit userCfg;
-          type = "shells";
-          name = "fish";
-        };
-        nvimEnabled = lib.userCfgIsEnabled {
-          inherit userCfg;
-          type = "editors";
-          name = "nvim";
-        };
+          fishEnabled = lib.userCfgIsEnabled {
+            inherit userCfg;
+            type = "shells";
+            name = "fish";
+          };
+          nvimEnabled = lib.userCfgIsEnabled {
+            inherit userCfg;
+            type = "editors";
+            name = "nvim";
+          };
 
-        compat = fishEnabled && nvimEnabled;
-      in (trivial.warnIfNot compat "Custom kitty pager is not compatible with the current configuration" compat);
+          compat = fishEnabled && nvimEnabled;
+        in
+        (trivial.warnIfNot compat "Custom kitty pager is not compatible with the current configuration"
+          compat
+        );
     };
   };
 }

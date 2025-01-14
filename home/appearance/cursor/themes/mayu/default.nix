@@ -1,6 +1,8 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   catpuccinName = "catppuccin-mocha-maroon-cursors";
-in {
+in
+{
   home.pointerCursor = {
     package = pkgs.catppuccin-cursors.mochaMaroon;
     name = catpuccinName;

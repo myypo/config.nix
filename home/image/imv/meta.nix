@@ -1,3 +1,1 @@
-{
-  className = "imv";
-}
+{ className = "imv"; }

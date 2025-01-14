@@ -1,17 +1,13 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.programs.docker;
-in {
+in
+{
   options.myypo.programs.docker = {
     enable = mkEnableOption "whether to enable docker system-wide";
 
-    members = mkOption {
-      type = types.listOf types.str;
-    };
+    members = mkOption { type = types.listOf types.str; };
   };
 
   config = mkIf cfg.enable {

@@ -4,9 +4,7 @@
   isMainVideoPlayer,
 }:
 lib.makeVideoPlayer isMainVideoPlayer "mpv.desktop" {
-  home.packages = with pkgs; [
-    ffmpegthumbnailer
-  ];
+  home.packages = with pkgs; [ ffmpegthumbnailer ];
 
   programs.mpv = {
     enable = true;

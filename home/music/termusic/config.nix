@@ -12,8 +12,9 @@ lib.makeMusicPlayer isMainMusicPlayer "termusic.desktop" {
   ];
 
   xdg = {
-    configFile."termusic/config.toml".text =
-      builtins.concatStringsSep "\n"
-      [(builtins.readFile ./settings.toml) (builtins.readFile ./themes/${theme}/theme.toml)];
+    configFile."termusic/config.toml".text = builtins.concatStringsSep "\n" [
+      (builtins.readFile ./settings.toml)
+      (builtins.readFile ./themes/${theme}/theme.toml)
+    ];
   };
 }

@@ -6,8 +6,9 @@
   escalCmd,
   pagerCompatible,
   isMainTerminal,
-}: let
-  cfg = {};
+}:
+let
+  cfg = { };
 
   mykitty = lib.writeScript {
     inherit pkgs cfg;
@@ -19,24 +20,19 @@
     name = "v";
     src = ./scripts/kitty_nvim.sh;
   };
-in {
-  home.sessionVariables = lib.mkIf isMainTerminal {TERMINAL = "kitty";};
+in
+{
+  home.sessionVariables = lib.mkIf isMainTerminal { TERMINAL = "kitty"; };
   home.packages = [
     mykitty
 
     # Convenient command to open nvim in kitty in cwd
-    (
-      if isMainTerminal
-      then kitty_nvim
-      else null
-    )
+    (if isMainTerminal then kitty_nvim else null)
   ];
 
   xdg.configFile."kitty/job_win.py".source = ./kittens/job_win.py;
 
-  imports = [
-    (import ./themes/${theme} {inherit fontSize;})
-  ];
+  imports = [ (import ./themes/${theme} { inherit fontSize; }) ];
 
   programs = {
     kitty = {

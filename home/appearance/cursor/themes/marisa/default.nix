@@ -1,13 +1,18 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   pname = "Marisa-Kirisame";
-in {
+in
+{
   home.pointerCursor = {
     # TODO: sadly it is pretty broken, can't change cursor size and it leaves a trace
     package = pkgs.stdenvNoCC.mkDerivation rec {
       inherit pname;
       name = pname;
 
-      nativeBuildInputs = with pkgs; [xcur2png hyprcursor];
+      nativeBuildInputs = with pkgs; [
+        xcur2png
+        hyprcursor
+      ];
 
       src = ./.;
 

@@ -2,8 +2,9 @@
   lib,
   inputs,
   pkgs,
-}: let
-  cfg = {};
+}:
+let
+  cfg = { };
 
   grimblast_save_area = lib.writeScript {
     inherit pkgs cfg;
@@ -15,7 +16,8 @@
     name = "grimblast_save_screen";
     src = ./scripts/grimblast_save_screen.sh;
   };
-in {
+in
+{
   home.packages = with pkgs; [
     grimblast
     slurp

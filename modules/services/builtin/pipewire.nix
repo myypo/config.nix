@@ -3,9 +3,11 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   cfg = config.myypo.services.builtin.pipewire;
-in {
+in
+{
   options.myypo.services.builtin.pipewire = {
     enable = lib.mkEnableOption "pipewire";
   };
@@ -25,8 +27,6 @@ in {
       wireplumber.enable = true;
     };
 
-    environment.systemPackages = with pkgs; [
-      pulsemixer
-    ];
+    environment.systemPackages = with pkgs; [ pulsemixer ];
   };
 }

@@ -4,13 +4,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   userOpts = {
     options.dev-tools.rust = {
       enable = lib.makeNullableEnableOption "rust dev-tools";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {
@@ -19,7 +21,7 @@ in {
     type = "dev-tools";
     name = "rust";
     nixosConfig = {
-      nixpkgs.overlays = [inputs.fenix.overlays.default];
+      nixpkgs.overlays = [ inputs.fenix.overlays.default ];
     };
   };
 }

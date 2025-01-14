@@ -4,9 +4,11 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.myypo.services.builtin.dbus;
-in {
+in
+{
   options.myypo.services.builtin.dbus = {
     enable = mkEnableOption "dbus";
   };
@@ -18,7 +20,11 @@ in {
       dbus = {
         enable = true;
         implementation = "broker";
-        packages = with pkgs; [dconf gcr udisks2];
+        packages = with pkgs; [
+          dconf
+          gcr
+          udisks2
+        ];
       };
     };
   };

@@ -1,20 +1,14 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.services.builtin.autologin;
-in {
+in
+{
   options.myypo.services.builtin.autologin = {
     enable = mkEnableOption "autologin";
 
-    userName = mkOption {
-      type = types.str;
-    };
+    userName = mkOption { type = types.str; };
   };
 
-  config = mkIf cfg.enable {
-    services.getty.autologinUser = "${cfg.userName}";
-  };
+  config = mkIf cfg.enable { services.getty.autologinUser = "${cfg.userName}"; };
 }

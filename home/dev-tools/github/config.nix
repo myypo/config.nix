@@ -1,7 +1,5 @@
+{ theme, pkgs }:
 {
-  theme,
-  pkgs,
-}: {
   programs.gh = {
     enable = true;
   };
@@ -14,7 +12,5 @@
     };
   };
 
-  home.packages = with pkgs; [
-    act
-  ];
+  home.packages = with pkgs; [ act ];
 }

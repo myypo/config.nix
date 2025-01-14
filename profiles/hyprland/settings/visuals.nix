@@ -3,7 +3,8 @@
   theme,
   monitors,
   mainTerminalMeta,
-}: {
+}:
+{
   wayland.windowManager.hyprland.settings = {
     general = {
       gaps_in = 0;
@@ -69,16 +70,10 @@
       swallow_regex = "^(${mainTerminalMeta.className})$";
     };
 
-    monitor =
-      lib.attrsets.mapAttrsToList (
-        _: v:
-          "${v.name},${v.settings},${v.position},${v.scaling}"
-          + (
-            if v.extra != null
-            then ",${v.extra}"
-            else ""
-          )
-      )
-      monitors;
+    monitor = lib.attrsets.mapAttrsToList (
+      _: v:
+      "${v.name},${v.settings},${v.position},${v.scaling}"
+      + (if v.extra != null then ",${v.extra}" else "")
+    ) monitors;
   };
 }

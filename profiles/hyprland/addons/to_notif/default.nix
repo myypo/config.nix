@@ -2,18 +2,20 @@
   lib,
   pkgs,
   addons,
-}: let
+}:
+let
   cfg = addons.to_notif;
 
   name = "to_notif";
   src = ./to_notif.sh;
 
   to_notif = lib.writeScript {
-    inherit pkgs name cfg src;
+    inherit
+      pkgs
+      name
+      cfg
+      src
+      ;
   };
 in
-  lib.mkIf cfg.enable {
-    home.packages = [
-      to_notif
-    ];
-  }
+lib.mkIf cfg.enable { home.packages = [ to_notif ]; }

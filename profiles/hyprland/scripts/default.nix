@@ -2,8 +2,9 @@
   lib,
   pkgs,
   userCfg,
-}: let
-  cfg = {};
+}:
+let
+  cfg = { };
 
   hypr_organize_workspaces = lib.writeScript {
     inherit pkgs cfg;
@@ -11,10 +12,13 @@
     src = ./hypr_organize_workspaces.sh;
   };
 
-  mpris_toggle_browser = let
-    meta = lib.getMeta "browsers" userCfg.mainBrowser;
-    cfg = {mpris-prefix = meta.mprisPrefix;};
-  in
+  mpris_toggle_browser =
+    let
+      meta = lib.getMeta "browsers" userCfg.mainBrowser;
+      cfg = {
+        mpris-prefix = meta.mprisPrefix;
+      };
+    in
     lib.writeScript {
       inherit pkgs cfg;
       name = "mpris_toggle_browser";
@@ -52,7 +56,8 @@
     name = "to_prev_workspace";
     src = ./to_prev_workspace.sh;
   };
-in {
+in
+{
   home.packages = [
     hypr_organize_workspaces
     mpris_toggle_browser

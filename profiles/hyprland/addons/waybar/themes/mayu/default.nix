@@ -1,7 +1,6 @@
-{pkgs}: {
-  home.packages = with pkgs; [
-    wttrbar
-  ];
+{ pkgs }:
+{
+  home.packages = with pkgs; [ wttrbar ];
 
   # Applet is used in the waybar "tray" module
   services.network-manager-applet.enable = true;
@@ -18,9 +17,7 @@
           "custom/weather"
           "clock"
         ];
-        modules-center = [
-          "hyprland/workspaces"
-        ];
+        modules-center = [ "hyprland/workspaces" ];
         modules-right = [
           "pulseaudio"
           "memory"
@@ -32,7 +29,8 @@
           "format" = "{}°C";
           "tooltip" = true;
           "interval" = 3600;
-          "exec" = "sleep 15 && wttrbar --date-format '%m/%d' --location Kamianets-Podilskyi --ampm --hide-conditions &";
+          "exec" =
+            "sleep 15 && wttrbar --date-format '%m/%d' --location Kamianets-Podilskyi --ampm --hide-conditions &";
           "return-type" = "json";
         };
         "hyprland/workspaces" = {
@@ -45,7 +43,12 @@
           "on-scroll-up" = "light -A 1";
           "on-scroll-down" = "light -U 1";
           "format" = "<span color=\"#f6c177\">{icon} </span>{percent}%";
-          "format-icons" = ["󰃝" "󰃞" "󰃟" "󰃠"];
+          "format-icons" = [
+            "󰃝"
+            "󰃞"
+            "󰃟"
+            "󰃠"
+          ];
           "tooltip" = false;
         };
         "pulseaudio" = {
@@ -53,7 +56,11 @@
           "format" = "<span color=\"#f6c177\">{icon} </span>{volume}%";
           "format-muted" = "<span color=\"#f6c177\">󰖁 Muted</span>";
           "format-icons" = {
-            "default" = ["󰕿" "󰖀" "󰕾 "];
+            "default" = [
+              "󰕿"
+              "󰖀"
+              "󰕾 "
+            ];
           };
           "on-click" = "pulsemixer --toggle-mute";
           "tooltip" = false;
@@ -65,7 +72,18 @@
             "critical" = 10;
           };
           "format" = "<span color=\"#f6c177\">{icon} </span>{capacity}%";
-          "format-icons" = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+          "format-icons" = [
+            "󰁺"
+            "󰁻"
+            "󰁼"
+            "󰁽"
+            "󰁾"
+            "󰁿"
+            "󰂀"
+            "󰂁"
+            "󰂂"
+            "󰁹"
+          ];
           "format-full" = "<span color=\"#f6c177\">{icon} </span>{capacity}%";
           "format-charging" = "<span color=\"#f6c177\">󰂄 </span>{capacity}%";
           "tooltip" = false;

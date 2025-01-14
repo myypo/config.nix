@@ -1,13 +1,8 @@
+{ lib, config, ... }:
+with lib;
 {
-  lib,
-  config,
-  ...
-}:
-with lib; {
   options.myypo = {
-    hostName = mkOption {
-      type = types.str;
-    };
+    hostName = mkOption { type = types.str; };
   };
 
   config = {

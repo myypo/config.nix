@@ -4,7 +4,8 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   nix = {
     package = pkgs.nixVersions.git;
 
@@ -13,7 +14,10 @@
     settings = {
       auto-optimise-store = true;
       builders-use-substitutes = true;
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       keep-derivations = true;
       keep-outputs = true;
     };
@@ -34,9 +38,7 @@
 
       # Make pkgs from small-unstable accessible by referencing pkgs.small-unstable
       (final: _prev: {
-        small-unstable = import inputs.small-unstable-nixpkgs {
-          inherit (final) system config;
-        };
+        small-unstable = import inputs.small-unstable-nixpkgs { inherit (final) system config; };
       })
     ];
   };

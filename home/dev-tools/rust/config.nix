@@ -1,7 +1,5 @@
+{ inputs, pkgs }:
 {
-  inputs,
-  pkgs,
-}: {
   home.packages = with pkgs; [
     rust-analyzer-nightly
 

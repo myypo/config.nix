@@ -1,11 +1,9 @@
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
+{ lib, config, ... }:
+with lib;
+let
   cfg = config.myypo.ukr-locale;
-in {
+in
+{
   options.myypo.ukr-locale.enable = mkEnableOption "Ukrainian locale";
 
   config = mkIf cfg.enable {

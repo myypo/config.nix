@@ -4,13 +4,15 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   userOpts = {
     options.recording.grim = {
       enable = lib.makeNullableEnableOption "grim";
     };
   };
-in {
+in
+{
   options = lib.makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {
@@ -18,8 +20,6 @@ in {
     configPath = ./config.nix;
     type = "recording";
     name = "grim";
-    addArgsFn = userName: cfg: {
-      inherit inputs;
-    };
+    addArgsFn = userName: cfg: { inherit inputs; };
   };
 }
