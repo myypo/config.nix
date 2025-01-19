@@ -61,7 +61,7 @@ Keymap("n", "<A-e>", ":cprev<CR>")
 Keymap("n", "n", "nzzzv")
 Keymap("n", "N", "Nzzzv")
 
--- Flash remaps
+-- Flash/Leap remaps
 Keymap("n", "x", "s")
 Keymap("n", "X", "r")
 

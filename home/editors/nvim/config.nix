@@ -103,8 +103,8 @@ in
             mkOutOfStoreSymlink "${baseSrcPath}/minvim/base/min_autocmd.lua";
           "${baseDestPath}/lua/base/options.lua".source =
             mkOutOfStoreSymlink "${baseSrcPath}/lua/base/options.lua";
-          "${baseDestPath}/lua/plugins/flash.lua".source =
-            mkOutOfStoreSymlink "${baseSrcPath}/lua/plugins/flash.lua";
+          "${baseDestPath}/lua/plugins/leap.lua".source =
+            mkOutOfStoreSymlink "${baseSrcPath}/lua/plugins/leap.lua";
           "${baseDestPath}/lua/plugins/colorscheme.lua".source =
             mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/colorscheme.lua";
         };
