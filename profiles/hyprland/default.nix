@@ -106,40 +106,20 @@ in
         };
       };
     };
-    nixosConfig = {
-      programs = {
-        # Have to be enabled to use apps that do not support wayland
-        xwayland.enable = false;
 
-        dconf.enable = true;
-      };
+    nixosConfig = {
+      programs.dconf.enable = true;
 
       xdg.portal = with pkgs; {
         enable = true;
         extraPortals = [
           xdg-desktop-portal-gtk
-          xdg-desktop-portal-hyprland
         ];
-        config.preferred.default = [
-          "hyprland"
-          "gtk"
+        configPackages = [
+          xdg-desktop-portal-gtk
         ];
         xdgOpenUsePortal = true;
-        configPackages = [ hyprland ];
       };
-
-      environment.systemPackages = with pkgs; [
-        wl-clipboard
-        wlr-randr
-        wayland
-        wayland-scanner
-        wayland-utils
-        egl-wayland
-        wayland-protocols
-        glfw-wayland
-        qt6.qtwayland
-        wev
-      ];
     };
   };
 }

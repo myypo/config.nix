@@ -9,9 +9,11 @@ return {
 		local leap = require("leap")
 		leap.opts.safe_labels = "netsufm"
 		leap.opts.labels = 'neitsroamgluypfwh,.dcx"/qz'
-		leap.opts.case_sensitive = true
+		leap.opts.preview_filter = function(ch0, ch1, ch2)
+			return not (ch1:match("%s") or ch0:match("%w") and ch1:match("%w") and ch2:match("%w"))
+		end
 
-		vim.keymap.set({ "n", "v" }, "s", "<Plug>(leap)")
+		vim.keymap.set({ "n" }, "s", "<Plug>(leap)")
 
 		vim.keymap.set({ "o" }, "s", function()
 			require("leap.remote").action()
@@ -19,7 +21,7 @@ return {
 
 		vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
 
-		vim.keymap.set({ "x", "o" }, "r", function()
+		vim.keymap.set({ "o" }, "r", function()
 			require("leap.treesitter").select()
 		end)
 

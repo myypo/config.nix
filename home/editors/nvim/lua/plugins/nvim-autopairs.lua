@@ -11,6 +11,7 @@ return {
 			ts_config = {
 				lua = { "string" }, -- Don't add pairs in lua string treesitter nodes
 				javascript = { "template_string" }, -- Don't add pairs in javascript template_string
+				rust = {},
 			},
 			disable_filetype = { "TelescopePrompt", "spectre_panel" },
 			fast_wrap = {
@@ -23,13 +24,18 @@ return {
 		})
 
 		local Rule = require("nvim-autopairs.rule")
-		local cond = require("nvim-autopairs.conds")
+		local conds = require("nvim-autopairs.conds")
 
 		np.add_rules({
-			Rule("<", ">"):with_pair(cond.before_regex("%a+")),
-			Rule("*", "*", { "markdown" }):with_pair(cond.not_before_regex("\n")),
-			Rule("_", "_", { "markdown" }):with_pair(cond.before_regex("%s")),
+			Rule("<", ">"):with_pair(conds.before_regex("%a+")):with_move(function(opts)
+				return opts.char == ">"
+			end),
+			Rule("*", "*", { "markdown" }):with_pair(conds.not_before_regex("\n")),
+			Rule("_", "_", { "markdown" }):with_pair(conds.before_regex("%s")),
 		})
+
+		local ts_conds = require("nvim-autopairs.ts-conds")
+		np.get_rule("'")[2]:with_pair(ts_conds.is_not_ts_node({ "type_arguments", "bounded_type" }))
 
 		local cmp_na = require("nvim-autopairs.completion.cmp")
 		local cmp = require("cmp")

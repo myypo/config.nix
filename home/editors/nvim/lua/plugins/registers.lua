@@ -1,7 +1,7 @@
 return {
 	"tversteeg/registers.nvim",
 	keys = {
-		{ '"', mode = { "n", "v" } },
+		{ '"', mode = { "n" } },
 		{
 			"<C-r>",
 			mode = "i",

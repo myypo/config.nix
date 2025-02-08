@@ -85,6 +85,8 @@ in
                     mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/colorscheme.lua";
                   "${baseDestPath}/lua/plugins/lualine.lua".source =
                     mkOutOfStoreSymlink "${baseSrcPath}/lua/themes/${theme}/lualine.lua";
+
+                  "${baseDestPath}/after".source = mkOutOfStoreSymlink "${baseSrcPath}/after";
                 };
 
                 substPlugins = builtins.listToAttrs (

@@ -39,6 +39,9 @@ Keymap("n", "<C-u>", "<Nop>")
 Keymap("n", "<PageDown>", lazy_feedkeys("<C-d>zz"))
 Keymap("n", "<PageUp>", lazy_feedkeys("<C-u>zz"))
 
+-- I do not use hjkl anyways
+Keymap("n", "l", "<Nop>")
+
 -- Killword backward
 Keymap({ "i", "c" }, "<C-BS>", "<C-w>")
 

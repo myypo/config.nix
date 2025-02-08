@@ -24,14 +24,15 @@
     grimblast
 
     playerctl
+
+    wl-clipboard
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-
-    # Have to be enabled to use apps that do not support wayland
-    xwayland.enable = false;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   home.sessionVariables = {

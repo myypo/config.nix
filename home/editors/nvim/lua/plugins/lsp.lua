@@ -120,6 +120,11 @@ return {
 			vim.lsp.buf.code_action({ apply = true })
 		end)
 
+		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+			border = "rounded",
+		})
+		Keymap("n", "R", vim.lsp.buf.hover)
+
 		-- LSP setups
 		-- client capabilities (+ the completion ones from nvim-cmp).
 		local client_capabilities = function()
@@ -150,29 +155,6 @@ return {
 						enable = false,
 					},
 				},
-			},
-		})
-
-		nvim_lsp.gopls.setup({
-			capabilities = capabilities,
-			settings = {
-				gopls = {
-					experimentalPostfixCompletions = true,
-					analyses = {
-						unusedparams = true,
-						shadow = true,
-					},
-					staticcheck = true,
-					semanticTokens = true,
-				},
-			},
-			init_options = {
-				usePlaceholders = true,
-			},
-
-			-- HACK: because experiencing issues with diagnostics never disappearing
-			flags = {
-				allow_incremental_sync = false,
 			},
 		})
 
@@ -241,18 +223,8 @@ return {
 
 		nvim_lsp.nushell.setup({ capabilities = capabilities })
 
-		require("lspconfig.configs").postgres_lsp = {
-			default_config = {
-				name = "postgres_lsp",
-				cmd = { "postgres_lsp" },
-				filetypes = { "sql" },
-				single_file_support = true,
-			},
-		}
-		nvim_lsp.postgres_lsp.setup({
-			capabilities = capabilities,
-			force_setup = true,
-		})
+		-- TODO: sounds good but it just crashes all the time
+		-- nvim_lsp.postgres_lsp.setup({ capabilities = capabilities })
 
 		nvim_lsp.roc_ls.setup({ capabilities = capabilities })
 

@@ -2,9 +2,8 @@
 {
   home.packages = with pkgs; [
     slack
+    google-chrome
     postman
-    buttercup-desktop
-
-    restate
+    keepassxc
   ];
 }

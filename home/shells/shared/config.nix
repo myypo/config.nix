@@ -20,6 +20,8 @@ let
         top = "btop";
 
         c = "wl-copy --trim-newline";
+
+        r = "bat";
       };
     in
     {
