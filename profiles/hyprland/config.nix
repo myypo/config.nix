@@ -30,24 +30,31 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    package = null;
+    portalPackage = null;
+    systemd.enable = false;
   };
+  xdg.configFile."hypr/xdph.conf".text = ''
+    screencopy {
+        allow_token_by_default = true
+    }
+  '';
 
   home.sessionVariables = {
     QT_QPA_PLATFORMTHEME = "gtk3";
     QT_SCALE_FACTOR = "1";
-    MOZ_ENABLE_WAYLAND = "1";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORM = "wayland;xcb";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
 
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
+    MOZ_ENABLE_WAYLAND = "1";
+    SDL_VIDEODRIVER = "wayland";
+    SDL_VIDEO_DRIVER = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+
+    # GBM_BACKEND = "nvidia-drm";
+    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    # LIBVA_DRIVER_NAME = "nvidia";
 
     CLUTTER_BACKEND = "wayland";
 

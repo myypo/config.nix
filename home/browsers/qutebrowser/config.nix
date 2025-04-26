@@ -7,7 +7,7 @@
 lib.makeBrowser isMainBrowser "org.qutebrowser.qutebrowser.desktop" {
   home = {
     packages = with pkgs; [
-      small-unstable.qutebrowser
+      qutebrowser
       python311Packages.adblock
     ];
 

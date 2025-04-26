@@ -48,7 +48,7 @@ in
         "ctrl+shift+e" = "send_text application \\033[101;6u";
         "ctrl+shift+h" = "send_text application \\033[104;6u";
         "ctrl+shift+n" = "send_text application \\033[110;6u";
-        "ctrl+shift+p" = "send_text application \\033[113;6u";
+        "ctrl+shift+p" = "send_text application \\033[112;6u";
         "ctrl+shift+s" = "send_text application \\033[115;6u";
         "ctrl+shift+t" = "send_text application \\033[116;6u";
         "ctrl+shift+u" = "send_text application \\033[117;6u";

@@ -53,6 +53,8 @@ local options = {
 
 	-- Treat hyphen as a part of word
 	iskeyword = "@,48-57,_,192-255,-",
+
+	winborder = "rounded",
 }
 
 for k, v in pairs(options) do
@@ -96,9 +98,13 @@ local globals = {
 
 	-- Disable sql omni completion
 	loaded_sql_completion = 1,
+	omni_sql_no_default_maps = 1,
 
 	-- Set this to 0 in order to disable native EditorConfig support
 	editorconfig = 1,
+
+	-- FIXME: https://github.com/neovim/neovim/issues/32660
+	_ts_force_sync_parsing = true,
 }
 
 for k, v in pairs(globals) do

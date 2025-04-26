@@ -34,25 +34,7 @@ return {
 			Rule("_", "_", { "markdown" }):with_pair(conds.before_regex("%s")),
 		})
 
-		local ts_conds = require("nvim-autopairs.ts-conds")
-		np.get_rule("'")[2]:with_pair(ts_conds.is_not_ts_node({ "type_arguments", "bounded_type" }))
-
-		local cmp_na = require("nvim-autopairs.completion.cmp")
-		local cmp = require("cmp")
-		-- To autoinsert () on choosing function/method
-		cmp.event:on(
-			"confirm_done",
-			cmp_na.on_confirm_done({
-				filetypes = {
-					roc = false,
-					lean = false,
-					nix = false,
-					nu = false,
-				},
-			})
-		)
-
 		local na = require("nvim-autopairs")
-		na.get_rule("'")[1].not_filetypes = { "rescript" }
+		na.get_rule("'")[1].not_filetypes = { "rust" }
 	end,
 }

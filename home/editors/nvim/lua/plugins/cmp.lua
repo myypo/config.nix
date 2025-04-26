@@ -1,247 +1,145 @@
 return {
-	"iguanacucumber/magazine.nvim",
-	name = "nvim-cmp",
+	"saghen/blink.cmp",
 	event = { "InsertEnter", "CmdlineEnter" },
 	dependencies = {
-		{ "iguanacucumber/mag-nvim-lsp", name = "cmp-nvim-lsp" },
-		{ "iguanacucumber/mag-buffer", name = "cmp-buffer" },
-		{ "iguanacucumber/mag-cmdline", name = "cmp-cmdline" },
-
-		"https://codeberg.org/FelipeLema/cmp-async-path",
-
-		"saadparwaiz1/cmp_luasnip",
-		"L3MON4D3/LuaSnip",
+		-- { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+		{
+			"L3MON4D3/LuaSnip",
+			config = function()
+				local ls = require("luasnip")
+				---@diagnostic disable-next-line: unused-local
+				local s = ls.snippet
+				---@diagnostic disable-next-line: unused-local
+				local sn = ls.snippet_node
+				---@diagnostic disable-next-line: unused-local
+				local t = ls.text_node
+				---@diagnostic disable-next-line: unused-local
+				local i = ls.insert_node
+				---@diagnostic disable-next-line: unused-local
+				local f = ls.function_node
+				---@diagnostic disable-next-line: unused-local
+				local c = ls.choice_node
+				---@diagnostic disable-next-line: unused-local
+				local d = ls.dynamic_node
+				---@diagnostic disable-next-line: unused-local
+				local r = ls.restore_node
+				require("luasnip.loaders.from_lua").lazy_load({ paths = { "~/.config/nvim/lua/luasnip" } })
+			end,
+		},
 	},
 
-	config = function()
-		local cmp = require("cmp")
+	-- use a release tag to download pre-built binaries
+	version = "1.*",
+	build = "nix run .#build-plugin",
 
-		local ls = require("luasnip")
-		---@diagnostic disable-next-line: unused-local
-		local s = ls.snippet
-		---@diagnostic disable-next-line: unused-local
-		local sn = ls.snippet_node
-		---@diagnostic disable-next-line: unused-local
-		local t = ls.text_node
-		---@diagnostic disable-next-line: unused-local
-		local i = ls.insert_node
-		---@diagnostic disable-next-line: unused-local
-		local f = ls.function_node
-		---@diagnostic disable-next-line: unused-local
-		local c = ls.choice_node
-		---@diagnostic disable-next-line: unused-local
-		local d = ls.dynamic_node
-		---@diagnostic disable-next-line: unused-local
-		local r = ls.restore_node
-		require("luasnip.loaders.from_lua").lazy_load({ paths = { "~/.config/nvim/lua/luasnip" } })
+	---@module 'blink.cmp'
+	---@type blink.cmp.Config
+	opts = {
+		snippets = { preset = "luasnip" },
 
-		local kind_icons = {
-			Text = "󰊄",
-			Method = "",
-			Function = "󰡱",
-			Constructor = "",
-			Field = "",
-			Variable = "󱀍",
-			Class = "",
-			Interface = "",
-			Module = "󰕳",
-			Property = "",
-			Unit = "",
-			Value = "",
-			Enum = "",
-			Keyword = "",
-			Snippet = "",
-			Color = "",
-			File = "",
-			Reference = "",
-			Folder = "",
-			EnumMember = "",
-			Constant = "",
-			Struct = "",
-			Event = "",
-			Operator = "",
-			TypeParameter = "",
-		}
+		keymap = {
+			preset = "none",
 
-		cmp.setup({
-			view = {
-				docs = {
-					auto_open = false,
-				},
-			},
+			["<C-i>"] = { "show_documentation", "hide_documentation", "fallback" },
+			["<PageUp>"] = { "scroll_documentation_up", "fallback" },
+			["<PageDown>"] = { "scroll_documentation_down", "fallback" },
+			["<CR>"] = { "select_and_accept", "fallback" },
+			["<Up>"] = { "select_prev", "fallback" },
+			["<Down>"] = { "select_next", "fallback" },
+			["<C-t>"] = { "hide", "show" },
 
-			preselect = cmp.PreselectMode.Item,
-			snippet = {
-				expand = function(args)
-					ls.lsp_expand(args.body)
-				end,
-			},
-			completion = {
-				completeopt = "menu,menuone",
-			},
-			---@diagnostic disable-next-line: missing-fields
-			performance = {
-				max_view_entries = 7,
-			},
-			mapping = cmp.mapping({
-				["<C-n>"] = cmp.mapping(function(fallback)
-					-- Trigger a custom snippet if possible
-					-- despite it not being visible in the cmp menu
-					if ls.expand_or_jumpable() then
-						ls.expand_or_jump()
-					else
-						fallback()
-					end
-				end, { "i", "s", "v" }),
-				["<C-e>"] = cmp.mapping(function(fallback)
-					if ls.jumpable(-1) then
-						ls.jump(-1)
-					else
-						fallback()
-					end
-				end, { "i", "s", "v" }),
-				["<C-i>"] = function()
-					if cmp.visible_docs() then
-						cmp.close_docs()
-					else
-						cmp.open_docs()
-					end
-				end,
-				["<PageUp>"] = cmp.mapping.scroll_docs(-4), -- Up
-				["<PageDown>"] = cmp.mapping.scroll_docs(4), -- Down
-				["<CR>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.confirm({ select = true })
-					else
-						fallback()
-					end
-				end),
-				["<Down>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_next_item()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<Up>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_prev_item()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<C-t>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.abort()
-					else
-						cmp.complete()
-						fallback()
-					end
-				end, { "i", "s" }),
-			}),
-			formatting = {
-				expandable_indicator = true,
-				fields = { "kind", "abbr", "menu" },
-				format = function(_, vim_item)
-					vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-					return vim_item
-				end,
-			},
-			sorting = {
-				priority_weight = 1.0,
-				comparators = {
-					cmp.config.compare.offset,
-					cmp.config.compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
-					cmp.config.compare.locality,
-					cmp.config.compare.recently_used,
-					cmp.config.compare.order,
-				},
-			},
-			sources = cmp.config.sources({
-				{ name = "async_path", priority = 8 },
-				{ name = "nvim_lsp", priority = 8 },
-				{ name = "lazydev", group_index = 0 }, -- Completions specific to Lua
-				{ name = "buffer", priority = 4, max_item_count = 2, keyword_length = 3 },
-			}),
+			["<C-n>"] = { "snippet_forward", "fallback" },
+			["<C-S-n>"] = { "snippet_backward", "fallback" },
+		},
 
-			confirm_opts = {
-				behavior = cmp.ConfirmBehavior.Replace,
-				select = false,
+		appearance = {
+			highlight_ns = vim.api.nvim_create_namespace("blink_cmp"),
+			use_nvim_cmp_as_default = true,
+			nerd_font_variant = "mono",
+			kind_icons = {
+				Text = "󰊄",
+				Method = "",
+				Function = "󰡱",
+				Constructor = "",
+				Field = "",
+				Variable = "󱀍",
+				Class = "",
+				Interface = "",
+				Module = "󰕳",
+				Property = "",
+				Unit = "",
+				Value = "",
+				Enum = "",
+				Keyword = "",
+				Snippet = "",
+				Color = "",
+				File = "",
+				Reference = "",
+				Folder = "",
+				EnumMember = "",
+				Constant = "",
+				Struct = "",
+				Event = "",
+				Operator = "",
+				TypeParameter = "",
 			},
-			window = {
-				completion = cmp.config.window.bordered({
-					winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
-				}),
-				documentation = cmp.config.window.bordered({
-					winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-				}),
-			},
-			experimental = {
-				ghost_text = false,
-				native_menu = false,
-			},
-		})
+		},
 
-		cmp.setup.cmdline(":", {
-			experimental = {
-				ghost_text = false,
-				native_menu = false,
+		cmdline = {
+			completion = { menu = { auto_show = true } },
+			keymap = {
+				preset = "none",
+
+				["<Tab>"] = { "select_and_accept" },
+				["<Up>"] = { "select_prev", "fallback" },
+				["<Down>"] = { "select_next", "fallback" },
+				["<C-t>"] = { "hide", "show" },
 			},
-			confirm_opts = {
-				behavior = cmp.ConfirmBehavior.Replace,
-				select = true,
+			---@diagnostic disable-next-line: assign-type-mismatch
+			sources = function()
+				local type = vim.fn.getcmdtype()
+				if type == ":" or type == "@" then
+					return { "cmdline" }
+				end
+				return {}
+			end,
+		},
+
+		completion = {
+			list = {
+				max_items = 7,
+				cycle = {
+					from_bottom = true,
+					from_top = true,
+				},
 			},
-			mapping = cmp.mapping({
-				["<C-t>"] = {
-					c = function(fallback)
-						if cmp.visible() then
-							cmp.abort()
-						else
-							cmp.complete()
-							fallback()
-						end
-					end,
+			menu = {
+				winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+			},
+			documentation = {
+				window = { winhighlight = "Normal:Normal,FloatBorder:FloatBorder" },
+				auto_show = false,
+			},
+		},
+
+		sources = {
+			default = { "lsp", "path", "buffer" },
+			per_filetype = {
+				-- sql = { "dadbod", "buffer" },
+			},
+			providers = {
+				-- dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+				lsp = {
+					fallbacks = {},
 				},
-				["<Down>"] = {
-					c = function(fallback)
-						if cmp.visible() then
-							cmp.select_next_item()
-						else
-							fallback()
-						end
-					end,
+				buffer = {
+					max_items = 2,
+					min_keyword_length = 3,
 				},
-				["<Up>"] = {
-					c = function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						else
-							fallback()
-						end
-					end,
-				},
-				["<Right>"] = {
-					c = function(fallback)
-						if cmp.visible() then
-							cmp.confirm({ select = true })
-						else
-							fallback()
-						end
-					end,
-				},
-			}),
-			---@diagnostic disable-next-line: missing-fields
-			matching = { disallow_symbol_nonprefix_matching = false },
-			sources = cmp.config.sources({
-				{ name = "async_path" },
-				{ name = "cmdline_history" },
-				{
-					name = "cmdline",
-					option = {
-						ignore_cmds = { "Man", "!" },
-					},
-				},
-			}),
-		})
-	end,
+			},
+		},
+
+		fuzzy = { implementation = "prefer_rust_with_warning" },
+	},
+	opts_extend = { "sources.default" },
 }

@@ -4,25 +4,24 @@
   config,
   ...
 }:
-with lib;
 let
   cfg = config.myypo.hardware.gpu;
 in
 {
   options.myypo.hardware.gpu = {
-    enable = mkEnableOption "enable custom gpu module";
+    enable = lib.mkEnableOption "enable custom gpu module";
 
     optimus = {
-      enable = mkEnableOption "whether the machine is an optimus laptop";
+      enable = lib.mkEnableOption "whether the machine is an optimus laptop";
     };
 
-    dedicatedBrand = mkOption {
-      type = types.nullOr (types.enum [ "nvidia" ]);
+    dedicatedBrand = lib.mkOption {
+      type = lib.types.nullOr (lib.types.enum [ "nvidia" ]);
       default = null;
     };
-    integratedBrand = mkOption {
-      type = types.nullOr (
-        types.enum [
+    integratedBrand = lib.mkOption {
+      type = lib.types.nullOr (
+        lib.types.enum [
           "intel"
           "amd"
         ]
@@ -30,21 +29,21 @@ in
       default = null;
     };
 
-    integratedBusId = mkOption {
-      type = types.nullOr types.str;
+    integratedBusId = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
       default = null;
     };
-    dedicatedBusId = mkOption {
-      type = types.nullOr types.str;
+    dedicatedBusId = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
       default = null;
     };
 
-    integratedDriNum = mkOption {
-      type = types.nullOr types.int;
+    integratedDriNum = lib.mkOption {
+      type = lib.types.nullOr lib.types.int;
       default = null;
     };
-    dedicatedDriNum = mkOption {
-      type = types.nullOr types.int;
+    dedicatedDriNum = lib.mkOption {
+      type = lib.types.nullOr lib.types.int;
       default = null;
     };
   };
@@ -54,7 +53,7 @@ in
       dedicatedBrand = cfg.dedicatedBrand or "none";
       integratedBrand = cfg.integratedBrand or "none";
     in
-    mkIf cfg.enable {
+    lib.mkIf cfg.enable {
       boot = {
         initrd.kernelModules =
           let
@@ -91,8 +90,8 @@ in
         ];
       };
 
-      hardware = with cfg; {
-        nvidia = mkIf (dedicatedBrand == "nvidia") {
+      hardware = {
+        nvidia = lib.mkIf (dedicatedBrand == "nvidia") {
           open = false;
 
           package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
@@ -106,15 +105,15 @@ in
           # Requires at least RTX 30xx GPU and Intel 10th gen/AMD Rembrandt
           dynamicBoost.enable = true;
 
-          prime = mkIf optimus.enable {
+          prime = lib.mkIf cfg.optimus.enable {
             sync.enable = true;
 
-            nvidiaBusId = dedicatedBusId;
+            nvidiaBusId = cfg.dedicatedBusId;
 
             # Values here depend on the laptop's model, run:
             # lspci | grep -E 'VGA|3D'
-            intelBusId = mkIf (integratedBrand == "intel") integratedBusId;
-            amdgpuBusId = mkIf (integratedBrand == "amd") integratedBusId;
+            intelBusId = lib.mkIf (integratedBrand == "intel") cfg.integratedBusId;
+            amdgpuBusId = lib.mkIf (integratedBrand == "amd") cfg.integratedBusId;
           };
         };
 
@@ -138,18 +137,17 @@ in
       };
 
       environment =
-        with cfg;
         let
           combinedVariables =
             let
               wlrDevices =
-                if optimus.enable then
+                if cfg.optimus.enable then
                   {
                     # Prioritize using integrated graphics for a WM, the values depend on the laptop's model
                     WLR_DRM_DEVICES =
                       let
-                        prior = builtins.toString integratedDriNum;
-                        backup = builtins.toString dedicatedDriNum;
+                        prior = builtins.toString cfg.integratedDriNum;
+                        backup = builtins.toString cfg.dedicatedDriNum;
                       in
                       "/dev/dri/card${prior}:/dev/dri/card${backup}";
                   }
@@ -167,6 +165,7 @@ in
             ffmpeg-full
             libva
             libva-utils
+            libva-vdpau-driver
             glxinfo
             mesa
             pciutils

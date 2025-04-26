@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   isMainBrowser,
 }:
 lib.makeBrowser isMainBrowser "firefox.desktop" {
@@ -8,16 +7,6 @@ lib.makeBrowser isMainBrowser "firefox.desktop" {
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      extraPolicies = {
-        DisplayBookmarksToolbar = false;
-        Preferences = {
-          "browser.toolbars.bookmarks.visibility" = "never";
-          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-          "media.ffmpeg.vaapi.enabled" = true;
-        };
-      };
-    };
 
     profiles.default = {
       userChrome = ''

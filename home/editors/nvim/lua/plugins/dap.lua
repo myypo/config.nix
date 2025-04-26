@@ -69,11 +69,11 @@ return {
 	},
 
 	keys = {
-		{ "<C-b>", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
-		{ "<C-x>", "<Cmd>DapTerminate<CR>", desc = "Stop debugging" },
-		{ "<C-g>", "<Cmd>DapContinue<CR>", desc = "Start debugging" },
-
-		{ "<leader>d", "<Cmd>lua require('dapui').toggle()<CR>", desc = "dapui_toggle" },
+		-- { "<C-b>", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
+		-- { "<C-x>", "<Cmd>DapTerminate<CR>", desc = "Stop debugging" },
+		-- { "<C-g>", "<Cmd>DapContinue<CR>", desc = "Start debugging" },
+		--
+		-- { "<leader>d", "<Cmd>lua require('dapui').toggle()<CR>", desc = "dapui_toggle" },
 	},
 
 	config = function()

@@ -6,9 +6,9 @@
     pkg-config
     openssl
 
+    leptosfmt
     (fenix.complete.withComponents [
       "cargo"
-      "clippy"
       "rust-src"
       "rust-std"
       "rustc"

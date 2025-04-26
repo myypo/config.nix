@@ -83,7 +83,7 @@ rec {
       };
 
       music = {
-        termusic.enable = true;
+        termusic.enable = false;
       };
 
       video = {
@@ -102,6 +102,8 @@ rec {
         common = {
           enableAll = true;
         };
+
+        wine.enable = false;
       };
 
       notifications = {
@@ -248,7 +250,7 @@ rec {
   services = {
     custom = {
       nordvpn = {
-        enable = true;
+        enable = false;
       };
 
       battery-charge-threshold = {

@@ -15,6 +15,7 @@
       go.mod
       go.sum
       node_modules
+      fixtures
     '';
 
     # Have to source it from a file because the prompt symbol padding

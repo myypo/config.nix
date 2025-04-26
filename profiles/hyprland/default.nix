@@ -108,17 +108,13 @@ in
     };
 
     nixosConfig = {
-      programs.dconf.enable = true;
-
-      xdg.portal = with pkgs; {
+      programs.hyprland = {
         enable = true;
-        extraPortals = [
-          xdg-desktop-portal-gtk
-        ];
-        configPackages = [
-          xdg-desktop-portal-gtk
-        ];
-        xdgOpenUsePortal = true;
+        withUWSM = true;
+
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        portalPackage =
+          inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       };
     };
   };

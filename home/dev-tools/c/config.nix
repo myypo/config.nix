@@ -1,4 +1,7 @@
 { pkgs }:
 {
-  home.packages = with pkgs; [ ccls ];
+  home.packages = with pkgs; [
+    ccls
+    gcc
+  ];
 }

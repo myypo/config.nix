@@ -26,10 +26,24 @@ in
     type = "editors";
     name = "nvim";
     nixosConfig = {
+      sops.secrets = lib.trivial.pipe config.myypo.users [
+        builtins.attrNames
+        (builtins.map (owner: {
+          name = "${owner}_OPENROUTER_API_KEY";
+          value = {
+            inherit owner;
+          };
+        }))
+        builtins.listToAttrs
+      ];
+
       nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
     };
     addArgsFn = userName: cfg: {
+      inherit userName;
+      secrets = config.sops.secrets;
       isMainEditor = config.myypo.users.${userName}.mainEditor == "nvim";
+      mainShell = config.myypo.users.${userName}.mainShell;
       githubUserName = config.myypo.users.${userName}.githubUserName;
 
       sourceNvimFiles =
@@ -75,8 +89,7 @@ in
                   "${baseDestPath}/init.lua".text = builtins.replaceStrings (fromFn subs."_init.lua") (toFn
                     subs."_init.lua"
                   ) (builtins.readFile "${baseSrcPath}/_init.lua");
-                  # TODO: doing it this way isn't really ergonomic for me
-                  # "${baseDestPath}/lazy-lock.json".source = "${baseSrcPath}/lazy-lock.json";
+                  "${baseDestPath}/lazy-lock.json".source = mkOutOfStoreSymlink "${baseSrcPath}/lazy-lock.json";
 
                   "${baseDestPath}/lua/base".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/base";
                   "${baseDestPath}/lua/luasnip".source = mkOutOfStoreSymlink "${baseSrcPath}/lua/luasnip";

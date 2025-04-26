@@ -1,9 +1,12 @@
 {
   lib,
   pkgs,
+  secrets,
   flakePath,
   theme,
   isMainEditor,
+  mainShell,
+  userName,
   githubUserName,
   sourceNvimFiles,
 }:
@@ -42,6 +45,12 @@ in
         vimPlugins.nvim-treesitter.withAllGrammars
       ];
     };
+
+    "${mainShell}" = {
+      shellInit = ''
+        export OPENROUTER_API_KEY="$(cat ${secrets."${userName}_OPENROUTER_API_KEY".path})"
+      '';
+    };
   };
   xdg.configFile."nvim/parser".source = "${
     pkgs.symlinkJoin {
@@ -57,12 +66,33 @@ in
       minvim
 
       # Debug
-      lldb
-      vscode-extensions.vadimcn.vscode-lldb
 
       # Build
       gnumake
       deno
+
+      (pkgs.callPackage (
+        {
+          lib,
+          fetchFromGitHub,
+          nodejs,
+        }:
+        pkgs.buildNpmPackage rec {
+          pname = "mcp-hub";
+          version = "1.7.3";
+
+          src = fetchFromGitHub {
+            owner = "ravitemer";
+            repo = pname;
+            tag = "v${version}";
+            hash = "sha256-IjLCPP4vNjdO1I9vNrovIhd86KGoHEp8h99V5jRtKLg=";
+          };
+
+          npmDepsHash = "sha256-hC5QxKxHAtV94DwT5m0zR+VAA8Jn4SuB36fdAhVT73g=";
+
+          nativeBuildInputs = [ nodejs ];
+        }
+      ) { })
     ];
   };
 
@@ -91,8 +121,7 @@ in
         {
           # Minimal setup for kitty-pager and command editing
           "${baseDestPath}/init.lua".source = mkOutOfStoreSymlink "${baseSrcPath}/_init.lua";
-          # TODO: doing it this way isn't really ergonomic for me
-          # "${baseDestPath}/lazy-lock.json".source = mkOutOfStoreSymlink "${baseSrcPath}/lazy-lock.json";
+          "${baseDestPath}/lazy-lock.json".source = mkOutOfStoreSymlink "${baseSrcPath}/lazy-lock.json";
 
           "${baseDestPath}/lua/kitty-pager.lua".source =
             mkOutOfStoreSymlink "${baseSrcPath}/minvim/kitty-pager.lua";

@@ -6,8 +6,14 @@ return {
 
 	config = function()
 		require("borrowed").setup({
-			modules = {
-				compass = { enable = true },
+			overrides = {
+				groups = {
+					all = {
+						LspReferenceText = {},
+						LspReferenceRead = {},
+						LspReferenceWrite = {},
+					},
+				},
 			},
 		})
 

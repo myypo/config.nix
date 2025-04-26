@@ -7,7 +7,7 @@
 }:
 {
   nix = {
-    package = pkgs.nixVersions.git;
+    package = pkgs.nixVersions.latest;
 
     registry.nixpkgs.flake = inputs.nixpkgs;
 
@@ -17,6 +17,7 @@
       experimental-features = [
         "nix-command"
         "flakes"
+        "pipe-operators"
       ];
       keep-derivations = true;
       keep-outputs = true;

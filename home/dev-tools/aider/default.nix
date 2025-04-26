@@ -4,20 +4,21 @@
   config,
   ...
 }:
+with lib;
 let
   userOpts = {
-    options.dev-tools.rescript = {
-      enable = lib.makeNullableEnableOption "rescript dev-tools";
+    options.dev-tools.aider = {
+      enable = makeNullableEnableOption "aider";
     };
   };
 in
 {
-  options = lib.makeHomeOpts userOpts;
+  options = makeHomeOpts userOpts;
 
   config = lib.makeHomeModule {
     inherit pkgs config;
     configPath = ./config.nix;
     type = "dev-tools";
-    name = "rescript";
+    name = "aider";
   };
 }

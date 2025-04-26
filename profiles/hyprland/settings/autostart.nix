@@ -9,13 +9,12 @@ with lib;
     # Start hyprland automatically with fish
     fish = {
       loginShellInit = ''
-        set TTY1 (tty)
-        [ "$TTY1" = "/dev/tty1" ] && exec Hyprland
+        if uwsm check may-start
+            exec uwsm start hyprland-uwsm.desktop
+        end
       '';
     };
   };
-
-  systemd.user.targets.hyprland-session.Unit.Wants = [ "xdg-desktop-autostart.target" ];
 
   wayland.windowManager.hyprland = {
     settings = {

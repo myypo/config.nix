@@ -9,6 +9,8 @@
     gotools
     iferr
     delve
+    golangci-lint
+    golangci-lint-langserver
   ];
 
   programs.go = {

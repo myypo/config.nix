@@ -79,6 +79,7 @@ in
     cmd_duration.disabled = true;
     battery.disabled = true;
     direnv.disabled = true;
+    aws.disabled = true;
 
     aws.symbol = "  ";
     rust.symbol = "󱘗 ";
@@ -117,6 +118,7 @@ in
     python.symbol = " ";
     rlang.symbol = "󰟔 ";
     ruby.symbol = " ";
+    terraform.symbol = " ";
 
     os.symbols = {
       Alpaquita = " ";

@@ -10,6 +10,7 @@ in
 (lib.attrsets.recursiveUpdate {
   home.pointerCursor = {
     gtk.enable = true;
+    x11.enable = true;
 
     inherit size;
   };

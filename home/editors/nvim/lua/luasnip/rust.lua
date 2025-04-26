@@ -99,4 +99,20 @@ return {
 		i(5),
 		t({ "", "}" }),
 	}),
+
+	-- Structs
+	s({ trig = "s", wordTrig = true }, {
+		t("struct "),
+		i(1),
+		t({ " {", "\t" }),
+		i(2),
+		t({ "", "}" }),
+	}),
+	s({ trig = "ps", wordTrig = true }, {
+		t("pub struct "),
+		i(1),
+		t({ " {", "\t" }),
+		i(2),
+		t({ "", "}" }),
+	}),
 }

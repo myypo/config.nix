@@ -5,7 +5,6 @@
   myypo,
   ...
 }:
-with lib;
 let
   usersCfg = config.myypo.users;
   hmCfg = config.myypo.home-manager;
@@ -23,10 +22,10 @@ in
   ];
 
   options.myypo.home-manager = {
-    enable = mkEnableOption "whether to enable home-manager on the machine";
+    enable = lib.mkEnableOption "whether to enable home-manager on the machine";
   };
 
-  config = mkIf hmCfg.enable {
+  config = lib.mkIf hmCfg.enable {
     home-manager = {
       # Create backup files instead of exiting with an error on hm collision
       backupFileExtension = "hm_backup_";
@@ -34,7 +33,9 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       verbose = true;
-      sharedModules = [ { home.stateVersion = mkForce config.system.stateVersion; } ];
+      sharedModules = [
+        { home.stateVersion = lib.mkForce config.system.stateVersion; }
+      ];
     };
     home-manager.users = builtins.mapAttrs (userName: _: {
       programs.home-manager.enable = true;

@@ -1,0 +1,70 @@
+return {
+	-- "copilotlsp-nvim/copilot-lsp",
+	-- init = function()
+	-- 	vim.g.copilot_nes_debounce = 50
+	-- 	vim.lsp.enable("copilot_ls")
+	-- 	vim.keymap.set({ "n", "i" }, "<Tab>", function()
+	-- 		require("copilot-lsp.nes").apply_pending_nes(0)
+	-- 	end)
+	-- end,
+
+	-- "supermaven-inc/supermaven-nvim",
+	-- config = function()
+	-- 	require("supermaven-nvim").setup({
+	-- 		keymaps = {
+	-- 			accept_suggestion = "<Tab>",
+	-- 			clear_suggestion = "<C-]>",
+	-- 			accept_word = "<C-j>",
+	-- 		},
+	-- 		ignore_filetypes = {},
+	-- 		disable_keymaps = false, -- disables built in keymaps for more manual control
+	-- 	})
+	-- end,
+
+	-- "milanglacier/minuet-ai.nvim",
+	-- config = function()
+	-- 	require("minuet").setup({
+	-- 		provider = "openai_fim_compatible",
+	-- 		request_timeout = 2.5,
+	-- 		throttle = 1000, -- Increase to reduce costs and avoid rate limits
+	-- 		debounce = 400, -- Increase to reduce costs and avoid rate limits
+	-- 		provider_options = {
+	-- 			openai_fim_compatible = {
+	-- 				api_key = "OPENROUTER_API_KEY",
+	-- 				end_point = "https://openrouter.ai/api/v1/completions",
+	-- 				-- model = "deepseek/deepseek-chat-v3-0324:free",
+	-- 				-- model = "google/gemini-2.5-pro-exp-03-25:free",
+	-- 				-- model = "qwen/qwq-32b:free",
+	-- 				model = "agentica-org/deepcoder-14b-preview:free",
+	-- 				-- model = "mistralai/codestral-2501",
+	-- 				name = "OpenRouter",
+	-- 				optional = {
+	-- 					max_tokens = 128,
+	-- 					provider = {
+	-- 						sort = "throughput",
+	-- 					},
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 		completion = { trigger = { prefetch_on_insert = false } },
+	-- 		n_completions = 1,
+	-- 		virtualtext = {
+	-- 			auto_trigger_ft = {},
+	-- 			keymap = {
+	-- 				-- accept whole completion
+	-- 				accept = "<Tab>",
+	-- 				-- accept one line
+	-- 				accept_line = "<A-a>",
+	-- 				-- accept n lines (prompts for number)
+	-- 				-- e.g. "A-z 2 CR" will accept 2 lines
+	-- 				accept_n_lines = "<A-z>",
+	-- 				-- Cycle to prev completion item, or manually invoke completion
+	-- 				prev = "<A-[>",
+	-- 				-- Cycle to next completion item, or manually invoke completion
+	-- 				next = "<C-c>",
+	-- 				dismiss = "<A-e>",
+	-- 			},
+	-- 		},
+	-- 	})
+	-- end,
+}
