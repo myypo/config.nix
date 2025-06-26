@@ -1,0 +1,51 @@
+theme_selected = "default"
+
+[album_photo_xywh]
+x_between_1_100 = 100
+y_between_1_100 = 77
+width_between_1_100 = 20
+align = "BottomRight"
+
+[style_color_symbol]
+library_foreground = "Foreground"
+library_background = "Reset"
+library_border = "Magenta"
+library_highlight = "Yellow"
+library_highlight_symbol = ""
+playlist_foreground = "Foreground"
+playlist_background = "Reset"
+playlist_border = "Magenta"
+playlist_highlight = "Yellow"
+playlist_highlight_symbol = ""
+progress_foreground = "White"
+progress_background = "Reset"
+progress_border = "Magenta"
+lyric_foreground = "Foreground"
+lyric_background = "Reset"
+lyric_border = "Magenta"
+currently_playing_track_symbol = "►"
+
+[style_color_symbol.alacritty_theme]
+path = ""
+name = "default"
+author = "MyyPo"
+background = "#000000"
+foreground = "#e0def4"
+cursor = "#f5dcd8"
+text = "#e0def4"
+black = "#000000"
+red = "#eb6f92"
+green = "#3e8fb0"
+yellow = "#f6c177"
+blue = "#9ccfd8"
+magenta = "#eba4ac"
+cyan = "#9ccfd8"
+white = "#e0def4"
+light_black = "#6e6a86"
+light_red = "#eb6f92"
+light_green = "#3e8fb0"
+light_yellow = "#f6c177"
+light_blue = "#9ccfd8"
+light_magenta = "#eba4ac"
+light_cyan = "#9ccfd8"
+light_white = "#e0def4"
