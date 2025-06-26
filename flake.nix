@@ -45,7 +45,6 @@
 
     ### CachyOS kernel ###
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    chaotic.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Utils ###
     flake-parts.url = "github:hercules-ci/flake-parts";
