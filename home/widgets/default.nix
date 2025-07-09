@@ -1,9 +1,8 @@
 { lib, ... }:
-with lib;
 let
   userOpts = {
     options.widgets.common = {
-      enableAll = mkEnableOption "enable all configured widget apps";
+      enableAll = lib.mkEnableOption "enable all configured widget apps";
     };
   };
 

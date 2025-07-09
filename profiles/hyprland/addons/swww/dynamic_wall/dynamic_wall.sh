@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env dash
+
+# Check if another instance of this script is already running
+if pgrep -x dynamic_wall >/dev/null; then
+    exit 0
+fi
 
 # Make sure swww daemon is already running
 while ! swww query; do

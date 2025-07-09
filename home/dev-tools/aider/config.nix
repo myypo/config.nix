@@ -4,7 +4,6 @@
   flakePath,
 }:
 let
-
   mkOutOfStoreSymlink = lib.makeOutOfStore pkgs;
   baseSrcPath = "${flakePath}/home/dev-tools/aider";
 in
@@ -14,6 +13,5 @@ in
     playwright
   ];
 
-  # xdg.configFile.".aider.conf.yml".source = mkOutOfStoreSymlink "${baseSrcPath}/aider.conf.yml";
   home.file.".aider.conf.yml".source = mkOutOfStoreSymlink "${baseSrcPath}/aider.conf.yml";
 }

@@ -104,7 +104,7 @@ local globals = {
 	editorconfig = 1,
 
 	-- FIXME: https://github.com/neovim/neovim/issues/32660
-	_ts_force_sync_parsing = true,
+	-- _ts_force_sync_parsing = true,
 }
 
 for k, v in pairs(globals) do

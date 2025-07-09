@@ -142,6 +142,9 @@ rec {
             waybar = {
               enable = true;
             };
+            # quickshell = {
+            #   enable = true;
+            # };
             to_notif = {
               enable = true;
             };
@@ -164,6 +167,20 @@ rec {
     cpu = {
       enable = true;
       brand = "amd";
+    };
+    gpu = {
+      enable = true;
+
+      dedicatedBrand = null;
+      integratedBrand = "amd";
+
+      integratedBusId = null;
+      dedicatedBusId = null;
+
+      integratedDriNum = null;
+      dedicatedDriNum = null;
+
+      optimus.enable = false;
     };
   };
 

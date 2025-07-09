@@ -65,6 +65,13 @@ let
             default = null;
           };
         };
+        quickshell = {
+          enable = lib.mkEnableOption "quickshell";
+          theme = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+          };
+        };
         to_notif = {
           enable = lib.mkEnableOption "to notification hyprland utility";
         };
@@ -101,6 +108,13 @@ in
               inherit config userName;
               name = "theme";
               val = cfg.addons.waybar.theme;
+            };
+          };
+          quickshell = cfg.addons.quickshell // {
+            theme = lib.valueOrUserDefault {
+              inherit config userName;
+              name = "theme";
+              val = cfg.addons.quickshell.theme;
             };
           };
         };

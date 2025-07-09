@@ -28,8 +28,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     ### Hyprland ###
-    # Neverending cycle: https://github.com/hyprwm/Hyprland/discussions/9953
-    hyprland.url = "github:hyprwm/Hyprland/8c97cb7858e5d6c35d1a055930904346fb4248db";
+    hyprland.url = "github:hyprwm/Hyprland";
 
     ### Secrets ###
     sops-nix.url = "github:Mic92/sops-nix";
@@ -42,6 +41,9 @@
     ### Rust ###
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    ### Sherlock launcher ###
+    sherlock.url = "github:Skxxtz/sherlock";
 
     ### CachyOS kernel ###
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";

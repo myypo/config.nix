@@ -1,9 +1,8 @@
 { lib, ... }:
-with lib;
 let
   userOpts = {
     options.video.common = {
-      enableAll = mkEnableOption "enable all video players and editors";
+      enableAll = lib.mkEnableOption "enable all video players and editors";
     };
   };
 

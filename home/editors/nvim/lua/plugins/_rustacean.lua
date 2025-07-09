@@ -7,23 +7,22 @@ return {
 			callback = function()
 				vim.lsp.buf.format({ async = false })
 
-				if vim.fn.executable("dx") == 0 then
-					return
-				end
-
-				if vim.fn.executable("dx") == 1 then
-					local path = vim.api.nvim_buf_get_name(0)
-					if path == "" then
-						return
-					end
-
-					local result = vim.system({ "dx", "fmt", "-f", path }, { text = true }):wait()
-					if result.code == 0 then
-						vim.cmd("silent! edit!")
-					else
-						vim.notify("dx fmt failed: " .. (result.stderr or ""), vim.log.levels.WARN)
-					end
-				end
+				-- FIXME: this shit sucks, none-ls also sucks, figure out how to do it
+				-- if vim.fn.executable("dx") == 0 then
+				-- 	return
+				-- end
+				--
+				-- local path = vim.api.nvim_buf_get_name(0)
+				-- if path == "" then
+				-- 	return
+				-- end
+				--
+				-- local result = vim.system({ "dx", "fmt", "-f", path }, { text = true }):wait()
+				-- if result.code == 0 then
+				-- 	vim.cmd("silent! edit!")
+				-- else
+				-- 	vim.notify("dx fmt failed: " .. (result.stderr or ""), vim.log.levels.WARN)
+				-- end
 			end,
 		})
 

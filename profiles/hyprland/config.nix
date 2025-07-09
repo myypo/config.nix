@@ -4,6 +4,7 @@
   inputs,
   pkgs,
   userCfg,
+  flakePath,
 }:
 {
   imports = [
@@ -13,6 +14,7 @@
         pkgs
         cfg
         userCfg
+        flakePath
         ;
     })
     (import ./scripts { inherit lib pkgs userCfg; })

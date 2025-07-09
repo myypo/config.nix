@@ -60,6 +60,10 @@
       inactive_timeout = 5;
     };
 
+    ecosystem = {
+      no_update_news = true;
+    };
+
     misc = {
       disable_autoreload = true;
       disable_hyprland_logo = true;
